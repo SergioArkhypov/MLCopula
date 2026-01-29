@@ -1,14 +1,9 @@
-ipykernell
 pandas
 numpy
 pandoc
-networkx
-bs4
-lxml
-html5lib
 pypandoc
 pypandoc_binary
 pdflatex
-litellm
 yfinance
 scipy
+matplotlib

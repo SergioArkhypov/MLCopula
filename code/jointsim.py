@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 class JointSim:
     def __init__(self, calib_data, rf_dir, seed=0):
         self.seed = seed
+        self.figpath = 'C:\\dev\\MLCopula\\document\\figures'
         self.name = 'Not implemented'
         self.calib_data = copy.deepcopy(calib_data)
         
@@ -24,14 +25,14 @@ class JointSim:
         raise NotImplementedError
     
     def plot_sims(self, rf1 : int, rf2 : int):
-        plt.title(f'Uniform scenarios: {self.name}')
+        #plt.title(f'Uniform scenarios: {self.name}')
         plt.scatter(self.sims.iloc[:,rf1], self.sims.iloc[:,rf2], s =0.3)
+        title=self.name.replace(' ', '_')
+        plt.savefig(f'{self.figpath}\\Uniform_scenarios_{title}.png')
         plt.show()
 
     def plot_contour(self, rf1 : int, rf2 : int, step = 0.025):
-        plt.title(f'Contour plot: {self.name}')
-
-        
+        #plt.title(f'Contour plot: {self.name}')
         #sns.set_style('white')
         #sns.kdeplot(x=self.sims.iloc[:,rf1], y=self.sims.iloc[:,rf2], cmap='Greens', fill=True)
         #sns.kdeplot(x=self.sims.iloc[:,rf1], y=self.sims.iloc[:,rf2])
@@ -45,13 +46,14 @@ class JointSim:
         z = kernel.evaluate(np.vstack([x.ravel(), y.ravel()]))/nscen
         plt.contourf(x, y, z.reshape(x.shape), cmap='Greens')
         plt.colorbar()
-
+        title=self.name.replace(' ', '_')
+        plt.savefig(f'{self.figpath}\\Contour_plot_{title}.png')
         plt.show()
 
     def plot_pdf(self, rf1 : int, rf2 : int, step = 0.025):
         nscen = self.sims.shape[0]
         fig = plt.figure()
-        plt.title(f'PDF: {self.name}')
+        #plt.title(f'PDF: {self.name}')
         ax = fig.add_subplot(111, projection='3d')
         
         x_vals = np.linspace(0.0, 1.0, int(1.0/step))
@@ -63,7 +65,8 @@ class JointSim:
         z = kernel.evaluate(np.vstack([x.ravel(), y.ravel()]))/nscen
         ax.plot_surface(x, y, z.reshape(x.shape), cmap='Greens')
         #ax.plot_wireframe(x, y, z.reshape(x.shape))
-
+        title=self.name.replace(' ', '_')
+        plt.savefig(f'{self.figpath}\\PDF_{title}.png')
         plt.show()
 
 class GaussCopulaCorr(JointSim):

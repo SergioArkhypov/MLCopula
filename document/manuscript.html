@@ -19,8 +19,53 @@ achieve minimization with regards to those measures. On the simulation
 part, a range of different approaches can be considered, starting from
 semi-analytical methods to Variational Autoencoders (VAEs) and
 Generative Adversarial Networks (GANs).</p>
-<p><span id="eq1"><span
-class="math display"><em>x</em> = <em>X</em><sup>2</sup> + <em>Y</em><sub><em>d</em><em>s</em><em>d</em><em>s</em><em>d</em><em>s</em></sub>    (<em>E</em><em>q</em>.1)</span></span></p>
+<h1 id="theory">… theory</h1>
+<h2 id="copulas">Copulas</h2>
+<p><span
+class="math inline"><em>C</em> : [0, 1]<sup><em>d</em></sup>− &gt; [0, 1]</span>
+is a d-dimentional copula if <span class="math inline"><em>C</em></span>
+is a joint cumulative distribution function of a d-dimentional random
+vector on the unit cube <span
+class="math inline">[0, 1]<sup><em>d</em></sup><em>w</em><em>i</em><em>t</em><em>h</em><em>u</em><em>n</em><em>i</em><em>f</em><em>o</em><em>r</em><em>m</em><em>m</em><em>a</em><em>r</em><em>g</em><em>i</em><em>n</em><em>a</em><em>l</em><em>s</em></span></p>
+<h2 id="sklars-theorem">Sklar’s theorem</h2>
+<p>Every multivariate cumulative distribution function <span
+class="math inline"><em>H</em>(<em>x</em><sub>1</sub>, ...<em>x</em><sub><em>d</em></sub>) = <em>P</em><em>r</em>[<em>X</em><sub>1</sub> ≤ <em>x</em><sub>1</sub>, ...<em>X</em><sub><em>d</em></sub> ≤ <em>x</em><sub><em>d</em></sub>]</span>
+of a random <span
+class="math inline">(<em>X</em><sub>1</sub>, <em>X</em><sub>2</sub>, ..., <em>X</em><sub><em>d</em></sub>)</span>
+can be expressed in terms of its marginals <span
+class="math inline"><em>F</em><sub><em>i</em></sub>(<em>x</em><sub><em>i</em></sub>) = <em>P</em><em>r</em>[<em>X</em><sub><em>i</em></sub> ≤ <em>x</em><sub><em>i</em></sub>]</span>
+and a copula <span class="math inline"><em>C</em></span>, as: <span
+id="eq1"><span
+class="math display"><em>H</em>(<em>x</em><sub>1</sub>, ..., <em>x</em><sub><em>d</em></sub>) = <em>C</em>(<em>F</em><sub>1</sub>(<em>x</em><sub>1</sub>), ..., <em>F</em><sub><em>d</em></sub>(<em>x</em><sub><em>d</em></sub>))    (<em>E</em><em>q</em>.1)</span></span></p>
+<h2 id="gaussian-copula">Gaussian copula</h2>
+<figure>
+<img
+src="figures\Uniform_scenarios_Gaussian_copula,_numerical_simulation.png"
+alt="Figure 1: Uniform scenarios Gaussian_copula, numerical simulation" />
+<figcaption aria-hidden="true">Figure 1: Uniform scenarios
+Gaussian_copula, numerical simulation</figcaption>
+</figure>
+<figure>
+<img
+src="figures\Contour_plot_Gaussian_copula,_numerical_simulation.png"
+alt="Figure 2: Contour plot Gaussian copula, numerical simulation" />
+<figcaption aria-hidden="true">Figure 2: Contour plot Gaussian copula,
+numerical simulation</figcaption>
+</figure>
+<h2 id="cauchy-copula">Cauchy copula</h2>
+<figure>
+<img
+src="figures\Uniform_scenarios_Cauchy_copula,_numerical_simulation.png"
+alt="Figure 3: Uniform scenarios Cauchy copula, numerical simulation" />
+<figcaption aria-hidden="true">Figure 3: Uniform scenarios Cauchy
+copula, numerical simulation</figcaption>
+</figure>
+<figure>
+<img src="figures\Contour_plot_Cauchy_copula,_numerical_simulation.png"
+alt="Figure 4: Contour plot Cauchy copula, numerical simulation" />
+<figcaption aria-hidden="true">Figure 4: Contour plot Cauchy copula,
+numerical simulation</figcaption>
+</figure>
 <h1 id="literature">Literature</h1>
 <ol type="1">
 <li>D.Oh, A.Patton (2015). Modelling dependance in High dimensions with

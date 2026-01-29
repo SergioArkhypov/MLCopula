@@ -12,8 +12,25 @@ Despite the popularity of ML/AI algorithms in finance, they have mainly been use
 
 The main aim of this work would be to develop a machine learning algorithm for calibrating a high-dimensional copula with tail dependence different from Gaussian, while still reflecting the observed history with regards to selected measures (i.e., matching correlation matrix, matching pairwise tail dependence at the specific percentile, etc.). The latter is expected to require the creation of a custom loss function to achieve minimization with regards to those measures. On the simulation part, a range of different approaches can be considered, starting from semi-analytical methods to Variational Autoencoders (VAEs) and Generative Adversarial Networks (GANs).
 
-[$$x= X^2 + Y_{dsdsds} \;\;\; \ (Eq.1)$$]{id="eq1"}
 
+# ... theory
+## Copulas
+$C: [0,1]^d -> [0,1]$ is a d-dimentional copula if $C$ is a joint cumulative distribution function of a d-dimentional random vector on the unit cube $[0,1]^d with uniform marginals$
+
+## Sklar's theorem
+Every multivariate cumulative distribution function $H(x_1, ... x_d) = Pr[X_1 \leq x_1, ... X_d \leq x_d]$ of a random $(X_1, X_2, ... , X_d )$ can be expressed in terms of its marginals $F_i(x_i)=Pr[X_i \leq x_i]$ and a copula $C$, as:
+[$$H(x_1, ..., x_d) = C(F_1(x_1), ..., F_d(x_d)) \;\;\; \ (Eq.1)$$]{id="eq1"}
+
+## Gaussian copula
+![Figure 1: Uniform scenarios Gaussian_copula, numerical simulation](figures\Uniform_scenarios_Gaussian_copula,_numerical_simulation.png)
+
+![Figure 2: Contour plot Gaussian copula, numerical simulation](figures\Contour_plot_Gaussian_copula,_numerical_simulation.png)
+
+
+## Cauchy copula 
+![Figure 3: Uniform scenarios Cauchy copula, numerical simulation](figures\Uniform_scenarios_Cauchy_copula,_numerical_simulation.png)
+
+![Figure 4: Contour plot Cauchy copula, numerical simulation](figures\Contour_plot_Cauchy_copula,_numerical_simulation.png)
 
 # Literature
 1. D.Oh, A.Patton (2015). Modelling dependance in High dimensions with factor copulas. [(link)](https://www.federalreserve.gov/econresdata/feds/2015/files/2015051pap.pdf)
