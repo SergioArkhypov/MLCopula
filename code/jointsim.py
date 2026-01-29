@@ -1,0 +1,121 @@
+import numpy as np
+from scipy import stats
+import pandas as pd
+import copy
+import matplotlib.pyplot as plt
+
+
+class JointSim:
+    def __init__(self, calib_data, rf_dir, seed=0):
+        self.seed = seed
+        self.name = 'Not implemented'
+        self.calib_data = copy.deepcopy(calib_data)
+        
+        i = 0
+        for rf in calib_data.columns:
+            if np.isnan(rf_dir[i]): self.calib_data = self.calib_data.drop(columns=[rf])
+            if rf_dir[i]==-1.0: self.calib_data[rf] = 1.0 - self.calib_data[rf] 
+            i+=1
+
+        self.size = self.calib_data.shape[0]
+        self.sizerf = self.calib_data.shape[1]
+    
+    def get_sims(self, scen_number):
+        raise NotImplementedError
+    
+    def plot_sims(self, rf1 : int, rf2 : int):
+        plt.title(f'Uniform scenarios: {self.name}')
+        plt.scatter(self.sims.iloc[:,rf1], self.sims.iloc[:,rf2], s =0.3)
+        plt.show()
+
+    def plot_contour(self, rf1 : int, rf2 : int, step = 0.025):
+        plt.title(f'Contour plot: {self.name}')
+
+        
+        #sns.set_style('white')
+        #sns.kdeplot(x=self.sims.iloc[:,rf1], y=self.sims.iloc[:,rf2], cmap='Greens', fill=True)
+        #sns.kdeplot(x=self.sims.iloc[:,rf1], y=self.sims.iloc[:,rf2])
+        nscen = self.sims.shape[0]
+        x_vals = np.linspace(0.0, 1.0, int(1.0/step))
+        y_vals = np.linspace(0.0, 1.0, int(1.0/step))
+        x, y = np.meshgrid(x_vals, y_vals)
+
+        data = np.vstack([self.sims.iloc[:,rf1], self.sims.iloc[:,rf2]])
+        kernel = stats.gaussian_kde(data)
+        z = kernel.evaluate(np.vstack([x.ravel(), y.ravel()]))/nscen
+        plt.contourf(x, y, z.reshape(x.shape), cmap='Greens')
+        plt.colorbar()
+
+        plt.show()
+
+    def plot_pdf(self, rf1 : int, rf2 : int, step = 0.025):
+        nscen = self.sims.shape[0]
+        fig = plt.figure()
+        plt.title(f'PDF: {self.name}')
+        ax = fig.add_subplot(111, projection='3d')
+        
+        x_vals = np.linspace(0.0, 1.0, int(1.0/step))
+        y_vals = np.linspace(0.0, 1.0, int(1.0/step))
+        x, y = np.meshgrid(x_vals, y_vals)
+
+        data = np.vstack([self.sims.iloc[:,rf1], self.sims.iloc[:,rf2]])
+        kernel = stats.gaussian_kde(data)
+        z = kernel.evaluate(np.vstack([x.ravel(), y.ravel()]))/nscen
+        ax.plot_surface(x, y, z.reshape(x.shape), cmap='Greens')
+        #ax.plot_wireframe(x, y, z.reshape(x.shape))
+
+        plt.show()
+
+class GaussCopulaCorr(JointSim):
+    def __init__(self, calib_data, rf_dir, seed=0):
+        JointSim.__init__(self, calib_data, rf_dir, seed)
+        self.name ='Gaussian copula, correlation based'
+    
+    def get_sims(self, scen_number):
+        mean = np.zeros((self.sizerf,))
+        corr = self.calib_data.corr()
+        data = np.random.multivariate_normal(mean, corr, size=scen_number)
+        df = pd.DataFrame(data=data, columns=self.calib_data.columns)
+        self.sims = df.rank(axis=0, pct=True) 
+        return self.sims
+
+
+class GaussCopulaNum(JointSim):
+    def __init__(self, calib_data, rf_dir, seed=0):
+        JointSim.__init__(self, calib_data, rf_dir, seed)
+        self.name = 'Gaussian copula, numerical simulation'
+    
+    def get_sims(self, scen_number):
+        z = np.array([np.random.standard_normal(scen_number) for s in range(self.size)]) #np.random.standard_normal(scen_number, size)
+        sim = np.matmul(np.transpose(z), self.calib_data)
+        sim_stddev = sim.std(axis=0, ddof=1)
+
+        self.sims = copy.deepcopy(sim)
+        for sn in self.calib_data.columns:
+            self.sims[sn] = stats.norm.cdf(sim[sn], loc=0.0, scale=sim_stddev[sn])
+
+        return self.sims
+
+
+class CauchyCopulaNum(JointSim):
+    def __init__(self, calib_data, rf_dir, seed=0):
+        JointSim.__init__(self, calib_data, rf_dir, seed)
+        self.name = 'Cauchy copula, numerical simulation'
+    
+    def get_sims(self, scen_number):
+        z = np.array([np.random.standard_cauchy(scen_number) for s in range(self.size)])
+        sim = np.matmul(np.transpose(z), self.calib_data)
+
+        #Wiki version: as we perform linear combination sum(ksi_cauchy(0, 1)* weight) location should be zero
+        # as Cauchy is a stable distribution. In this case we can estimate second parameter (scale) as median of abs values
+        # https://en.wikipedia.org/wiki/Cauchy_distribution
+        
+        scales  = np.median(np.abs(sim), axis=0)
+        sim_scale = pd.DataFrame(data=[scales], columns=sim.columns)
+
+        self.sims = copy.deepcopy(sim)
+        for sn in self.calib_data:
+            sc = sim_scale[sn]
+            self.sims[sn] = stats.cauchy.cdf(sim[sn], loc=0.0, scale=sc)
+
+        return self.sims
