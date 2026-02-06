@@ -7,7 +7,8 @@ import matplotlib.pyplot as plt
 
 class JointSim:
     def __init__(self, calib_data, rf_dir, seed=0):
-        self.seed = seed
+        # self.seed = seed
+        np.random.seed(seed)
         self.figpath = 'C:\\dev\\MLCopula\\document\\figures'
         self.name = 'Not implemented'
         self.calib_data = copy.deepcopy(calib_data)
@@ -72,7 +73,7 @@ class JointSim:
 class GaussCopulaCorr(JointSim):
     def __init__(self, calib_data, rf_dir, seed=0):
         JointSim.__init__(self, calib_data, rf_dir, seed)
-        self.name ='Gaussian copula, correlation based'
+        self.name ='Gaussian copula (correlation based)'
     
     def get_sims(self, scen_number):
         mean = np.zeros((self.sizerf,))
@@ -86,7 +87,7 @@ class GaussCopulaCorr(JointSim):
 class GaussCopulaNum(JointSim):
     def __init__(self, calib_data, rf_dir, seed=0):
         JointSim.__init__(self, calib_data, rf_dir, seed)
-        self.name = 'Gaussian copula, numerical simulation'
+        self.name = 'Gaussian copula (numerical simulation)'
     
     def get_sims(self, scen_number):
         z = np.array([np.random.standard_normal(scen_number) for s in range(self.size)]) #np.random.standard_normal(scen_number, size)
@@ -103,7 +104,7 @@ class GaussCopulaNum(JointSim):
 class CauchyCopulaNum(JointSim):
     def __init__(self, calib_data, rf_dir, seed=0):
         JointSim.__init__(self, calib_data, rf_dir, seed)
-        self.name = 'Cauchy copula, numerical simulation'
+        self.name = 'Cauchy copula (numerical simulation)'
     
     def get_sims(self, scen_number):
         z = np.array([np.random.standard_cauchy(scen_number) for s in range(self.size)])
