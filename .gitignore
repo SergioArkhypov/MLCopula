@@ -1,4 +1,5 @@
 node_modules
 *.myvenv
 *.myvenv2
+*.myvenv3
 __pycache__
