@@ -19,5 +19,5 @@ def get_market(ticker_list, period, interval):
     result = pd.concat(market, axis=1)
     result = result.sort_index(ascending=True)
     #result = np.log(result).shift()
-    result = np.log(1.0 + result.pct_change(fill_method = None)) #TODO: implement other 
-    return result.dropna()
+    returns = np.log(1.0 + result.pct_change(fill_method = None)) #TODO: implement other 
+    return (returns.dropna(), result.iloc[-1])

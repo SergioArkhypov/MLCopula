@@ -22,15 +22,15 @@ Every multivariate cumulative distribution function $H(x_1, ... x_d) = Pr[X_1 \l
 [$$H(x_1, ..., x_d) = C(F_1(x_1), ..., F_d(x_d)) \;\;\; \ (Eq.1)$$]{id="eq1"}
 
 ## Gaussian copula
-![Figure 1: Uniform scenarios Gaussian_copula, numerical simulation](figures\Uniform_scenarios_Gaussian_copula,_numerical_simulation.png)
+![Figure 1: Uniform scenarios Gaussian_copula, numerical simulation](figures\Uniform_scenarios_Gaussian_copula_(numerical_simulation).png)
 
-![Figure 2: Contour plot Gaussian copula, numerical simulation](figures\Contour_plot_Gaussian_copula,_numerical_simulation.png)
+![Figure 2: Contour plot Gaussian copula, numerical simulation](figures\Contour_plot_Gaussian_copula_(numerical_simulation).png)
 
 
 ## Cauchy copula 
-![Figure 3: Uniform scenarios Cauchy copula, numerical simulation](figures\Uniform_scenarios_Cauchy_copula,_numerical_simulation.png)
+![Figure 3: Uniform scenarios Cauchy copula, numerical simulation](figures\Uniform_scenarios_Cauchy_copula_(numerical_simulation).png)
 
-![Figure 4: Contour plot Cauchy copula, numerical simulation](figures\Contour_plot_Cauchy_copula,_numerical_simulation.png)
+![Figure 4: Contour plot Cauchy copula, numerical simulation](figures\Contour_plot_Cauchy_copula_(numerical_simulation).png)
 
 # Literature
 1. D.Oh, A.Patton (2015). Modelling dependance in High dimensions with factor copulas. [(link)](https://www.federalreserve.gov/econresdata/feds/2015/files/2015051pap.pdf)
