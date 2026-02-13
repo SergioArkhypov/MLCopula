@@ -18,6 +18,10 @@ def get_market(ticker_list, period, interval):
 
     result = pd.concat(market, axis=1)
     result = result.sort_index(ascending=True)
+    result = result.ffill() #TODO: implement other !!! current implementation fills missed values with previously available 
     #result = np.log(result).shift()
-    returns = np.log(1.0 + result.pct_change(fill_method = None)) #TODO: implement other 
-    return (returns.dropna(), result.iloc[-1])
+    returns = np.log(1.0 + result.pct_change(fill_method = None)) #TODO: implement other !!!!
+    returns = returns.dropna()
+    returns.to_csv(f'C:\\Temp\\sp500-{period}-{interval}.csv')
+    print(f'Market stats, non nones count: {sum(list(returns.count()))}, needs {returns.size}')
+    return (returns, result.iloc[-1])
