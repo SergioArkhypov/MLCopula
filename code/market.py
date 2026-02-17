@@ -6,16 +6,17 @@ import os
 
 
 class Market:
-    def __init__(self, name, cob_date_str, ticker_list, period_years, interval):
+    def __init__(self, name, cob_date_str, ticker_list, period_years, interval, cache_path):
         self.ticker_list = ticker_list
         self.period_years = period_years
         self.interval = interval
         self.name = name
         self.cob_date_str = cob_date_str
+        self.cache_path = cache_path
 
 
     def load_history(self):
-        market_path = f'C:\\Temp\\market-{self.name}-{self.cob_date_str}-{self.period_years}Y-{self.interval}.csv'
+        market_path = f'{self.cache_path}\\market-{self.name}-{self.cob_date_str}-{self.period_years}Y-{self.interval}.csv'
 
         if os.path.exists(market_path):
             self.market = pd.read_csv(market_path, index_col=0)
@@ -50,8 +51,9 @@ class Market:
         start_date_str = start_date.strftime('%Y%m%d')
         market = self.market[(self.market.index > start_date_str) & (self.market.index <= cob_date_str)]
 
-        returns = np.log(1.0 + market.pct_change(fill_method = None)) #TODO: implement other !!!!
-        returns = returns.dropna()
+        returns = np.log(1.0 + market.pct_change(fill_method = None)) 
+        returns = returns.dropna(how='all')
+        returns = returns.fillna(0) #TODO: implement other !!!!
         #returns.to_csv(f'C:\\Temp\\sp500-{selperiod}-{interval}.csv')
         print(f'Market stats {cob_date_str}-{sub_period_years}Y, non nones count: {sum(list(returns.count()))}, needs {returns.size}')
         return returns

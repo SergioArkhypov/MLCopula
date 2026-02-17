@@ -30,7 +30,6 @@
 29,Cisco,CSCO,0.0055
 30,GE Aerospace,GE,0.0053
 31,Coca-Cola Company (The),KO,0.0053
-32,Palantir Technologies,PLTR,0.0052
 33,Merck & Co.,MRK,0.0046
 34,Philip Morris International,PM,0.0045
 35,Lam Research,LRCX,0.0045
@@ -47,7 +46,6 @@
 46,PepsiCo,PEP,0.0036
 47,T-Mobile US,TMUS,0.0035
 48,Linde plc,LIN,0.0034
-49,GE Vernova,GEV,0.0034
 50,Citigroup,C,0.0033
 51,Thermo Fisher Scientific,TMO,0.0033
 52,Texas Instruments,TXN,0.0032
@@ -70,7 +68,6 @@
 69,Deere & Company,DE,0.0025
 70,Lowe's,LOW,0.0025
 71,Analog Devices,ADI,0.0025
-72,AppLovin Corporation,APP,0.0025
 73,Pfizer,PFE,0.0025
 74,Danaher Corporation,DHR,0.0025
 75,Honeywell,HON,0.0025
@@ -111,7 +108,6 @@
 110,Trane Technologies,TT,0.0016
 111,United Parcel Service,UPS,0.0016
 112,Southern Company,SO,0.0016
-113,Constellation Energy,CEG,0.0016
 114,Northrop Grumman,NOC,0.0016
 115,General Dynamics,GD,0.0015
 116,Marriott International,MAR,0.0015
@@ -144,17 +140,14 @@
 143,Synopsys,SNPS,0.0013
 144,American Tower,AMT,0.0013
 145,Dell Technologies,DELL,0.0013
-146,Sandisk Corporation,SNDK,0.0013
 147,Cadence Design Systems,CDNS,0.0013
 148,Cummins,CMI,0.0013
 149,Regeneron Pharmaceuticals,REGN,0.0013
-150,DoorDash,DASH,0.0013
 151,Cintas,CTAS,0.0013
 152,Monster Beverage,MNST,0.0012
 153,Mondelez International,MDLZ,0.0012
 154,O'Reilly Auto Parts,ORLY,0.0012
 155,Apollo Global Management,APO,0.0012
-156,"Robinhood Markets, Inc.",HOOD,0.0012
 157,CSX Corporation,CSX,0.0012
 158,Cigna,CI,0.0012
 159,Quanta Services,PWR,0.0012
@@ -163,7 +156,6 @@
 162,Schlumberger,SLB,0.0012
 163,Moody's Corporation,MCO,0.0012
 164,TransDigm Group,TDG,0.0012
-165,Airbnb,ABNB,0.0012
 166,Elevance Health,ELV,0.0012
 167,General Motors,GM,0.0011
 168,Norfolk Southern Railway,NSC,0.0011
@@ -199,7 +191,6 @@
 198,Carvana Co.,CVNA,0.0009
 199,Monolithic Power Systems,MPWR,0.0009
 200,United Rentals,URI,0.0009
-201,Carrier Global,CARR,0.0009
 202,Dominion Energy,D,0.0009
 203,Ford Motor Company,F,0.0009
 204,Arthur J. Gallagher & Co.,AJG,0.0009
@@ -229,7 +220,6 @@
 228,Hershey Company (The),HSY,0.0007
 229,D. R. Horton,DHI,0.0007
 230,Xcel Energy,XEL,0.0007
-231,Datadog,DDOG,0.0007
 232,Carnival,CCL,0.0007
 233,Occidental Petroleum,OXY,0.0007
 234,Ameriprise Financial,AMP,0.0007
@@ -237,7 +227,6 @@
 236,Exelon,EXC,0.0007
 237,Edwards Lifesciences,EW,0.0007
 238,Entergy,ETR,0.0007
-239,Coinbase Global,COIN,0.0007
 240,Yum! Brands,YUM,0.0007
 241,Nucor,NUE,0.0007
 242,Vulcan Materials Company,VMC,0.0007
@@ -272,17 +261,14 @@
 271,Crown Castle,CCI,0.0006
 272,Agilent Technologies,A,0.0006
 273,PG&E Corporation,PCG,0.0006
-274,GE HealthCare,GEHC,0.0006
 275,State Street Corporation,STT,0.0006
 276,M&T Bank,MTB,0.0006
 277,Cognizant,CTSH,0.0006
 278,Prudential Financial,PRU,0.0006
 279,Axon Enterprise,AXON,0.0006
-280,Kenvue,KVUE,0.0006
 281,Kimberly-Clark,KMB,0.0006
 282,Paychex,PAYX,0.0006
 283,Arch Capital Group,ACGL,0.0006
-284,Otis Worldwide,OTIS,0.0006
 285,"EMCOR Group, Inc.",EME,0.0006
 286,"Block, Inc.",XYZ,0.0006
 287,Live Nation Entertainment,LYV,0.0006
@@ -355,7 +341,6 @@
 354,Equifax,EFX,0.0004
 355,First Solar,FSLR,0.0004
 356,Dollar Tree,DLTR,0.0004
-357,Expand Energy,EXE,0.0004
 358,Dow Inc.,DOW,0.0004
 359,Steris,STE,0.0004
 360,Verisk Analytics,VRSK,0.0004
@@ -364,8 +349,6 @@
 363,LabCorp,LH,0.0004
 364,C.H. Robinson,CHRW,0.0004
 365,Coterra,CTRA,0.0004
-366,Qnity Electronics,Q,0.0004
-367,Veralto,VLTO,0.0004
 368,Bunge Global,BG,0.0004
 369,Omnicom Group,OMC,0.0004
 370,Quest Diagnostics,DGX,0.0004
@@ -448,7 +431,6 @@
 447,Align Technology,ALGN,0.0002
 448,Regency Centers,REG,0.0002
 449,Brown Forman,BF-B,0.0002
-450,Solventum,SOLV,0.0002
 451,Akamai Technologies,AKAM,0.0002
 452,"The Trade Desk, Inc.",TTD,0.0002
 453,Host Hotels & Resorts,HST,0.0002
