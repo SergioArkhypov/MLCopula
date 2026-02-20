@@ -40,6 +40,7 @@ Every multivariate cumulative distribution function $H(x_1, ... x_d) = Pr[X_1 \l
 5. B.Horvath et al. (2025). Generative Models in Finance: Market Generators, a Paradigm Shift in Financial Modeling.[(link)](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5284313)
 6. M.Vuletic, M.Cucuringu (2025). GraFiN-Gen: graph-based ensemble generative modelling for multi-asset forecasting. [(link)](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5317725)
 7. A.Sancetta, S.Satchell (2004). The Bernstein Copula and Its Applications to Modeling and Approximations of Multivariate Distributions. [(link)](https://www.jstor.org/stable/pdf/3533531.pdf)
+8. M.Wiese et al. Multi-Asset Spot and Option Market Simulation. [(link)](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3980817) #TODO: to read!  i.e.e Buhler 
 
 # Appendix
 See corresponding equation [(Eq.1)](#eq1)
