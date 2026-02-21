@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 
 class JointSim:
     def __init__(self, calib_data, rf_dir, seed=0):
-        # self.seed = seed
         np.random.seed(seed)
         self.figpath = 'C:\\dev\\MLCopula\\document\\figures'
         self.name = 'Not implemented'
@@ -33,10 +32,6 @@ class JointSim:
         plt.show()
 
     def plot_contour(self, rf1 : int, rf2 : int, step = 0.025):
-        #plt.title(f'Contour plot: {self.name}')
-        #sns.set_style('white')
-        #sns.kdeplot(x=self.sims.iloc[:,rf1], y=self.sims.iloc[:,rf2], cmap='Greens', fill=True)
-        #sns.kdeplot(x=self.sims.iloc[:,rf1], y=self.sims.iloc[:,rf2])
         nscen = self.sims.shape[0]
         x_vals = np.linspace(0.0, 1.0, int(1.0/step))
         y_vals = np.linspace(0.0, 1.0, int(1.0/step))
@@ -70,6 +65,7 @@ class JointSim:
         plt.savefig(f'{self.figpath}\\PDF_{title}.png')
         plt.show()
 
+
 class GaussCopulaCorr(JointSim):
     def __init__(self, calib_data, rf_dir, seed=0):
         JointSim.__init__(self, calib_data, rf_dir, seed)
@@ -81,6 +77,18 @@ class GaussCopulaCorr(JointSim):
         data = np.random.multivariate_normal(mean, corr, size=scen_number)
         df = pd.DataFrame(data=data, columns=self.calib_data.columns)
         self.sims = df.rank(axis=0, pct=True) 
+        return self.sims
+
+
+class HistSimulation(JointSim):
+    def __init__(self, calib_data, rf_dir, seed=0):
+        JointSim.__init__(self, calib_data, rf_dir, seed)
+        self.name ='Historical simulation'
+    
+    def get_sims(self, scen_number):
+        scen = self.calib_data.rank(axis=0,pct=True)
+        repeat = round(scen_number/self.calib_data.shape[0], 0)
+        self.sims = pd.concat([scen] * int(repeat), ignore_index=True) 
         return self.sims
 
 
