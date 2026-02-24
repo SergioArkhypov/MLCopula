@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 
 class JointSim:
     def __init__(self, calib_data, rf_dir, seed=0):
+        self.seed = seed
         np.random.seed(seed)
         self.figpath = 'C:\\dev\\MLCopula\\document\\figures'
         self.name = 'Not implemented'
@@ -18,6 +19,7 @@ class JointSim:
             if rf_dir[i]==-1.0: self.calib_data[rf] = 1.0 - self.calib_data[rf] 
             i+=1
 
+        self.rf_dir = rf_dir
         self.size = self.calib_data.shape[0]
         self.sizerf = self.calib_data.shape[1]
     
@@ -130,4 +132,16 @@ class CauchyCopulaNum(JointSim):
             sc = sim_scale[sn]
             self.sims[sn] = stats.cauchy.cdf(sim[sn], loc=0.0, scale=sc)
 
+        return self.sims
+
+
+class MixCopulaNum(JointSim):
+    def __init__(self, calib_data, rf_dir, seed=0):
+        JointSim.__init__(self, calib_data, rf_dir, seed)
+        self.name ='Mixture copula 0.5 Gaussian and 0.5 Cauchy'
+    
+    def get_sims(self, scen_number):
+        c1 = GaussCopulaNum(self.calib_data, self.rf_dir, self.seed)
+        c2 = CauchyCopulaNum(self.calib_data, self.rf_dir, self.seed)
+        self.sims = pd.concat([c1.get_sims(int(scen_number/2)), c2.get_sims(int(scen_number/2))], ignore_index=True)
         return self.sims
