@@ -27,13 +27,14 @@ class JointSim:
         raise NotImplementedError
     
     def plot_sims(self, rf1 : int, rf2 : int):
-        #plt.title(f'Uniform scenarios: {self.name}')
+        plt.title(f'Uniform scenarios: {self.name}')
         plt.scatter(self.sims.iloc[:,rf1], self.sims.iloc[:,rf2], s =0.3)
         title=self.name.replace(' ', '_')
         plt.savefig(f'{self.figpath}\\Uniform_scenarios_{title}.png')
         plt.show()
 
     def plot_contour(self, rf1 : int, rf2 : int, step = 0.025):
+        plt.title(f'Contour plot scenarios: {self.name}')
         nscen = self.sims.shape[0]
         x_vals = np.linspace(0.0, 1.0, int(1.0/step))
         y_vals = np.linspace(0.0, 1.0, int(1.0/step))
@@ -73,9 +74,12 @@ class GaussCopulaCorr(JointSim):
         JointSim.__init__(self, calib_data, rf_dir, seed)
         self.name ='Gaussian copula (correlation based)'
     
-    def get_sims(self, scen_number):
+    def get_sims(self, scen_number, override_corr=None):
         mean = np.zeros((self.sizerf,))
         corr = self.calib_data.corr()
+        if override_corr is not None:
+            corr.loc[:] = override_corr
+            np.fill_diagonal(corr.values, 1.0)
         data = np.random.multivariate_normal(mean, corr, size=scen_number)
         df = pd.DataFrame(data=data, columns=self.calib_data.columns)
         self.sims = df.rank(axis=0, pct=True) 
@@ -136,12 +140,19 @@ class CauchyCopulaNum(JointSim):
 
 
 class MixCopulaNum(JointSim):
-    def __init__(self, calib_data, rf_dir, seed=0):
+    def __init__(self, calib_data, rf_dir, seed=0, weights=None):
         JointSim.__init__(self, calib_data, rf_dir, seed)
-        self.name ='Mixture copula 0.5 Gaussian and 0.5 Cauchy'
+        self.name ='Mixture copula'
+        self.weights=weights
     
     def get_sims(self, scen_number):
         c1 = GaussCopulaNum(self.calib_data, self.rf_dir, self.seed)
         c2 = CauchyCopulaNum(self.calib_data, self.rf_dir, self.seed)
-        self.sims = pd.concat([c1.get_sims(int(scen_number/2)), c2.get_sims(int(scen_number/2))], ignore_index=True)
+        c3 = GaussCopulaCorr(self.calib_data, self.rf_dir, self.seed)
+        self.sims = pd.concat(
+            [c1.get_sims(int(scen_number*self.weights[0])), 
+             c2.get_sims(int(scen_number*self.weights[1])),
+             c3.get_sims(int(scen_number*self.weights[2]), override_corr = 1.0),
+             c3.get_sims(int(scen_number*self.weights[3]), override_corr = 0.0)
+             ], ignore_index=True)
         return self.sims
