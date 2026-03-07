@@ -142,7 +142,7 @@ class CauchyCopulaNum(JointSim):
 class MixCopulaNum(JointSim):
     def __init__(self, calib_data, rf_dir, seed=0, weights=None):
         JointSim.__init__(self, calib_data, rf_dir, seed)
-        self.name ='Mixture copula'
+        self.name =f'Mixture copula g{weights[0]},c{weights[1]},u{weights[2]},i{weights[3]}'
         self.weights=weights
     
     def get_sims(self, scen_number):
