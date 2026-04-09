@@ -78,8 +78,12 @@ class GaussCopulaCorr(JointSim):
         mean = np.zeros((self.sizerf,))
         corr = self.calib_data.corr()
         if override_corr is not None:
-            corr.loc[:] = override_corr
-            np.fill_diagonal(corr.values, 1.0)
+            temp = corr.values
+            temp.setflags(write=1)
+            temp[:,:] = override_corr
+            np.fill_diagonal(temp, 1.0)
+            temp_corr = pd.DataFrame(data=temp, index=corr.index, columns=corr.columns)
+            corr = temp_corr
         data = np.random.multivariate_normal(mean, corr, size=scen_number)
         df = pd.DataFrame(data=data, columns=self.calib_data.columns)
         self.sims = df.rank(axis=0, pct=True) 
