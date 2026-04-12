@@ -8,9 +8,70 @@ limited, i.e., mainly based on Gaussian copulas. There is hope that
 modern advances in ML/AI algorithms could help expand this toolset and
 provide alternative approaches for modeling high-dimensional joint
 dependency.</p>
-<h1 id="background-research">Background research</h1>
+<p>This academic proposal proceeds by outlining its primary goals and
+objectives. Subsequently, it explains the problem under investigation,
+along with pertinent work that provides essential concepts and a
+literature review. The subsequent sections detail the methodology and
+techniques employed to achieve the previously outlined objectives. The
+proposal concludes in a development plan for the project.</p>
+<h1 id="aims-and-objectives">Aims and Objectives</h1>
+<p>The main aim of this work would be to develop a machine learning
+algorithm for calibrating a high-dimensional copula with tail dependence
+different from Gaussian, while still reflecting the observed history
+with regards to selected measures (i.e., matching correlation matrix,
+matching pairwise tail dependence at the specific percentile, etc.). The
+latter is expected to require the creation of a custom loss function to
+achieve minimization with regards to those measures. On the simulation
+part, a range of different approaches can be considered, starting from
+semi-analytical methods to Variational Autoencoders (VAEs) and
+Generative Adversarial Networks (GANs).</p>
+<p>Develop a software application designed for extracting and caching
+market data, with subsequent incorporation of calculations of portfolio
+Value-at-Risk (VaR) and Expected Shortfall (ES) measures. To achieve
+this, implement Monte Carlo simulations using various copulas within the
+application, in addition to providing support for pure historical
+calculation methods.</p>
+<p>Upon completion of the initial software development, conduct an
+experimental analysis to evaluate the impact of copula assumptions on
+the selected VaR and ES measures across distinct portfolios. Following
+this, establish a calibration procedure aimed at fitting appropriate
+copulas to real-world market data. Lastly, devise a testing exercise to
+verify whether the calibrated copulas align with the prescribed
+conditions.</p>
+<p>In summary:</p>
+<ol type="1">
+<li>Create software for market data extraction and caching.</li>
+<li>Implement VaR/ES calculations using Monte Carlo simulations (with
+various copulas) and historical methods.</li>
+<li>Perform an initial experiment to gauge copula impact on selected
+measures across different portfolios.</li>
+<li>Define a machine calibration procedure tailored towards fitting
+suitable copulas to real-world market data.</li>
+<li>Design a testing exercise to ensure the calibrated copulas adhere to
+the specified conditions.</li>
+</ol>
+<h1 id="description-of-the-problem-and-relevant-work">Description of the
+problem and relevant work</h1>
 <h2 id="key-concepts">Key concepts</h2>
-<p>Copulas. <span
+<h3 id="value-at-risk-var-and-expected-shortfall-es">Value-at-risk (VaR)
+and expected shortfall (ES)</h3>
+<p>Based on <a href="#literature">[1]</a>, portfolio Value-at-risk (VaR)
+can be defined as the quantile (usually high 99%, 99.9% etc.) of the
+projected distribution of gains and loses over the target horizon. In
+simple terms it summarizes the worst loss that will not be exceeded with
+a given level of confidence. <span
+class="math display">VaR<sub><em>α</em></sub>(<em>L</em>) = <em>F</em><sub><em>L</em></sub><sup>−1</sup>(<em>α</em>)</span>
+where <span class="math inline"><em>α</em></span> is a confidence level
+and <span
+class="math inline"><em>F</em><sub><em>L</em></sub><sup>−1</sup></span>
+is an inverted loss distribution.</p>
+<p>On the other hand, Expected Shortfall (ES) measures the average loss
+in the tail of a loss distribution. <span
+class="math display"><em>E</em><em>S</em><sub><em>α</em></sub>(<em>L</em>) = 1/(1 − <em>α</em>)∫<sub><em>α</em></sub><sup>1</sup><em>V</em><em>a</em><em>R</em><sub><em>p</em></sub>(<em>L</em>)<em>d</em><em>p</em></span>
+Additional details and relevant industry discussion about ES are
+available in <a href="#literature">[4]</a>.</p>
+<h3 id="copulas.">Copulas.</h3>
+<p><span
 class="math inline"><em>C</em> : [0, 1]<sup><em>d</em></sup>− &gt; [0, 1]</span>
 is a d-dimentional copula if <span class="math inline"><em>C</em></span>
 is a joint cumulative distribution function of a d-dimentional random
@@ -57,48 +118,42 @@ alt="Figure 4: Contour plot Cauchy copula, numerical simulation" />
 numerical simulation</figcaption>
 </figure>
 <h2 id="literature-review">Literature review</h2>
-<h1 id="aims-and-objectives">Aims and Objectives</h1>
-<p>The main aim of this work would be to develop a machine learning
-algorithm for calibrating a high-dimensional copula with tail dependence
-different from Gaussian, while still reflecting the observed history
-with regards to selected measures (i.e., matching correlation matrix,
-matching pairwise tail dependence at the specific percentile, etc.). The
-latter is expected to require the creation of a custom loss function to
-achieve minimization with regards to those measures. On the simulation
-part, a range of different approaches can be considered, starting from
-semi-analytical methods to Variational Autoencoders (VAEs) and
-Generative Adversarial Networks (GANs).</p>
-<h1 id="description-of-the-problem-and-relevant-work">Description of the
-problem and relevant work</h1>
 <h1 id="methodology-and-methods">Methodology and methods</h1>
-<h1 id="organise-and-plan-the-project">Organise and plan the
-project</h1>
+<p><em>provide a diagram that illustrate your approach/data
+pipeline</em> <em>for each objective you can provide methodology,
+methods and tools that you will use, and organise this part
+accordingly</em> <em>difference between an evaluation with respect to
+how your software performs, versus a critical evaluation where you
+reflect on your aims and objectives</em> <em>how do you plan to
+implement it? E.g. if you are using machine learning, you will require a
+model (explain the structure of the neural network)</em></p>
+<h1 id="project-development-plan">Project development plan</h1>
+<p><em>you have to convince the marker and the supervisor that you are
+able to manage your time and juggle two separate concerns: software
+artefacts (software app, ML models) and final report. Develop a
+realistic workplan for the project.</em></p>
 <h1 id="literature">Literature</h1>
 <ol type="1">
-<li>D.Oh, A.Patton (2015). Modelling dependance in High dimensions with
-factor copulas. <a
-href="https://www.federalreserve.gov/econresdata/feds/2015/files/2015051pap.pdf">(link)</a></li>
-<li>R.Cont et al. (2022). Tail-GAN: Nonparametric scenario generation
+<li><p>Jorion P., 2006. Value as Risk: The New Benchmark for Managing
+Financial Risk. New York: The McGraw-Hill.</p></li>
+<li><p>Cherubini U. et al, 2004. Copula methods in finance. England:
+Wiley finance.</p></li>
+<li><p>Chollet F., 2021. Deep learning with Python. New York: Manning
+Publications Co. </p></li>
+<li><p>Acerbi C., Szekely B., 2014. Back-testing expected shortfall.
+Risk, 27(11):76–81.</p></li>
+<li><p>Cont R. et al, 2022. Tail-GAN: Nonparametric scenario generation
 for tail risk estimation. <a
-href="https://arxiv.org/abs/2203.01664">(link)</a></li>
-<li>H.Buhler, B.Horvath (2021). A data-driven market simulator for small
-data environments. <a
-href="https://arxiv.org/abs/2006.14498">(link)</a></li>
-<li>M.Vuletic, R.Cont (2025). VolGAN: a generative model for
-arbitrage-free implied volatility surfaces.<a
-href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4617536">(link)</a></li>
-<li>B.Horvath et al. (2025). Generative Models in Finance: Market
+href="https://arxiv.org/abs/2203.01664">(link)</a></p></li>
+<li><p>Oh D., Patton A., 2015. Modelling dependance in High dimensions
+with factor copulas. <a
+href="https://www.federalreserve.gov/econresdata/feds/2015/files/2015051pap.pdf">(link)</a></p></li>
+<li><p>Buhler H., Horvath B., 2021. A data-driven market simulator for
+small data environments. <a
+href="https://arxiv.org/abs/2006.14498">(link)</a></p></li>
+<li><p>Horvath B. et al, 2025. Generative Models in Finance: Market
 Generators, a Paradigm Shift in Financial Modeling.<a
-href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5284313">(link)</a></li>
-<li>M.Vuletic, M.Cucuringu (2025). GraFiN-Gen: graph-based ensemble
-generative modelling for multi-asset forecasting. <a
-href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5317725">(link)</a></li>
-<li>A.Sancetta, S.Satchell (2004). The Bernstein Copula and Its
-Applications to Modeling and Approximations of Multivariate
-Distributions. <a
-href="https://www.jstor.org/stable/pdf/3533531.pdf">(link)</a></li>
-<li>M.Wiese et al. Multi-Asset Spot and Option Market Simulation. <a
-href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3980817">(link)</a></li>
+href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5284313">(link)</a></p></li>
 </ol>
 <h1 id="appendixes">Appendixes</h1>
 <p>See corresponding equation <a href="#eq1">(Eq.1)</a></p>
