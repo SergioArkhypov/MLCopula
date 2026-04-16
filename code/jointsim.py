@@ -27,9 +27,12 @@ class JointSim:
         raise NotImplementedError
     
     def plot_sims(self, rf1 : int, rf2 : int):
-        plt.title(f'Uniform scenarios: {self.name}')
-        plt.scatter(self.sims.iloc[:,rf1], self.sims.iloc[:,rf2], s =0.3)
+        pearson = round(self.sims.iloc[:,rf1].corr(self.sims.iloc[:,rf2], method='pearson'), 2)
+        spearmn = round(self.sims.iloc[:,rf1].corr(self.sims.iloc[:,rf2], method='spearman'),2)
+        kendall = round(self.sims.iloc[:,rf1].corr(self.sims.iloc[:,rf2], method='kendall'), 2)
         title=self.name.replace(' ', '_')
+        plt.title(f'Uniform scenarios: {self.name} (p:{pearson}, s:{spearmn}, k:{kendall})')
+        plt.scatter(self.sims.iloc[:,rf1], self.sims.iloc[:,rf2], s =0.3)
         plt.savefig(f'{self.figpath}\\Uniform_scenarios_{title}.png')
         plt.show()
 
