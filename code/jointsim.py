@@ -195,7 +195,7 @@ class MixCopulaNum(JointSim):
 class SkewCopulaNum(JointSim):
     def __init__(self, calib_data, rf_dir, seed=0, weights=None):
         JointSim.__init__(self, calib_data, rf_dir, seed)
-        self.name =f'Skewed copula'
+        self.name =f'Skewed Cauchy copula'
         self.weights=weights
     
     def get_sims(self, scen_number):

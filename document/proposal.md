@@ -141,6 +141,8 @@ Beyond scalability, another key advantage lies in the interpretability of result
 9. Chorniy V. and Arkhypov S., 2025. Extreme VaR, ES and reverse stress testing a catastrophe: 
 projecting gains and losses above 99% for market and counterparty credit risk. Risk Minds International, London.
 
+10. Hofert M. and Pang Z., 2025. W-transforms: Uniformity-preserving transformations and induced dependence structures.[(link)](https://arxiv.org/pdf/2509.26280)
+
 # Appendixes
 See corresponding equation [(Eq.1)](#eq1)
 
