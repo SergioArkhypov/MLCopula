@@ -69,6 +69,36 @@ class JointSim:
         plt.show()
 
 
+    def plot_tailcoef(self, rf1 : int, rf2 : int, step = 0.025):
+        plt.title(f'Tail coefficient: {self.name}')
+        max_list = np.maximum(self.sims.iloc[:,rf1], self.sims.iloc[:,rf2])
+        min_list = np.minimum(self.sims.iloc[:,rf1], self.sims.iloc[:,rf2])
+        count_sim = len(self.sims.iloc[:,rf1])
+        indexlist = ['Q01', 'Q1', 'Q5', 'Q10', 'Q25', 'Q50-', 'Q50+', 'Q75', 'Q90', 'Q95', 'Q99', 'Q999']
+        #indexlist1 = [0.01, 0.05, 0.1, 0.25, 0.499, 0.501, 0.75, 0.90, 0.95, 0.99]
+
+        vals = [
+            np.count_nonzero(max_list <= 0.001)/count_sim*1000.0,
+            np.count_nonzero(max_list <= 0.01)/count_sim*100.0,
+            np.count_nonzero(max_list <= 0.05)/count_sim*20.0,
+            np.count_nonzero(max_list <= 0.1)/count_sim*10.0,
+            np.count_nonzero(max_list <= 0.25)/count_sim*4.0,
+            np.count_nonzero(max_list <= 0.5)/count_sim*2.0,
+            np.count_nonzero(min_list >= 0.5)/count_sim*2.0,
+            np.count_nonzero(min_list >= 0.75)/count_sim*4.0,
+            np.count_nonzero(min_list >= 0.9)/count_sim*10.0,
+            np.count_nonzero(min_list >= 0.95)/count_sim*20.0,
+            np.count_nonzero(min_list >= 0.99)/count_sim*100.0,
+            np.count_nonzero(min_list >= 0.999)/count_sim*1000.0,
+        ]
+        plt.ylim(0.0, 1.0)
+        plt.plot(indexlist, vals, marker='o')
+        title=self.name.replace(' ', '_')
+        plt.savefig(f'{self.figpath}\\Tail_coefficient_{title}.png')
+        plt.show()
+
+
+
 class GaussCopulaCorr(JointSim):
     def __init__(self, calib_data, rf_dir, seed=0):
         JointSim.__init__(self, calib_data, rf_dir, seed)
@@ -159,4 +189,27 @@ class MixCopulaNum(JointSim):
              c3.get_sims(int(scen_number*self.weights[2]), override_corr = 1.0),
              c3.get_sims(int(scen_number*self.weights[3]), override_corr = 0.0)
              ], ignore_index=True)
+        return self.sims
+
+
+class SkewCopulaNum(JointSim):
+    def __init__(self, calib_data, rf_dir, seed=0, weights=None):
+        JointSim.__init__(self, calib_data, rf_dir, seed)
+        self.name =f'Skewed copula'
+        self.weights=weights
+    
+    def get_sims(self, scen_number):
+        c1 = CauchyCopulaNum(self.calib_data, self.rf_dir, self.seed)
+        
+        sim = c1.get_sims(int(scen_number))
+        theta_w=pd.DataFrame(data=[self.weights], columns=self.calib_data.columns)
+
+        self.sims = copy.deepcopy(sim)
+        for sn in self.calib_data.columns:
+            theta = theta_w[sn][0]
+            # self.sims[sn] = [u/(2*theta) if u<=theta
+            #                  else ((u-theta)/(1 - 2*theta) if u <= 1-theta else (u-1+2*theta)/(2*theta)) 
+            #                  for u in sim[sn]]
+            self.sims[sn] = [u/theta if u<=theta else ((1-u)/(1-theta)) for u in sim[sn]]
+
         return self.sims
