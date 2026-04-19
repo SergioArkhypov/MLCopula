@@ -20,15 +20,6 @@ Develop a software application designed for extracting and caching market data, 
 
 Upon completion of the initial software development, conduct an experimental analysis to evaluate the impact of copula assumptions on the selected VaR and ES measures across distinct portfolios. Following this, establish a calibration procedure aimed at fitting appropriate copulas to real-world market data. Lastly, devise a testing exercise to verify whether the calibrated copulas align with the prescribed conditions.
 
-In summary:
-
-1. Create software for market data extraction and caching.
-2. Implement VaR/ES calculations using Monte Carlo simulations (with various copulas) and historical methods.
-3. Perform an initial experiment to gauge copula impact on selected measures across different portfolios.
-4. Define a machine calibration procedure tailored towards fitting suitable copulas to real-world market data.
-5. Design a testing exercise to ensure the calibrated copulas adhere to the specified conditions.
-
-
 # Description of the problem and relevant work
 
 ## Key concepts
@@ -123,11 +114,21 @@ Beyond scalability, another key advantage lies in the interpretability of result
 *how do you plan to implement it? E.g. if you are using machine learning, you will require a model (explain the structure of the neural network)*
 
 
+The software end-product 
+My aim with this software is a proof of concept rather than an end-user application. 
+
 # Project development plan
-*you have to convince the marker and the supervisor that you are able to manage your time and juggle two separate concerns: software artefacts (software app, ML models) and final report. Develop a realistic workplan for the project.*
+The work is expected to start in the begging of May 2026. Development and research phase is expected to be finalized within 3 months leaving additional time for the report preparation. 
+
+* **Step 1 [week 1-2]:** Develop functionality able to discover required market data and casche it from Yahoo API according the required population, length and granularity.
+* **Step 2 [week 3-4]:** Develop functionality able to calculate different Value-at-Risk metrics based on specified methodology i.e. Historical VaR, Monte-Carlo VaR. The latter should be structured in a way that copula class is provided as an input, allowing calculations with different copula hypothesis.
+* **Step 3 [week 5-6]:** Perform initial experiments to gauge copula impact on selected measures across different portfolios. This should help to develop better understanding required for the future interpretation of the results and testing. Assessing Gaussian, Cauchy, their transformations and weighted combinations.
+* **Step 4 [week 7-8]:** Build optimization functionality select parameters for the copula matching current measures for the list of selected portfolios. Once the best matching parameters are available attempt on learning them from the observations directly with deep neral net (MLP).    
+* **Step 5 [week 9-10]:** Design a testing exercise to ensure the calibrated copulas adhere to the specified conditions. Test whether MLP neral net was able to learn specific copula parameters directly from the data. 
+* **Step 6 [week 11 +]:** Assess obtained results, summarize observations and developed software within the report.
 
 
-# Literature
+# References
 1. Jorion P., 2006. Value as Risk: The New Benchmark for Managing Financial Risk. New York: The McGraw-Hill.
 2. Cherubini U. et al, 2004. Copula methods in finance. England: Wiley finance.
 3. Chollet F., 2021. Deep learning with Python. New York: Manning Publications Co. 
