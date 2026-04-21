@@ -184,8 +184,8 @@ between the observed and Gaussian tail dependence expands
 significantly.</p>
 <figure>
 <img src="figures\Tail_dependance.png"
-alt="Figure 5: Tail dependence for different types of copulas and different number of random variables" />
-<figcaption aria-hidden="true">Figure 5: Tail dependence for different
+alt="Figure 1: Tail dependence for different types of copulas and different number of random variables" />
+<figcaption aria-hidden="true">Figure 1: Tail dependence for different
 types of copulas and different number of random variables</figcaption>
 </figure>
 <p>The Cauchy copula (equivalently a Student‑t copula with zero degrees
@@ -234,7 +234,8 @@ Unlike studies where the intricacies of underlying asset path dynamics
 critical, this work deliberately abstracts from such details. As such
 there is no need to include dynamically changing portfolios
 (i.e. dynamic trading strategies), limiting portfolio dimension
-optimization to static.</p>
+optimization to static. (only portfolios of approx. 500 names all long
+and 500 long/short hedged portfolios will used in this study).</p>
 <p>A defining challenge in Market Risk is the need to evaluate the
 collective behavior of thousands of risk factors simultaneously, a
 requirement that far exceeds the scope of prior research, where
@@ -242,6 +243,15 @@ simulations often focused on merely dozens of variables. This study
 bridges that gap by demonstrating scalability to hundreds or even
 thousands of risk factors, aligning with the real-world demands of
 large-scale risk aggregation.</p>
+<p>Figure below presents overall workflow of the project aiming at
+calibrating copula to historical timeseries. <img
+src="figures\Project-workflow-high.png"
+alt="Figure 2: Copula calibration workflow" /></p>
+<p>It is further detailed in the next figure, which illustrated
+cumulative process of constructing different time series based on the
+observed history and representing required data transformations. <img
+src="figures\Project-workflow-high.png"
+alt="Figure 3: Detailed process of data transformations for copula calibration" /></p>
 <p>Beyond scalability, another key advantage lies in the
 interpretability of results. While alternative approaches, such as
 Tail-GAN-based simulations, often produce outputs that are difficult to

@@ -74,7 +74,7 @@ By computing these tail‑dependence coefficients, one can directly compare how 
 
 Figures below compare historically observed tail dependence (the orange line) with the one of Gaussian and Cauchy copulas i.e. Student-T with zero degrees of freedom (the blue and green lines respectively). The vertical axis measures tail dependence, while the horizontal axis displays the chosen percentile. As the graphs reveal, the discrepancy between the observed and Gaussian tail dependence expands significantly.
 
-![Figure 5: Tail dependence for different types of copulas and different number of random variables](figures\Tail_dependance.png)
+![Figure 1: Tail dependence for different types of copulas and different number of random variables](figures\Tail_dependance.png)
 
 The Cauchy copula (equivalently a Student‑t copula with zero degrees of freedom) is a statistical technique for capturing dependence structures, especially when modelling tail‑risk or extreme events. Its principal advantage lies in preserving the overall correlation matrix of the underlying variables while simultaneously enabling the generation of scenarios that exhibit much heavier tails (joint‑movement) and de-correlation. In practice, this means that the copula retains the familiar linear dependence captured by pearson‑type correlations, yet it can produce joint realizations that reflect the heightened co‑movement observed during rare, high‑impact shocks.
 
@@ -91,11 +91,15 @@ Both types of scenarios are crucial for robust risk assessment. De‑correlation
  
 
 # Methodology and methods
-
-
-This analysis prioritizes the generation of extreme market scenarios designed specifically for Market Risk and capital estimation purposes. Unlike studies where the intricacies of underlying asset path dynamics (such as time-dependent volatility or complex stochastic processes) are critical, this work deliberately abstracts from such details. As such there is no need to include dynamically changing portfolios (i.e. dynamic trading strategies), limiting portfolio dimension optimization to static.
+This analysis prioritizes the generation of extreme market scenarios designed specifically for Market Risk and capital estimation purposes. Unlike studies where the intricacies of underlying asset path dynamics (such as time-dependent volatility or complex stochastic processes) are critical, this work deliberately abstracts from such details. As such there is no need to include dynamically changing portfolios (i.e. dynamic trading strategies), limiting portfolio dimension optimization to static. (only portfolios of approx. 500 names all long and 500 long/short hedged portfolios will used in this study).
 
 A defining challenge in Market Risk is the need to evaluate the collective behavior of thousands of risk factors simultaneously, a requirement that far exceeds the scope of prior research, where simulations often focused on merely dozens of variables. This study bridges that gap by demonstrating scalability to hundreds or even thousands of risk factors, aligning with the real-world demands of large-scale risk aggregation.
+
+Figure below presents overall workflow of the project aiming at calibrating copula to historical timeseries.
+![Figure 2: Copula calibration workflow](figures\Project-workflow-high.png)
+
+It is further detailed in the next figure, which illustrated cumulative process of constructing different time series based on the observed history and representing required data transformations.
+![Figure 3: Detailed process of data transformations for copula calibration](figures\Project-workflow-high.png)
 
 Beyond scalability, another key advantage lies in the interpretability of results. While alternative approaches, such as Tail-GAN-based simulations, often produce outputs that are difficult to dissect or explain, the methodology employed here offers an inherent structure for understanding extreme scenarios. The framework decomposes market dynamics into a weighted combination of copulas, each with a clear and intuitive economic or statistical meaning. This not only enhances transparency but also provides with a more actionable foundation for stress testing and capital planning. The ability to attribute risk contributions to specific copula components is a significant improvement in practical applicability and model governance.
 
