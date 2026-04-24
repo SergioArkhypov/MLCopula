@@ -8,7 +8,7 @@ limited, i.e., mainly based on Gaussian copulas. There is hope that
 modern advances in ML/AI algorithms could help expand this toolset and
 provide alternative approaches for modeling high-dimensional joint
 dependency.</p>
-<p>This academic proposal proceeds by outlining its primary goals and
+<p>This MSc proposal proceeds by outlining its primary goals and
 objectives. Subsequently, it explains the problem under investigation,
 along with pertinent work that provides essential concepts and a
 literature review. The subsequent sections detail the methodology and
@@ -29,8 +29,8 @@ develop a software application designed for extracting and caching
 market data, with subsequent incorporation of calculations of portfolio
 Value-at-Risk (VaR) and/or Expected Shortfall (ES) measures. To achieve
 this, implement Monte Carlo simulations using various copulas within the
-application, in addition to providing support for pure the historical
-calculation methods.</p>
+application, in addition to providing support for the pure historical
+calculation methods (which can serve as a benchmark).</p>
 <p>Upon completion of the initial software development, conduct an
 experimental analysis to evaluate the impact of copula assumptions on
 the selected VaR / ES measures across distinct portfolios. Following
@@ -83,8 +83,8 @@ of historical data, especially in the tails. On the other hand, the
 relative strength of the method is its low model error, since it does
 not impose strong parametric assumptions but instead directly uses
 empirical distributions. This makes it robust in scenarios where the
-true data-generating process is unknown, though at the cost of precision
-in extreme quantiles.</p>
+true data-generating process is unknown (and a good benchmark), though
+at the cost of precision in extreme quantiles.</p>
 <p>In contrast, Monte Carlo Value-at-Risk (MC VaR), whether based on
 parametric assumptions or Extreme Value Theory (EVT), offers distinct
 advantages for high-percentile risk estimation. Unlike HVaR, these
@@ -121,9 +121,8 @@ of a random <span
 class="math inline">(<em>X</em><sub>1</sub>, <em>X</em><sub>2</sub>, ..., <em>X</em><sub><em>d</em></sub>)</span>
 can be expressed in terms of its marginals <span
 class="math inline"><em>F</em><sub><em>i</em></sub>(<em>x</em><sub><em>i</em></sub>) = <em>P</em><em>r</em>[<em>X</em><sub><em>i</em></sub> ≤ <em>x</em><sub><em>i</em></sub>]</span>
-and a copula <span class="math inline"><em>C</em></span>, as: <span
-id="eq1"><span
-class="math display"><em>H</em>(<em>x</em><sub>1</sub>, ..., <em>x</em><sub><em>d</em></sub>) = <em>C</em>(<em>F</em><sub>1</sub>(<em>x</em><sub>1</sub>), ..., <em>F</em><sub><em>d</em></sub>(<em>x</em><sub><em>d</em></sub>))    (<em>E</em><em>q</em>.1)</span></span></p>
+and a copula <span class="math inline"><em>C</em></span>, as: [<span
+class="math display"><em>H</em>(<em>x</em><sub>1</sub>, ..., <em>x</em><sub><em>d</em></sub>) = <em>C</em>(<em>F</em><sub>1</sub>(<em>x</em><sub>1</sub>), ..., <em>F</em><sub><em>d</em></sub>(<em>x</em><sub><em>d</em></sub>))</span>]</p>
 <p>For more details on copula and their applications in finance please
 see <a href="#references">[2]</a>. However it is important to introduce
 several properties of the copulas which will be significant for the
@@ -145,16 +144,17 @@ details on these transformations and their properties please see <a
 href="#references">[9]</a>.</p></li>
 </ul>
 <h3 id="copulas-in-value-at-risk">Copulas in Value-at-Risk</h3>
-<p>The selection of a copula has a profound influence on the assessment
-of tail‑risk measures such as Value‑at‑Risk (VaR) / Expected Shortfall
-(ES). This influence becomes increasingly pronounced as we move to more
-extreme quantiles (e.g. 99 % and 99.9 % VaR). The principal limitation
-of the Gaussian copula lies in its asymptotic independence: as one
-approach the far ends of the distribution, the probability that two (or
-more) variables exceed a high threshold simultaneously tends to zero at
-the same rate as if the variables were independent. Consequently, the
-Gaussian copula systematically under‑estimates the likelihood of joint
-extreme events and, therefore, under‑states tail‑risk metrics.</p>
+<p>The selection of a copula has a significant influence on the
+assessment of tail‑risk measures such as Value‑at‑Risk (VaR) / Expected
+Shortfall (ES). This influence becomes increasingly pronounced as we
+move to more extreme quantiles (e.g. 99 % and 99.9 % VaR). The principal
+limitation of the Gaussian copula lies in its asymptotic independence:
+as one approach the far ends of the distribution, the probability that
+two (or more) variables exceed a high threshold simultaneously tends to
+zero at the same rate as if the variables were independent.
+Consequently, the Gaussian copula systematically under‑estimates the
+likelihood of joint extreme events and, therefore, under‑states
+tail‑risk metrics.</p>
 <p>Tail dependence provides a concise way to expose this shortcoming,
 some introduction to the use of tail dependence can be found in <a
 href="#references">[6]</a>. Formulas below define lower and upper tail
@@ -180,16 +180,15 @@ orange line) with the one of Gaussian and Cauchy copulas i.e. Student-T
 with zero degrees of freedom (the blue and green lines respectively).
 The vertical axis measures tail dependence, while the horizontal axis
 displays the chosen percentile. As the graphs reveal, the discrepancy
-between the observed and Gaussian tail dependence expands
-significantly.</p>
+between the observed and Gaussian tail dependence expands significantly
+when more risk factors considered together.</p>
 <figure>
 <img src="figures\Tail_dependance.png"
 alt="Figure 1: Tail dependence for different types of copulas and different number of random variables" />
 <figcaption aria-hidden="true">Figure 1: Tail dependence for different
 types of copulas and different number of random variables</figcaption>
 </figure>
-<p>The Cauchy copula (equivalently a Student‑t copula with zero degrees
-of freedom) is a statistical technique for capturing dependence
+<p>The Cauchy copula is a statistical technique for capturing dependence
 structures, especially when modelling tail‑risk or extreme events. Its
 principal advantage lies in preserving the overall correlation matrix of
 the underlying variables while simultaneously enabling the generation of
@@ -225,63 +224,84 @@ both behaviors, provide a more realistic picture of potential extreme
 outcomes than approaches that rely solely on historic linear
 correlations.</p>
 <h2 id="literature-review">Literature review</h2>
-<p>[TODO: present articles!!!]</p>
+<p>The rapid advancement of generative machine learning techniques has
+generated significant interest within the financial industry, as
+evidenced by numerous studies (e.g., see <a href="#references">[8]</a>
+for a review). However, much of the existing research has primarily
+focused on generating paths for either a single asset or a limited
+number of risk factors (as discussed in <a href="#references">[7]</a>).
+Moreover, the majority of these efforts have cantered on simulating
+so-called “central scenarios,” with limited attention given to the
+generation of realistic extreme scenarios. An exception to this trend
+can be found in <a href="#references">[5]</a>, which explicitly target
+the generation of tail events using Generative Adversarial Network (GAN)
+(see <a href="#references">[5]</a> for examples and implementation)
+architectures, though even these approaches remain constrained to
+relatively low-dimensional environments (e.g., up to 20–50 factors).</p>
+<p>Inspired by these works, this research seeks to extend the
+dimensionality of scenario generation while relaxing the requirement for
+path dependence. This adjustment allows us to leverage more classical
+tools for modelling joint dependencies, such as copulas. However, even
+within this framework, only Gaussian copulas (and selected Student-T)
+have demonstrated the capacity to scale effectively to very high
+dimensions. This project aims to bridge the gap between the data-driven
+GAN-like approaches and the scalability of copulas by developing a
+high-dimensional copula model capable of capturing historical tail
+dependence properties. The ultimate goal is to generate realistic
+extreme scenarios that reflect the complex dependencies observed in
+financial markets.</p>
 <h1 id="methodology-and-methods">Methodology and methods</h1>
-<p>This analysis prioritizes the generation of extreme market scenarios
-designed specifically for Market Risk and capital estimation purposes.
-Unlike studies where the intricacies of underlying asset path dynamics
-(such as time-dependent volatility or complex stochastic processes) are
-critical, this work deliberately abstracts from such details. As such
-there is no need to include dynamically changing portfolios
-(i.e. dynamic trading strategies), limiting portfolio dimension
-optimization to static. (only portfolios of approx. 500 names all long
-and 500 long/short hedged portfolios will used in this study).</p>
-<p>A defining challenge in Market Risk is the need to evaluate the
-collective behavior of thousands of risk factors simultaneously, a
-requirement that far exceeds the scope of prior research, where
-simulations often focused on merely dozens of variables. This study
-bridges that gap by demonstrating scalability to hundreds or even
-thousands of risk factors, aligning with the real-world demands of
-large-scale risk aggregation.</p>
+<p>As mentioned above unlike studies where the intricacies of underlying
+asset path dynamics (such as time-dependent volatility or complex
+stochastic processes) are critical, this work deliberately abstracts
+from such details. As such there is no need to include dynamically
+changing portfolios (i.e. dynamic trading strategies), limiting
+portfolio dimension optimization to static. Portfolios of approx. 500
+names with all long positions and 500 long/short hedged positions will
+be used in this study.</p>
 <p>Figure below presents overall workflow of the project aiming at
-calibrating copula to historical timeseries. <img
-src="figures\Project-workflow-high.png"
-alt="Figure 2: Copula calibration workflow" /></p>
-<p>It is further detailed in the next figure, which illustrated
+calibrating copula to historical timeseries related to the list of
+selected portfolios.</p>
+<figure>
+<img src="figures\Project-workflow-high.png"
+alt="Figure 2: Copula calibration workflow" />
+<figcaption aria-hidden="true">Figure 2: Copula calibration
+workflow</figcaption>
+</figure>
+<p>It is further detailed in the next figure, which illustrates the
 cumulative process of constructing different time series based on the
-observed history and representing required data transformations. <img
-src="figures\Project-workflow-high.png"
-alt="Figure 3: Detailed process of data transformations for copula calibration" /></p>
+observed history and representing required data transformations.</p>
+<figure>
+<img src="figures\Project-workflow-detailed.png"
+alt="Figure 3: Detailed process of data transformations for copula calibration" />
+<figcaption aria-hidden="true">Figure 3: Detailed process of data
+transformations for copula calibration</figcaption>
+</figure>
 <p>Beyond scalability, another key advantage lies in the
 interpretability of results. While alternative approaches, such as
 Tail-GAN-based simulations, often produce outputs that are difficult to
 dissect or explain, the methodology employed here offers an inherent
 structure for understanding extreme scenarios. The framework decomposes
-market dynamics into a weighted combination of copulas, each with a
-clear and intuitive economic or statistical meaning. This not only
-enhances transparency but also provides with a more actionable
+market dynamics into a weighted combination of copulas (see <a
+href="#copulas">Copulas</a> properties in the previous section), each
+with a clear and intuitive economic or statistical meaning. This not
+only enhances transparency but also provides with a more actionable
 foundation for stress testing and capital planning. The ability to
 attribute risk contributions to specific copula components is a
 significant improvement in practical applicability and model
 governance.</p>
-<p><em>provide a diagram that illustrate your approach/data
-pipeline</em> <em>for each objective you can provide methodology,
-methods and tools that you will use, and organise this part
-accordingly</em> <em>difference between an evaluation with respect to
-how your software performs, versus a critical evaluation where you
-reflect on your aims and objectives</em> <em>how do you plan to
-implement it? E.g. if you are using machine learning, you will require a
-model (explain the structure of the neural network)</em></p>
-<p>The software end-product My aim with this software is a proof of
-concept rather than an end-user application.</p>
+<p>Please also note that aim of this software (Python) is a proof of
+concept rather than an end-user application, while it still follows the
+main principals of software design with the development plan outlined
+below.</p>
 <h1 id="project-development-plan">Project development plan</h1>
-<p>The work is expected to start in the begging of May 2026. Development
-and research phase is expected to be finalized within 3 months leaving
-additional time for the report preparation.</p>
+<p>The work is expected to start in the beginning of May 2026.
+Development and research phase is expected to be finalized within 3
+months leaving additional time for the report preparation.</p>
 <ul>
-<li><strong>Step 1 [week 1-2]:</strong> Develop functionality able to
-discover required market data and casche it from Yahoo API according the
-required population, length and granularity.</li>
+<li><strong>Step 1 [week 1-2]:</strong> Develop functionality (Python)
+able to discover required market data and cache it from Yahoo API
+according the required population, length and granularity.</li>
 <li><strong>Step 2 [week 3-4]:</strong> Develop functionality able to
 calculate different Value-at-Risk metrics based on specified methodology
 i.e. Historical VaR, Monte-Carlo VaR. The latter should be structured in
@@ -332,8 +352,16 @@ transformations and induced dependence structures.<a
 href="https://arxiv.org/pdf/2509.26280">(link)</a></p></li>
 </ol>
 <h1 id="appendixes">Appendixes</h1>
-<p>See corresponding equation <a href="#eq1">(Eq.1)</a></p>
-<h2 id="appendix-a-copula-examples">Appendix A: Copula examples</h2>
+<h2 id="appendix-a-list-of-used-ai-tools">Appendix A: List of used AI
+tools</h2>
+<ul>
+<li>Gemini via Google Search;</li>
+<li>Mistral-7B-Instruct-v0.3 for polishing the text. Prompt: <em>“You’re
+an academic assistant with an expertise in software engineering to
+proofread and rewrite as a single connected text. Keep academic
+tone.”</em></li>
+</ul>
+<h2 id="appendix-b-copula-examples">Appendix B: Copula examples</h2>
 <p>Gaussian copula.</p>
 <figure>
 <img
@@ -363,12 +391,3 @@ alt="Figure 4: Contour plot Cauchy copula, numerical simulation" />
 <figcaption aria-hidden="true">Figure 4: Contour plot Cauchy copula,
 numerical simulation</figcaption>
 </figure>
-<h2 id="appendix-b-list-of-used-ai-tools">Appendix B: List of used AI
-tools</h2>
-<ul>
-<li>Gemini via Google Search;</li>
-<li>Mistral-7B-Instruct-v0.3 for polishing the text. Prompt: <em>“You’re
-an academic assistant with an expertise in software engineering to
-proofread and rewrite as a single connected text. Keep academic
-tone.”</em></li>
-</ul>
