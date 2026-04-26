@@ -7,3 +7,5 @@ pdflatex
 yfinance
 scipy
 matplotlib
+noisyopt
+scikit-optimize

@@ -216,3 +216,19 @@ class SkewCopulaNum(JointSim):
             self.sims[sn] = [u/theta if u<=theta else ((1-u)/(1-theta)) for u in sim[sn]]
 
         return self.sims
+    
+
+class MixCopulaNumTest(JointSim):
+    def __init__(self, calib_data, rf_dir, seed=0, weights=None):
+        JointSim.__init__(self, calib_data, rf_dir, seed)
+        self.name =f'Mixture copula test g{1-weights[0]},sc{weights[0]}-{weights[1]}'
+        self.weights=weights
+    
+    def get_sims(self, scen_number):
+        c1 = GaussCopulaNum(self.calib_data, self.rf_dir, self.seed)
+        c2 = SkewCopulaNum(self.calib_data, self.rf_dir, self.seed, [self.weights[1]]*len(self.rf_dir) )
+        self.sims = pd.concat(
+            [c1.get_sims(int(scen_number*(1-self.weights[0]))), 
+             c2.get_sims(int(scen_number*self.weights[0])),
+             ], ignore_index=True)
+        return self.sims
