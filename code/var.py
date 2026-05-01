@@ -31,6 +31,10 @@ class VarSim(Var):
         joint_sim = self.copula.get_sims(numb_scen)
         #joint_sim.to_csv(f'C:\\Temp\\joint_sim.csv')
         #self.spot.to_csv(f'C:\\Temp\\spot.csv')
+        #joint_sim.to_csv(f'C:\\Temp\\sims.csv')
+        joint_sim[joint_sim > 0.99999] = 0.99999
+        joint_sim[joint_sim < 0.00001] = 0.00001
+        print(f'=> min:{joint_sim.min().min()}, max:{joint_sim.max().max()}')
 
         #todo: only log normal
         scen = pd.DataFrame(

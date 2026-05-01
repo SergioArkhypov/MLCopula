@@ -213,7 +213,7 @@ class SkewCopulaNum(JointSim):
             # self.sims[sn] = [u/(2*theta) if u<=theta
             #                  else ((u-theta)/(1 - 2*theta) if u <= 1-theta else (u-1+2*theta)/(2*theta)) 
             #                  for u in sim[sn]]
-            self.sims[sn] = [u/theta if u<=theta else ((1-u)/(1-theta)) for u in sim[sn]]
+            self.sims[sn] = [u/theta if u<=theta else ((1-u)/(1-theta)) for u in sim[sn]] if theta!=1.0 or theta!=0.0 else sim[sn]
 
         return self.sims
     
