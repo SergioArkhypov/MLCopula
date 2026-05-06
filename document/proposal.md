@@ -35,7 +35,7 @@ where $\alpha$ is a confidence level and $F_L^{-1}$ is an inverted loss distribu
 
 On the other hand, Expected Shortfall (ES) measures the average loss in the tail of a loss distribution:
 
-$$ES_{\alpha}(L) = \frac{1}{1-\alpha} \int_{\alpha}^{1} VaR_{p}(L) \, dp.$$
+$$ES_{\alpha}(L) = \frac{1}{1-\alpha} \int_{\alpha}^{1} VaR_{p}(L) dp.$$
 
 Additional details and relevant industry discussions about ES are available in Cont et. al. [[4]](#references).
 
@@ -66,7 +66,7 @@ In this section we briefly introduce the concept of copulas and provide addition
 
 $C: [0,1]^d -> [0,1]$ is a d-dimentional copula if $C$ is a joint cumulative distribution function of a d-dimentional random vector on the unit cube $[0,1]^d$ with uniform marginals.
 
-Sklar's theorem. Every multivariate cumulative distribution function $H(x_1, \dots x_d) = Pr[X_1 \leq x_1, \dots X_d \leq x_d]$ of a random $(X_1, X_2, \dots X_d )$ can be expressed in terms of its marginals $F_i(x_i)=Pr[X_i \leq x_i]$ and a copula $C$, as:
+Sklar's theorem. Every multivariate cumulative distribution function $H(x_1, \dots, x_d) = Pr[X_1 \leq x_1, \dots, X_d \leq x_d]$ of a random $(X_1, X_2, \dots, X_d )$ can be expressed in terms of its marginals $F_i(x_i)=Pr[X_i \leq x_i]$ and a copula $C$, as:
 
 $$H(x_1, \dots, x_d) = C(F_1(x_1), \dots, F_d(x_d))$$
 
@@ -74,7 +74,8 @@ For more details on copula and their applications in finance please see [[2]](#r
 
  * A convex combination of copulas is also a copula. It is often called a mixture copula and can be expressed as a weighted sum of copulas $C_i$, defined as $C_{mix} = \Sigma_{i=1}^{n} w_i C_i(u,v)$, where all $w_i>0$ and sum to one $\Sigma_{i=1}^{n} w_i = 1.$
 
- * Exists a set of functions (W-transforms) applied to copula and also returning copula but with modified properties. For additional details on these transformations and their properties please see [[9]](#references).
+ * Exists a set of functions (W-transforms) applied to copula and also returning copula but with modified properties.
+ * For additional details on these transformations and their properties please see [[9]](#references).
 
 
 ### Copulas in Value-at-Risk
