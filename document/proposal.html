@@ -57,9 +57,10 @@ and <span
 class="math inline"><em>F</em><sub><em>L</em></sub><sup>−1</sup></span>
 is an inverted loss distribution.</p>
 <p>On the other hand, Expected Shortfall (ES) measures the average loss
-in the tail of a loss distribution. <span
-class="math display"><em>E</em><em>S</em><sub><em>α</em></sub>(<em>L</em>) = 1/(1 − <em>α</em>)∫<sub><em>α</em></sub><sup>1</sup><em>V</em><em>a</em><em>R</em><sub><em>p</em></sub>(<em>L</em>)<em>d</em><em>p</em></span>
-Additional details and relevant industry discussions about ES are
+in the tail of a loss distribution:</p>
+<p><span class="math display">$$ES_{\alpha}(L) = \frac{1}{1-\alpha}
+\int_{\alpha}^{1} VaR_{p}(L) dp.$$</span></p>
+<p>Additional details and relevant industry discussions about ES are
 available in Cont et. al. <a href="#references">[4]</a>.</p>
 <p>Today there are several main contesting industry spread approaches to
 VaR (see <a href="#references">[1]</a> for additional details):</p>
@@ -105,49 +106,54 @@ to smooth out estimation noise. However, this precision comes at the
 expense of higher model error, particularly when parametric assumptions
 are misspecified or when EVT extrapolations deviate from true tail
 behavior. While these methods provide greater control and extensibility
-in extreme risk modelling, their reliability hinges on the accuracy of
-the underlying assumptions, whether in the choice of distributions
+in extreme-risk modelling, their reliability hinges on the accuracy of
+the underlying assumptions, whether in the choice of distributions,
 copula functions, or tail decay parameters.</p>
-<h3 id="copulas.">Copulas.</h3>
+<h3 id="copulas">Copulas</h3>
 <p>In this section we briefly introduce the concept of copulas and
-provide additional references, followed by the impacts it could have on
-VaR/ES measures.</p>
+provide additional references, followed by a discussion of the impact it
+has on VaR/ES measures.</p>
 <p><span
 class="math inline"><em>C</em> : [0, 1]<sup><em>d</em></sup>− &gt; [0, 1]</span>
 is a d-dimentional copula if <span class="math inline"><em>C</em></span>
 is a joint cumulative distribution function of a d-dimentional random
 vector on the unit cube <span
-class="math inline">[0, 1]<sup><em>d</em></sup></span> with uniform
-marginals.</p>
-<p>Sklar’s theorem. Every multivariate cumulative distribution function
-<span
-class="math inline"><em>H</em>(<em>x</em><sub>1</sub>, ...<em>x</em><sub><em>d</em></sub>) = <em>P</em><em>r</em>[<em>X</em><sub>1</sub> ≤ <em>x</em><sub>1</sub>, ...<em>X</em><sub><em>d</em></sub> ≤ <em>x</em><sub><em>d</em></sub>]</span>
-of a random <span
-class="math inline">(<em>X</em><sub>1</sub>, <em>X</em><sub>2</sub>, ..., <em>X</em><sub><em>d</em></sub>)</span>
+class="math inline">[0, 1]<sup><em>d</em></sup></span> with marginals
+(i.e. each dimension) following a uniform distribution.</p>
+<p>Sklar’s theorem (see also in <a href="#references">[2]</a>). Every
+multivariate cumulative distribution function <span
+class="math inline"><em>H</em>(<em>x</em><sub>1</sub>, …, <em>x</em><sub><em>d</em></sub>) = <em>P</em><em>r</em>[<em>X</em><sub>1</sub> ≤ <em>x</em><sub>1</sub>, …, <em>X</em><sub><em>d</em></sub> ≤ <em>x</em><sub><em>d</em></sub>]</span>
+of a random variable <span
+class="math inline">(<em>X</em><sub>1</sub>, <em>X</em><sub>2</sub>, …, <em>X</em><sub><em>d</em></sub>)</span>
 can be expressed in terms of its marginals <span
 class="math inline"><em>F</em><sub><em>i</em></sub>(<em>x</em><sub><em>i</em></sub>) = <em>P</em><em>r</em>[<em>X</em><sub><em>i</em></sub> ≤ <em>x</em><sub><em>i</em></sub>]</span>
-and a copula <span class="math inline"><em>C</em></span>, as: [<span
-class="math display"><em>H</em>(<em>x</em><sub>1</sub>, ..., <em>x</em><sub><em>d</em></sub>) = <em>C</em>(<em>F</em><sub>1</sub>(<em>x</em><sub>1</sub>), ..., <em>F</em><sub><em>d</em></sub>(<em>x</em><sub><em>d</em></sub>))</span>]</p>
+and a copula <span class="math inline"><em>C</em></span>, as:</p>
+<p><span
+class="math display"><em>H</em>(<em>x</em><sub>1</sub>, …, <em>x</em><sub><em>d</em></sub>) = <em>C</em>(<em>F</em><sub>1</sub>(<em>x</em><sub>1</sub>), …, <em>F</em><sub><em>d</em></sub>(<em>x</em><sub><em>d</em></sub>)),</span></p>
 <p>For more details on copula and their applications in finance please
 see <a href="#references">[2]</a>. However it is important to introduce
-several properties of the copulas which will be significant for the
-current project:</p>
+several properties of copulas which will be significant for the current
+project:</p>
 <ul>
-<li><p>A convex combination of copulas is also a copula. It is often
-called a mixture copula and can be expressed as a weighted sum of
-copulas <span
+<li><p>A convex combination (i.e. all weights are non-negative and sum
+to exactly one) of copulas is also a copula. It is often called a
+mixture copula and can be expressed as a weighted sum of copulas <span
 class="math inline"><em>C</em><sub><em>i</em></sub></span>, defined as
 <span
 class="math inline"><em>C</em><sub><em>m</em><em>i</em><em>x</em></sub> = <em>Σ</em><sub><em>i</em> = 1</sub><sup><em>n</em></sup><em>w</em><sub><em>i</em></sub><em>C</em><sub><em>i</em></sub>(<em>u</em>, <em>v</em>)</span>,
 where all <span
 class="math inline"><em>w</em><sub><em>i</em></sub> &gt; 0</span> and
 sum to one <span
-class="math inline"><em>Σ</em><sub><em>i</em> = 1</sub><sup><em>n</em></sup><em>w</em><sub><em>i</em></sub> = 1</span>.</p></li>
-<li><p>Exists a set of functions (W-transforms) applied to copula and
-also returning copula but with modified properties. For additional
-details on these transformations and their properties please see <a
-href="#references">[9]</a>.</p></li>
+class="math inline"><em>Σ</em><sub><em>i</em> = 1</sub><sup><em>n</em></sup><em>w</em><sub><em>i</em></sub> = 1.</span></p></li>
+<li><p>There exists a class of functions (W-transforms) applied to
+copula and also returning copula but with modified properties.</p></li>
+<li><p>For additional details on these transformations and their
+properties please see <a href="#references">[9]</a>.</p></li>
 </ul>
+<p>One of the most widely used copula is the one constructed from a
+multivariate normal distribution by using the probability integral
+transform, Gaussian copula, see <a href="#references">[2]</a> for
+additional details.</p>
 <h3 id="copulas-in-value-at-risk">Copulas in Value-at-Risk</h3>
 <p>The selection of a copula has a significant influence on the
 assessment of tail‑risk measures such as Value‑at‑Risk (VaR) / Expected
@@ -157,7 +163,7 @@ limitation of the Gaussian copula lies in its asymptotic independence:
 as one approach the far ends of the distribution, the probability that
 two (or more) variables exceed a high threshold simultaneously tends to
 zero at the same rate as if the variables were independent.
-Consequently, the Gaussian copula systematically under‑estimates the
+Consequently, the Gaussian Copula systematically under‑estimates the
 likelihood of joint extreme events and, therefore, under‑states
 tail‑risk metrics.</p>
 <p>Tail dependence provides a concise way to expose this shortcoming,
@@ -165,13 +171,21 @@ some introduction to the use of tail dependence can be found in <a
 href="#references">[6]</a>. Formulas below define lower and upper tail
 dependence respectively:</p>
 <p><span
-class="math display"><em>τ</em><sub><em>i</em><em>j</em></sub><sup><em>L</em></sup> = lim<sub><em>q</em> → 0<sup>+</sup></sub><em>P</em>[<em>X</em><sub><em>i</em></sub> ≤ <em>G</em><sub><em>i</em></sub><sup>−1</sup>(<em>q</em>) ∣ <em>X</em><sub><em>j</em></sub> ≤ <em>G</em><sub><em>j</em></sub><sup>−1</sup>(<em>q</em>)]/(1 − <em>q</em>)</span></p>
+class="math display"><em>τ</em><sub><em>i</em><em>j</em></sub><sup><em>L</em></sup> = lim<sub><em>q</em> → 0<sup>+</sup></sub><em>P</em>[<em>X</em><sub><em>i</em></sub> ≤ <em>G</em><sub><em>i</em></sub><sup>−1</sup>(<em>q</em>) ∣ <em>X</em><sub><em>j</em></sub> ≤ <em>G</em><sub><em>j</em></sub><sup>−1</sup>(<em>q</em>)]/(1 − <em>q</em>),</span></p>
 <p><span
-class="math display"><em>τ</em><sub><em>i</em><em>j</em></sub><sup><em>U</em></sup> = lim<sub><em>q</em> → 1<sup>−</sup></sub><em>P</em>[<em>X</em><sub><em>i</em></sub> &gt; <em>G</em><sub><em>i</em></sub><sup>−1</sup>(<em>q</em>) ∣ <em>X</em><sub><em>j</em></sub> &gt; <em>G</em><sub><em>j</em></sub><sup>−1</sup>(<em>q</em>)]/<em>q</em></span></p>
-<p>By computing these tail‑dependence coefficients, one can directly
-compare how different copulas treat extreme co‑movements. The contrast
-is stark: while a Gaussian copula predicts virtually no joint tail
-events, for example Cauchy (Student-T with zero degrees of freedom)
+class="math display"><em>τ</em><sub><em>i</em><em>j</em></sub><sup><em>U</em></sup> = lim<sub><em>q</em> → 1<sup>−</sup></sub><em>P</em>[<em>X</em><sub><em>i</em></sub> &gt; <em>G</em><sub><em>i</em></sub><sup>−1</sup>(<em>q</em>) ∣ <em>X</em><sub><em>j</em></sub> &gt; <em>G</em><sub><em>j</em></sub><sup>−1</sup>(<em>q</em>)]/<em>q</em>,</span></p>
+<p>where <span
+class="math inline"><em>G</em><sub><em>i</em></sub>, <em>G</em><sub><em>j</em></sub></span>
+are marginal CDFs, while <span
+class="math inline"><em>G</em><sub><em>i</em></sub><sup>−1</sup>, <em>G</em><sub><em>j</em></sub><sup>−1</sup></span>
+are inverse CDFs respectively.</p>
+<p>High levels of tail dependence essentially means that the extremes of
+<span class="math inline"><em>X</em><sub><em>i</em></sub></span> and
+<span class="math inline"><em>X</em><sub><em>j</em></sub></span> occur
+more in unison. By computing these tail‑dependence coefficients, one can
+directly compare how different copulas treat extreme co‑movements. The
+contrast is stark: while a Gaussian copula predicts virtually no joint
+tail events, for example Cauchy (Student-T with zero degrees of freedom)
 assigns a non‑negligible probability to simultaneous extreme losses. See
 <a href="#copula-examples">Appendix A</a> for the visual comparison
 between two copulas both reflecting equivalent correlation values. This
@@ -180,19 +194,23 @@ especially at the highest percentiles. Consequently, when modelling
 portfolio risk that is sensitive to rare but severe events, choosing a
 copula with appropriate tail dependence is essential. Otherwise, VaR and
 ES risk measures may be substantially understated.</p>
-<p>Figures below compare historically observed tail dependence (the
+<p>Figure 1 below compares historically observed tail dependence (the
 orange line) with the one of Gaussian and Cauchy copulas i.e. Student-T
 with zero degrees of freedom (the blue and green lines respectively).
 The vertical axis measures tail dependence, while the horizontal axis
 displays the chosen percentile. As the graphs reveal, the discrepancy
 between the observed and Gaussian tail dependence expands significantly
-when more risk factors considered together.</p>
+when more risk factors considered together. It is based on 20Y of market
+price historical observations data (2002-2022) for 2 names Microsoft and
+Morgan Stanley and 5 names with additionally Google, Amazon and JP
+Morgan.</p>
 <figure>
 <img src="figures\Tail_dependance.png"
 alt="Figure 1: Tail dependence for different types of copulas and different number of random variables" />
 <figcaption aria-hidden="true">Figure 1: Tail dependence for different
 types of copulas and different number of random variables</figcaption>
 </figure>
+<h3 id="economics-of-cauchy-copula">Economics of Cauchy copula</h3>
 <p>The Cauchy copula is a statistical technique for capturing dependence
 structures, especially when modelling tail‑risk or extreme events. Its
 principal advantage lies in preserving the overall correlation matrix of
@@ -207,17 +225,17 @@ that normally exhibit a strong positive (or negative) relationship
 suddenly lose that linkage when stress or extreme events materializes.
 In other words, the usual together‑ness of the data breaks down. A
 classic illustration comes from equity markets: two stocks that
-historically track each other e.g. because they belong to the same
+historically track each other, e.g., because they belong to the same
 industry, may abruptly move in opposite directions during a stress
-event. For example, Apple vs. Microsoft - Apple taking over Microsoft
+event. For example, Google vs. Microsoft - Google taking over Microsoft
 business after Microsoft collapses.</p>
 <p>On the other hand, joint‑movement scenarios involve a set of
 variables that, despite exhibiting only modest or even negligible
 correlation under normal conditions, all swing in the same direction
-because they are all exposed to a shared extreme driver. Think of a
-severe natural disaster that simultaneously spikes commodity prices or a
-sovereign default that forces both sovereign bond yields and the
-domestic currency to deteriorate together. In these cases the common
+because they are all exposed to a common extreme driver. Examples are
+severe natural disasters that simultaneously spike commodity prices, or
+a sovereign default that forces both sovereign bond yields and the
+domestic currency to deteriorate together. In these cases, the common
 shock creates a temporary, high‑intensity dependence that standard
 correlation estimates fail to capture.</p>
 <p>Both types of scenarios are crucial for robust risk assessment.
@@ -225,11 +243,11 @@ De‑correlation highlights the risk of assets that are supposed to hedge
 each other stop doing so, while joint‑movement emphasizes the danger of
 hidden tail‑dependence that can generate simultaneous losses across
 seemingly unrelated positions. Modelling frameworks that can generate
-both behaviours, provide a more realistic picture of potential extreme
-outcomes than approaches that rely solely on historic linear
+both behaviours would provide a more realistic picture of potential
+extreme outcomes than approaches that rely solely on historic linear
 correlations.</p>
 <h2 id="literature-review">Literature review</h2>
-<p>The rapid advancement of generative machine learning techniques has
+<p>The rapid advancement of generative Machine Learning techniques has
 generated significant interest within the financial industry, as
 evidenced by numerous studies (e.g., see <a href="#references">[8]</a>
 for a review). However, much of the existing research has primarily
@@ -240,9 +258,9 @@ so-called “central scenarios,” with limited attention given to the
 generation of realistic extreme scenarios. An exception to this trend
 can be found in <a href="#references">[5]</a>, which explicitly target
 the generation of tail events using Generative Adversarial Network (GAN)
-(see <a href="#references">[5]</a> for examples and implementation)
-architectures, though even these approaches remain constrained to
-relatively low-dimensional environments (e.g., up to 20–50 factors).</p>
+(see Cont R. et al for examples and implementation) architectures,
+though even these approaches remain constrained to relatively
+low-dimensional environments, i.e., up to 20–50 factors.</p>
 <p>Inspired by these works, this research seeks to extend the
 dimensionality of scenario generation while relaxing the requirement for
 path dependence. This adjustment allows us to leverage more classical

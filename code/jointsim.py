@@ -31,7 +31,7 @@ class JointSim:
         spearmn = round(self.sims.iloc[:,rf1].corr(self.sims.iloc[:,rf2], method='spearman'),2)
         kendall = round(self.sims.iloc[:,rf1].corr(self.sims.iloc[:,rf2], method='kendall'), 2)
         title=self.name.replace(' ', '_')
-        plt.title(f'Uniform scenarios: {self.name} (p:{pearson}, s:{spearmn}, k:{kendall})')
+        plt.title(f'Uniform scen: {self.name} (p:{pearson}, s:{spearmn}, k:{kendall})')
         plt.scatter(self.sims.iloc[:,rf1], self.sims.iloc[:,rf2], s =0.3)
         plt.savefig(f'{self.figpath}\\Uniform_scenarios_{title}.png')
         plt.show()
@@ -119,7 +119,10 @@ class GaussCopulaCorr(JointSim):
             corr = temp_corr
         data = np.random.multivariate_normal(mean, corr, size=scen_number)
         df = pd.DataFrame(data=data, columns=self.calib_data.columns)
-        self.sims = df.rank(axis=0, pct=True) 
+        sims_np = stats.norm.cdf(df, loc=0.0, scale=1.0)
+        df = pd.DataFrame(data=sims_np, columns=self.calib_data.columns)
+        #self.sims = df.rank(axis=0, pct=True) 
+        self.sims = df
         return self.sims
 
 

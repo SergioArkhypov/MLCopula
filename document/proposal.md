@@ -58,70 +58,76 @@ This separation enhances flexibility in modelling dependence structure while mai
 
 From a computational perspective, MC VaR methods exhibit low numerical error, as the simulated datasets can be made arbitrarily large to smooth out estimation noise. 
 However, this precision comes at the expense of higher model error, particularly when parametric assumptions are misspecified or when EVT extrapolations deviate from true tail behavior. 
-While these methods provide greater control and extensibility in extreme risk modelling, their reliability hinges on the accuracy of the underlying assumptions, whether in the choice of distributions copula functions, or tail decay parameters.
+While these methods provide greater control and extensibility in extreme-risk modelling, their reliability hinges on the accuracy of the underlying assumptions, whether in the choice of distributions, copula functions, or tail decay parameters.
 
  
-### Copulas. 
-In this section we briefly introduce the concept of copulas and provide additional references, followed by the impacts it could have on VaR/ES measures.
+### Copulas
+In this section we briefly introduce the concept of copulas and provide additional references, followed by a discussion of the impact it has on VaR/ES measures.
 
-$C: [0,1]^d -> [0,1]$ is a d-dimentional copula if $C$ is a joint cumulative distribution function of a d-dimentional random vector on the unit cube $[0,1]^d$ with uniform marginals.
+$C: [0,1]^d -> [0,1]$ is a d-dimentional copula if $C$ is a joint cumulative distribution function of a d-dimentional random vector on the unit cube $[0,1]^d$ with marginals (i.e. each dimension) following a uniform distribution.
 
-Sklar's theorem. Every multivariate cumulative distribution function $H(x_1, \dots, x_d) = Pr[X_1 \leq x_1, \dots, X_d \leq x_d]$ of a random $(X_1, X_2, \dots, X_d )$ can be expressed in terms of its marginals $F_i(x_i)=Pr[X_i \leq x_i]$ and a copula $C$, as:
+Sklar's theorem (see also in [[2]](#references)). Every multivariate cumulative distribution function $H(x_1, \dots, x_d) = Pr[X_1 \leq x_1, \dots, X_d \leq x_d]$ of a random variable $(X_1, X_2, \dots, X_d )$ can be expressed in terms of its marginals $F_i(x_i)=Pr[X_i \leq x_i]$ and a copula $C$, as:
 
-$$H(x_1, \dots, x_d) = C(F_1(x_1), \dots, F_d(x_d))$$
+$$H(x_1, \dots, x_d) = C(F_1(x_1), \dots, F_d(x_d)),$$
 
-For more details on copula and their applications in finance please see [[2]](#references). However it is important to introduce several properties of the copulas which will be significant for the current project:
+For more details on copula and their applications in finance please see [[2]](#references). However it is important to introduce several properties of copulas which will be significant for the current project:
 
- * A convex combination of copulas is also a copula. It is often called a mixture copula and can be expressed as a weighted sum of copulas $C_i$, defined as $C_{mix} = \Sigma_{i=1}^{n} w_i C_i(u,v)$, where all $w_i>0$ and sum to one $\Sigma_{i=1}^{n} w_i = 1.$
+ * A convex combination (i.e. all weights are non-negative and sum to exactly one) of copulas is also a copula. It is often called a mixture copula and can be expressed as a weighted sum of copulas $C_i$, defined as $C_{mix} = \Sigma_{i=1}^{n} w_i C_i(u,v)$, where all $w_i>0$ and sum to one $\Sigma_{i=1}^{n} w_i = 1.$
 
- * Exists a set of functions (W-transforms) applied to copula and also returning copula but with modified properties.
+ * There exists a class of functions (W-transforms) applied to copula and also returning copula but with modified properties.
+
  * For additional details on these transformations and their properties please see [[9]](#references).
 
+One of the most widely used copula is the one constructed from a multivariate normal distribution by using the probability integral transform, Gaussian copula, see [[2]](#references) for additional details.
 
 ### Copulas in Value-at-Risk
 The selection of a copula has a significant influence on the assessment of tail‑risk measures such as Value‑at‑Risk (VaR) / Expected Shortfall (ES). 
 This influence becomes increasingly pronounced as we move to more extreme quantiles (e.g. 99 % and 99.9 % VaR). 
 The principal limitation of the Gaussian copula lies in its asymptotic independence: as one approach the far ends of the distribution, the probability that two (or more) variables exceed a high threshold simultaneously tends to zero at the same rate as if the variables were independent. 
-Consequently, the Gaussian copula systematically under‑estimates the likelihood of joint extreme events and, therefore, under‑states tail‑risk metrics.
+Consequently, the Gaussian Copula systematically under‑estimates the likelihood of joint extreme events and, therefore, under‑states tail‑risk metrics.
 
 Tail dependence provides a concise way to expose this shortcoming, some introduction to the use of tail dependence can be found in [[6]](#references). Formulas below define lower and upper tail dependence respectively: 
 
-$$\tau^L_{ij} = \lim_{q \to 0^+} P[X_i \leq G_i^{-1}(q) \mid X_j \leq G_j^{-1}(q)]/(1-q)$$
+$$\tau^L_{ij} = \lim_{q \to 0^+} P[X_i \leq G_i^{-1}(q) \mid X_j \leq G_j^{-1}(q)]/(1-q),$$
 
-$$\tau^U_{ij} = \lim_{q \to 1^-} P[X_i > G_i^{-1}(q) \mid X_j > G_j^{-1}(q)]/q$$
+$$\tau^U_{ij} = \lim_{q \to 1^-} P[X_i > G_i^{-1}(q) \mid X_j > G_j^{-1}(q)]/q,$$
 
-By computing these tail‑dependence coefficients, one can directly compare how different copulas treat extreme co‑movements. 
+where $G_i, G_j$ are marginal CDFs, while $G_i^{-1}, G_j^{-1}$ are inverse CDFs respectively.
+
+High levels of tail dependence essentially means that the extremes of $X_i$ and $X_j$ occur more in unison. By computing these tail‑dependence coefficients, one can directly compare how different copulas treat extreme co‑movements. 
 The contrast is stark: while a Gaussian copula predicts virtually no joint tail events, for example Cauchy (Student-T with zero degrees of freedom) assigns a non‑negligible probability to simultaneous extreme losses. 
 See [Appendix A](#copula-examples) for the visual comparison between two copulas both reflecting equivalent correlation values. 
 This disparity translates into markedly different VaR and ES estimates, especially at the highest percentiles. 
 Consequently, when modelling portfolio risk that is sensitive to rare but severe events, choosing a copula with appropriate tail dependence is essential. 
 Otherwise, VaR and ES risk measures may be substantially understated.
 
-Figures below compare historically observed tail dependence (the orange line) with the one of Gaussian and Cauchy copulas i.e. Student-T with zero degrees of freedom (the blue and green lines respectively). 
+Figure 1 below compares historically observed tail dependence (the orange line) with the one of Gaussian and Cauchy copulas i.e. Student-T with zero degrees of freedom (the blue and green lines respectively). 
 The vertical axis measures tail dependence, while the horizontal axis displays the chosen percentile. 
-As the graphs reveal, the discrepancy between the observed and Gaussian tail dependence expands significantly when more risk factors considered together.
+As the graphs reveal, the discrepancy between the observed and Gaussian tail dependence expands significantly when more risk factors considered together. It is based on 20Y of market price historical observations data (2002-2022) for 2 names Microsoft and Morgan Stanley and 5 names with additionally Google, Amazon and JP Morgan. 
 
 ![Figure 1: Tail dependence for different types of copulas and different number of random variables](figures\Tail_dependance.png)
+
+### Economics of Cauchy copula 
 
 The Cauchy copula is a statistical technique for capturing dependence structures, especially when modelling tail‑risk or extreme events. 
 Its principal advantage lies in preserving the overall correlation matrix of the underlying variables while simultaneously enabling the generation of scenarios that exhibit much heavier tails (joint‑movement) and de-correlation. 
 In practice, this means that the copula retains the familiar linear dependence captured by Pearson‑type correlations, yet it can produce joint realizations that reflect the heightened co‑movement observed during rare, high‑impact shocks.
 
 De‑correlation scenarios describe circumstances in which variables that normally exhibit a strong positive (or negative) relationship suddenly lose that linkage when stress or extreme events materializes. 
-In other words, the usual together‑ness of the data breaks down. A classic illustration comes from equity markets: two stocks that historically track each other e.g. because they belong to the same industry, may abruptly move in opposite directions during a stress event. For example, Apple vs. Microsoft  - Apple taking over Microsoft business after Microsoft collapses.
+In other words, the usual together‑ness of the data breaks down. A classic illustration comes from equity markets: two stocks that historically track each other, e.g., because they belong to the same industry, may abruptly move in opposite directions during a stress event. For example, Google vs. Microsoft  - Google taking over Microsoft business after Microsoft collapses.
 
-On the other hand, joint‑movement scenarios involve a set of variables that, despite exhibiting only modest or even negligible correlation under normal conditions, all swing in the same direction because they are all exposed to a shared extreme driver. 
-Think of a severe natural disaster that simultaneously spikes commodity prices or a sovereign default that forces both sovereign bond yields and the domestic currency to deteriorate together. 
-In these cases the common shock creates a temporary, high‑intensity dependence that standard correlation estimates fail to capture.
+On the other hand, joint‑movement scenarios involve a set of variables that, despite exhibiting only modest or even negligible correlation under normal conditions, all swing in the same direction because they are all exposed to a common extreme driver. 
+Examples are severe natural disasters that simultaneously spike commodity prices, or a sovereign default that forces both sovereign bond yields and the domestic currency to deteriorate together. 
+In these cases, the common shock creates a temporary, high‑intensity dependence that standard correlation estimates fail to capture.
 
 Both types of scenarios are crucial for robust risk assessment.
 De‑correlation highlights the risk of assets that are supposed to hedge each other stop doing so, while joint‑movement emphasizes the danger of hidden tail‑dependence that can generate simultaneous losses across seemingly unrelated positions. 
-Modelling frameworks that can generate both behaviours, provide a more realistic picture of potential extreme outcomes than approaches that rely solely on historic linear correlations.
+Modelling frameworks that can generate both behaviours would provide a more realistic picture of potential extreme outcomes than approaches that rely solely on historic linear correlations.
 
 
 ## Literature review
 
-The rapid advancement of generative machine learning techniques has generated significant interest within the financial industry, as evidenced by numerous studies (e.g., see [[8]](#references) for a review). However, much of the existing research has primarily focused on generating paths for either a single asset or a limited number of risk factors (as discussed in [[7]](#references)). Moreover, the majority of these efforts have cantered on simulating so-called "central scenarios," with limited attention given to the generation of realistic extreme scenarios. An exception to this trend can be found in [[5]](#references), which explicitly target the generation of tail events using Generative Adversarial Network (GAN) (see [[5]](#references) for examples and implementation) architectures, though even these approaches remain constrained to relatively low-dimensional environments (e.g., up to 20–50 factors).
+The rapid advancement of generative Machine Learning techniques has generated significant interest within the financial industry, as evidenced by numerous studies (e.g., see [[8]](#references) for a review). However, much of the existing research has primarily focused on generating paths for either a single asset or a limited number of risk factors (as discussed in [[7]](#references)). Moreover, the majority of these efforts have cantered on simulating so-called "central scenarios," with limited attention given to the generation of realistic extreme scenarios. An exception to this trend can be found in [[5]](#references), which explicitly target the generation of tail events using Generative Adversarial Network (GAN) (see Cont R. et al for examples and implementation) architectures, though even these approaches remain constrained to relatively low-dimensional environments, i.e., up to 20–50 factors.
 
 Inspired by these works, this research seeks to extend the dimensionality of scenario generation while relaxing the requirement for path dependence. This adjustment allows us to leverage more classical tools for modelling joint dependencies, such as copulas. However, even within this framework, only Gaussian copulas (and selected Student-T) have demonstrated the capacity to scale effectively to very high dimensions. This project aims to bridge the gap between the data-driven GAN-like approaches and the scalability of copulas by developing a high-dimensional copula model capable of capturing historical tail dependence properties. The ultimate goal is to generate realistic extreme scenarios that reflect the complex dependencies observed in financial markets.
 
