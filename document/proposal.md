@@ -1,9 +1,9 @@
 ---
-title: "Machine Learning for Modeling High Dimensional Joint Dependency"
+title: "Machine Learning for Modelling High Dimensional Joint Dependency"
 subtitle: "MSc Data Analytics and AI. School of Computing and Mathematical Sciences. Birkbeck, University of London"
 author: "Author: Sergii Arkhypov, Supervisor: Dr Alessandro Provetti"
 abstract: "The modelling of high‑dimensional joint dependence among financial risk factors remains a significant major challenge for the financial industry and Data Science. Classical statistical approaches, notably Gaussian copulas, fail to capture tail dependence adequately, leading to systematic under‑estimation of extreme portfolio losses. This MSc project aims to develop a scalable algorithm for calibrating high‑dimensional copulas that exhibit non‑Gaussian tail dependence while preserving observed marginal and correlation structures. The methodology combines semi‑analytical techniques with Machine Learning models to generate realistic joint‑distribution scenarios for up to several hundred risk factors. A proof‑of‑concept Python software implementation will be built to (i) retrieve and cache market data via the Yahoo Finance API, (ii) compute a portfolio Value‑at‑Risk using both historical and Monte‑Carlo simulations, and (iii) integrate the calibrated copulas as modular components within our new Monte‑Carlo engine. Empirical experiments will assess the impact of copula selection on Value‑at‑Risk estimates across a range of selected portfolios, followed by calibration routine to fit copula parameters to observed data. Finally, a deep‑neural‑network will be trained to learn the calibrated parameters directly from the data, and a testing suite will verify adherence to prescribed dependence and tail criteria. The expected contributions are threefold: (1) a novel high‑dimensional copula calibration framework capable of reproducing empirical tail dependence, (2) a software prototype for market‑data acquisition, risk‑metric computation, and scenario generation, and (3) an empirical evaluation of how alternative copula assumptions affect risk‑measure outcomes, thereby offering a more robust toolset for stress‑testing and capital‑planning in high‑dimensional settings."
-date: "30 September 2026. Word count: 2481"
+date: "30 September 2026. Word count: 2639"
 toc: true
 numbersections: true
 ---
@@ -12,7 +12,7 @@ numbersections: true
 Despite the popularity of ML/AI algorithms in finance, they have mainly been used for either one or a small number of random factors. 
 Nevertheless, joint analytics of high dimensionality (e.g., >100 random factors) still present serious challenges. 
 This task is hard to address with classical statistical methods, and the available toolset is quite limited, i.e., mainly based on Gaussian copulas. 
-There is hope that advances in ML/AI algorithms and corresponding software libraries will help expand this toolset and provide alternative approaches for modeling high-dimensional joint dependency.
+There is hope that advances in ML/AI algorithms and corresponding software libraries will help expand this toolset and provide alternative approaches for modelling high-dimensional joint dependency.
 
 This MSc proposal proceeds by outlining its primary goals and objectives. Subsequently, it explains the problem under investigation, along with pertinent work that provides essential concepts and a literature review. The subsequent sections detail the methodology and techniques employed to achieve the previously outlined objectives. The proposal concludes in a development plan for the project and a risk mitigation analysis.
 
@@ -57,7 +57,7 @@ Unlike HVaR, these methods are well-suited for quantiles far beyond 99%, as they
 This separation enhances flexibility in modelling dependence structure while maintaining control over individual risk factors.
 
 From a computational perspective, MC VaR methods exhibit low numerical error, as the simulated datasets can be made arbitrarily large to smooth out estimation noise. 
-However, this precision comes at the expense of higher model error, particularly when parametric assumptions are misspecified or when EVT extrapolations deviate from true tail behavior. 
+However, this precision comes at the expense of higher model error, particularly when parametric assumptions are mis specified or when EVT extrapolations deviate from true tail behaviour. 
 While these methods provide greater control and extensibility in extreme-risk modelling, their reliability hinges on the accuracy of the underlying assumptions, whether in the choice of distributions, copula functions, or tail decay parameters.
 
  
@@ -105,9 +105,9 @@ Figure 1 below compares historically observed tail dependence (the orange line) 
 The vertical axis measures tail dependence, while the horizontal axis displays the chosen percentile. 
 As the graphs reveal, the discrepancy between the observed and Gaussian tail dependence expands significantly when more risk factors considered together. It is based on 20Y of market price historical observations data (2002-2022) for 2 names Microsoft and Morgan Stanley and 5 names with additionally Google, Amazon and JP Morgan. 
 
-![Figure 1: Tail dependence for different types of copulas and different number of random variables](figures\Tail_dependance.png)
+![Figure 1: Tail dependence for different types of copulas and different number of random variables.](figures\Tail_dependance.png)
 
-### Economics of Cauchy copula 
+### Economics of the Cauchy copula 
 
 The Cauchy copula is a statistical technique for capturing dependence structures, especially when modelling tail‑risk or extreme events. 
 Its principal advantage lies in preserving the overall correlation matrix of the underlying variables while simultaneously enabling the generation of scenarios that exhibit much heavier tails (joint‑movement) and de-correlation. 
@@ -129,34 +129,34 @@ Modelling frameworks that can generate both behaviours would provide a more real
 
 The rapid advancement of generative Machine Learning techniques has generated significant interest within the financial industry, as evidenced by numerous studies (e.g., see [[8]](#references) for a review). However, much of the existing research has primarily focused on generating paths for either a single asset or a limited number of risk factors (as discussed in [[7]](#references)). Moreover, the majority of these efforts have cantered on simulating so-called "central scenarios," with limited attention given to the generation of realistic extreme scenarios. An exception to this trend can be found in [[5]](#references), which explicitly target the generation of tail events using Generative Adversarial Network (GAN) (see Cont R. et al for examples and implementation) architectures, though even these approaches remain constrained to relatively low-dimensional environments, i.e., up to 20–50 factors.
 
-Inspired by these works, this research seeks to extend the dimensionality of scenario generation while relaxing the requirement for path dependence. This adjustment allows us to leverage more classical tools for modelling joint dependencies, such as copulas. However, even within this framework, only Gaussian copulas (and selected Student-T) have demonstrated the capacity to scale effectively to very high dimensions. This project aims to bridge the gap between the data-driven GAN-like approaches and the scalability of copulas by developing a high-dimensional copula model capable of capturing historical tail dependence properties. The ultimate goal is to generate realistic extreme scenarios that reflect the complex dependencies observed in financial markets.
+Inspired by these works, this research seeks to extend the dimensionality of scenario generation while relaxing the requirement for path dependence. This adjustment allows us to leverage more classical tools for modelling joint dependencies, such as copulas. However, even within this framework, only Gaussian copulas (and selected Student-T) have demonstrated the capacity to scale effectively to very high dimensions. This project aims to bridge the gap between the data-driven GAN-like approaches from the literature and the scalability of copulas by developing a high-dimensional copula model capable of capturing historical tail dependence properties. The ultimate goal is to generate realistic 'extreme' scenarios that reflect the complex dependencies observed in financial markets.
 
 
 # Methodology and methods
-As mentioned above unlike studies where the intricacies of underlying asset path dynamics (such as time-dependent volatility or complex stochastic processes) are critical, this work deliberately abstracts from such details. As such there is no need to include dynamically changing portfolios (i.e. dynamic trading strategies), limiting portfolio dimension optimization to static. Portfolios of approx. 500 names with all long positions and 500 long/short hedged positions will be used in this study.
+As mentioned above, unlike studies where the intricacies of underlying asset path dynamics (such as time-dependent volatility or complex stochastic processes) are critical, this work deliberately abstracts from such details. As such there is no need to include dynamically-changing portfolios (i.e. dynamic trading strategies), we limit portfolio dimension optimization to the static core. Portfolios of approx. 500 names with all long positions and 500 long/short hedged positions will be used in this study.
 
-Figure below presents overall workflow of the project aiming at calibrating copula to historical timeseries related to the list of selected portfolios.
+Figure 2 presents the overall workflow of the project. The aim is to calibrate copula to historical timeseries related to a list of selected portfolios.
 
-![Figure 2: Copula calibration workflow](figures\Project-workflow-high.png)
+![Figure 2: The proposed copula calibration workflow.](figures\Project-workflow-high.png)
 
-It is further detailed in the next figure, which illustrates the cumulative process of constructing different time series based on the observed history and representing required data transformations.
+Figure 3 further details the cumulative process of constructing different time series based on the observed history and representing the required data transformations.
 
-![Figure 3: Detailed process of data transformations for copula calibration](figures\Project-workflow-detailed.png)
+![Figure 3: The proposed process of data transformations for copula calibration.](figures\Project-workflow-detailed.png)
 
-Beyond scalability, another key advantage lies in the interpretability of results. While alternative approaches, such as Tail-GAN-based simulations, often produce outputs that are difficult to dissect or explain, the methodology employed here offers an inherent structure for understanding extreme scenarios. The framework decomposes market dynamics into a weighted combination of copulas (see [Copulas](#copulas) properties in the previous section), each with a clear and intuitive economic or statistical meaning. This not only enhances transparency but also provides with a more actionable foundation for stress testing and capital planning. The ability to attribute risk contributions to specific copula components is a significant improvement in practical applicability and model governance.
+Beyond scalability, another key advantage of the proposed architecture lies in the interpretability of results. While alternative approaches, such as Tail-GAN-based simulations, often produce outputs that are difficult to dissect or explain (see [[5]](#references) for a discussion), the methodology employed here offers a structure for understanding extreme scenarios. The framework decomposes market dynamics into a weighted combination of copulas (see [Copulas](#copulas) properties in the previous section), each with a clear and intuitive economic or statistical meaning. Not only will it enhance transparency but also provide a more actionable foundation for stress testing and capital planning. Indeed, the ability to attribute risk contributions to specific copula components is a significant improvement in practical applicability and model governance.
 
-Please also note that aim of this software (Python) is a proof of concept rather than an end-user application, while it still follows the main principals of software design with the development plan outlined below.
+The workflow described in Figure 3 will be implemented in Python with recourse to well-known Python modules that are frequently used for such type of data processing. In particular, the Scikit-learn module described in Geron's textbook (see [[10]](#references)) supply us with Python classes required to implement the workflow above and testing phase.
 
 
 # Project development plan and risk mitigation analysis
-The work is expected to start in the beginning of May 2026. Development and research phase is expected to be finalized within 3 months leaving additional time for the report preparation. 
+The work is expected to start in May 2026. The development and research phases are expected to be finalized within 3 months, leaving additional time for the report preparation. 
 
-* **Step 1 [week 1-2]:** Develop functionality (Python) able to discover required market data and cache it from Yahoo Finance API according to the required population, length and granularity.
-* **Step 2 [week 3-4]:** Develop functionality able to calculate different Value-at-Risk metrics based on specified methodology i.e. Historical VaR, Monte-Carlo VaR. The latter should be structured in a way that copula class is provided as an input, allowing calculations with different copula hypothesis.
-* **Step 3 [week 5-6]:** Perform initial experiments to gauge copula impact on selected measures across different portfolios. This should help to develop better understanding required for the future interpretation of the results and testing. Assessing Gaussian, Cauchy, their transformations and weighted combinations.
-* **Step 4 [week 7-8]:** Build optimization functionality select parameters for the copula matching current measures for the list of selected portfolios.    
+* **Step 1 [week 1-2]:** Develop the functionality (Python) able to discover and cache the required market data from the Yahoo Finance API according to the required population, length and granularity.
+* **Step 2 [week 3-4]:** Develop the functionality able to calculate different Value-at-Risk metrics based on specified methodologies i.e. Historical VaR, Monte-Carlo VaR. The latter should be structured in a way that copula class is provided as an input, allowing calculations with different copula hypothesis.
+* **Step 3 [week 5-6]:** Perform initial experiments to gauge copula impact on selected measures across different portfolios. This should help to develop the better understanding required for the future interpretation of the results and testing. We will assess Gaussian and Cauchy copulas, their transformations and weighted combinations.
+* **Step 4 [week 7-8]:** Build the optimization functionality that selects parameters for the copula by matching current measures for the list of selected portfolios.    
 * **Step 5 [week 9-10]:** Design a testing exercise to ensure the calibrated copulas adhere to the specified conditions.
-* **Step 6 [week 11 +]:** Assess obtained results, summarize observations and developed software within the report.
+* **Step 6 [week 11 +]:** Discuss the obtained results, summarize observations and developed software within the report.
 
 There is a distinct possibility that certain project phases may overrun, particularly code development, testing, and the selection of the copula calibration algorithm. To mitigate this, it is aimed to complete the core work by August 2026, providing a buffer to accommodate potential delays.
 
@@ -172,6 +172,8 @@ There is a distinct possibility that certain project phases may overrun, particu
 8. Horvath B. et al, 2025. Generative Models in Finance: Market Generators, a Paradigm Shift in Financial Modeling.[(link)](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5284313)
 
 9. Hofert M. and Pang Z., 2025. W-transforms: Uniformity-preserving transformations and induced dependence structures.[(link)](https://arxiv.org/pdf/2509.26280)
+10. Geron A., 2019. Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow: Concepts, Tools, and Techniques to Build Intelligent Systems. Sebastopol: O’Reilly Media. 2nd Edition.
+
 
 # Appendixes
 
@@ -181,17 +183,19 @@ There is a distinct possibility that certain project phases may overrun, particu
  * Mistral-7B-Instruct-v0.3 for polishing the text. Prompt: *"You're an academic assistant with an expertise in software engineering to proofread and rewrite as a single connected text. Keep academic tone."*
 
 ## Appendix B: Copula examples
-Gaussian copula.
+**Gaussian copula.**
 
-![Figure 1: Uniform scenarios Gaussian_copula, numerical simulation](figures\Uniform_scenarios_Gaussian_copula_(numerical_simulation).png)
+![Figure A.1: Uniform scenarios for Gaussian_copula, numerical simulation.](figures\Uniform_scenarios_Gaussian_copula_(numerical_simulation).png)
 
-![Figure 2: Contour plot Gaussian copula, numerical simulation](figures\Contour_plot_Gaussian_copula_(numerical_simulation).png)
+![Figure A.2: Contour plot for Gaussian copula, numerical simulation.](figures\Contour_plot_Gaussian_copula_(numerical_simulation).png)
 
-Cauchy copula.
+----------------
 
-![Figure 3: Uniform scenarios Cauchy copula, numerical simulation](figures\Uniform_scenarios_Cauchy_copula_(numerical_simulation).png)
+**Cauchy copula.**
 
-![Figure 4: Contour plot Cauchy copula, numerical simulation](figures\Contour_plot_Cauchy_copula_(numerical_simulation).png)
+![Figure A.3: Uniform scenarios for Cauchy copula, numerical simulation.](figures\Uniform_scenarios_Cauchy_copula_(numerical_simulation).png)
+
+![Figure A.4: Contour plot for Cauchy copula, numerical simulation.](figures\Contour_plot_Cauchy_copula_(numerical_simulation).png)
 
 
 
