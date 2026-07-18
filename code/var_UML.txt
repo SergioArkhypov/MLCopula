@@ -1,0 +1,103 @@
+@startuml
+class Market {
+    load_history()
+    get_logreturns()
+        ticker_list
+    period_years
+    interval
+    name
+    cob_date_str
+    cache_path
+    market
+    market
+    spot
+    __init__()
+}
+
+
+
+class JointSim {
+    get_sims()
+    plot_sims()
+    plot_contour()
+    plot_pdf()
+    plot_tailcoef()
+        seed
+    calib_data
+    rf_dir
+    size
+    sizerf
+    __init__()
+}
+class GaussCopulaCorr {
+    get_sims()
+        sims
+    __init__()
+}
+class HistSimulation {
+    get_sims()
+        sims
+    __init__()
+}
+class GaussCopulaNum {
+    get_sims()
+        sims
+    __init__()
+}
+class CauchyCopulaNum {
+    get_sims()
+        sims
+    __init__()
+}
+class MixCopulaNum {
+    get_sims()
+        name
+    weights
+    sims
+    __init__()
+}
+class SkewCopulaNum {
+    get_sims()
+        name
+    weights
+    sims
+    __init__()
+}
+class MixCopulaNumTest {
+    get_sims()
+        name
+    weights
+    sims
+    __init__()
+}
+JointSim <|-- GaussCopulaCorr
+JointSim <|-- HistSimulation
+JointSim <|-- GaussCopulaNum
+JointSim <|-- CauchyCopulaNum
+JointSim <|-- MixCopulaNum
+JointSim <|-- SkewCopulaNum
+JointSim <|-- MixCopulaNumTest
+
+class Var {
+    calculate_pnls()
+    get_quantile()
+    get_port_value()
+    (Market) calibration
+    spot
+    (JointSim) copula
+    portfolio
+    pnls
+    __init__()
+}
+Var --> JointSim : uses
+Var --> Market : uses
+
+class VarSim {
+    calculate_pnls()
+        name
+    method
+    pnls
+    __init__()
+}
+Var <|-- VarSim
+@enduml
