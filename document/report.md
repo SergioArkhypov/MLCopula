@@ -9,12 +9,10 @@ numbersections: true
 ---
 
 # Introduction
-Despite the popularity of ML/AI algorithms in finance, they have mainly been used for either one or a small number of random factors. 
-Nevertheless, joint analytics of high dimensionality (e.g., >100 random factors) still present serious challenges. 
-This task is hard to address with classical statistical methods, and the available toolset is quite limited, i.e., mainly based on Gaussian copulas. 
-There is hope that advances in ML/AI algorithms and corresponding software libraries will help expand this toolset and provide alternative approaches for modelling high-dimensional joint dependency.
+Despite the popularity of ML/AI algorithms in finance, they have mainly been used for either one or a small number of random factors. Nevertheless, joint analytics of high dimensionality (e.g., >100 random factors) still present serious challenges. This task is hard to address with classical statistical methods, and the available toolset is quite limited, i.e., mainly based on Gaussian copulas. There is hope that advances in ML/AI algorithms and corresponding software libraries will help expand this toolset and provide alternative approaches for modelling high-dimensional joint dependency.
 
-This MSc proposal proceeds by outlining its primary goals and objectives. Subsequently, it explains the problem under investigation, along with pertinent work that provides essential concepts and a literature review. The subsequent sections detail the methodology and techniques employed to achieve the previously outlined objectives. The proposal concludes in a development plan for the project and a risk mitigation analysis.
+This MSc project proceeds by outlining its primary goals and objectives. Subsequently, it explains the problem under investigation, along with pertinent work that provides essential concepts and a literature review. The subsequent sections detail the methodology and techniques employed to achieve the previously outlined objectives.The subsequent part of the document will explain the project design and implementation, providing rationales for the chosen code architecture. Following this, a section dedicated to testing and evaluation will be presented. It is followed by an analysis of the results, focusing on their implications, and concluding with suggestions for future research direction.
+
 
 # Aims and Objectives
 
@@ -151,7 +149,8 @@ TODO: explain noisy function optimization!!!
 
 # Requirements specification and Design
 
-xxx
+To implement full workflow mentioned in the previous section we start with the portfolio information provided as an input. Based on which we query Yahoo Finance API for historical timeseries of stock prices according to the prescribed length. Current implementation allows cashing all data in csv file stored locally in case multiple runs are required. 
+
 ![Figure 4: Value-at-Risk calculation UML class diagram.](figures\class-diagram.png)
 
 # Implementation 
