@@ -103,7 +103,7 @@ Figure 1 below compares historically observed tail dependence (the orange line) 
 The vertical axis measures tail dependence, while the horizontal axis displays the chosen percentile. 
 As the graphs reveal, the discrepancy between the observed and Gaussian tail dependence expands significantly when more risk factors considered together. It is based on 20Y of market price historical observations data (2002-2022) for 2 names Microsoft and Morgan Stanley and 5 names with additionally Google, Amazon and JP Morgan. 
 
-![Figure 1: Tail dependence for different types of copulas and different number of random variables.](figures\Tail_dependance.png)
+![*Figure 1: Tail dependence for different types of copulas and different number of random variables.*](figures\Tail_dependance.png)
 
 ### Economics of the Cauchy copula 
 
@@ -135,11 +135,11 @@ As mentioned above, unlike studies where the intricacies of underlying asset pat
 
 Figure 2 presents the overall workflow of the project. The aim is to calibrate copula to historical timeseries related to a list of selected portfolios.
 
-![Figure 2: The proposed copula calibration workflow.](figures\Project-workflow-high.png)
+![*Figure 2: The proposed copula calibration workflow.*](figures\Project-workflow-high.png)
 
 Figure 3 further details the cumulative process of constructing different time series based on the observed history and representing the required data transformations.
 
-![Figure 3: The proposed process of data transformations for copula calibration.](figures\Project-workflow-detailed.png)
+![*Figure 3: The proposed process of data transformations for copula calibration.*](figures\Project-workflow-detailed.png)
 
 Beyond scalability, another key advantage of the proposed architecture lies in the interpretability of results. While alternative approaches, such as Tail-GAN-based simulations, often produce outputs that are difficult to dissect or explain (see [[5]](#references) for a discussion), the methodology employed here offers a structure for understanding extreme scenarios. The framework decomposes market dynamics into a weighted combination of copulas (see [Copulas](#copulas) properties in the previous section), each with a clear and intuitive economic or statistical meaning. Not only will it enhance transparency but also provide a more actionable foundation for stress testing and capital planning. Indeed, the ability to attribute risk contributions to specific copula components is a significant improvement in practical applicability and model governance.
 
@@ -149,9 +149,29 @@ TODO: explain noisy function optimization!!!
 
 # Requirements specification and Design
 
-To implement full workflow mentioned in the previous section we start with the portfolio information provided as an input. Based on which we query Yahoo Finance API for historical timeseries of stock prices according to the prescribed length. Current implementation allows cashing all data in csv file stored locally in case multiple runs are required. 
+In terms of implementation this project requires two parts a) efficient code which is able to calculate Value-at-Risk for the prescribed portfolio b) research part which is able to calibrate joint high-dimensional copula copula, exploring different settings, algorithms and parametrisation.
+Due to its different nature it was decided to follow different design approach for the each part. Part a) was implemented by following object oriented approach, where each class abstraction performs its own role of the calculations. It is composed of the following parts:
 
-![Figure 4: Value-at-Risk calculation UML class diagram.](figures\class-diagram.png)
+* __Market data gathering and preparation__, where the solution fetches and pre-processes all required data (i.e. 'market.py' module);
+
+* __Joint simulation__ part is the central component of the current project, it serves to create scenarios expressing joint behavior, based on provided market data and different statistical hypotheses (i.e. 'jointsim.py' module);
+
+* __Value-at-Risk calculation__, where generated scenarios are combined with the portfolio information to calculate profit and loss distribution. Once distribution is ready it can be queried for the specific percentile (i.e. 'var.py' module);
+
+Figure below represent UML class diagram for the Value-at-Risk calculation, we will focus on each component further in this section. 
+
+![*Figure 4: Value-at-Risk calculation UML class diagram.*](figures\class-diagram.png)
+
+Part b) is done in a list of jupyter notebooks designed for the quick interactions with the results and exploitive study of different settings and parameters.
+
+## Market data gathering and preparation
+
+To execute the complete workflow as detailed in the previous section, we start with the portfolio information provided as an input. Subsequently, we access historical stock price data from Yahoo Finance API, according to the specified timeframe duration. The existing implementation, presented within the 'Market' class in the 'market.py' file (see listing in [Appendix](#appendix-c-code-listing)), performs storing of all retrieved data in a locally saved CSV file for the reference in case multiple runs be necessary. After the gathering stage of all required timeseries, they undergo pre-processing to calculate log-returns, segmented into the chunks of dedicated length. 
+
+## Joint simulation
+
+
+
 
 # Implementation 
 
@@ -201,6 +221,8 @@ To implement full workflow mentioned in the previous section we start with the p
 ![Figure A.3: Uniform scenarios for Cauchy copula, numerical simulation.](figures\Uniform_scenarios_Cauchy_copula_(numerical_simulation).png)
 
 ![Figure A.4: Contour plot for Cauchy copula, numerical simulation.](figures\Contour_plot_Cauchy_copula_(numerical_simulation).png)
+
+## Appendix C: Code listing
 
 
 

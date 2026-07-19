@@ -32,8 +32,10 @@ class VarSim(Var):
         #joint_sim.to_csv(f'C:\\Temp\\joint_sim.csv')
         #self.spot.to_csv(f'C:\\Temp\\spot.csv')
         #joint_sim.to_csv(f'C:\\Temp\\sims.csv')
+
         joint_sim[joint_sim > 0.9999] = 0.9999
         joint_sim[joint_sim < 0.0001] = 0.0001
+        joint_sim = joint_sim.fillna(0.5)
         print(f'=> min:{joint_sim.min().min()}, max:{joint_sim.max().max()}')
 
         #todo: only log normal
