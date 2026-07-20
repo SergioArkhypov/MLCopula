@@ -211,8 +211,9 @@ Morgan.</p>
 <figure>
 <img src="figures\Tail_dependance.png"
 alt="Figure 1: Tail dependence for different types of copulas and different number of random variables." />
-<figcaption aria-hidden="true">Figure 1: Tail dependence for different
-types of copulas and different number of random variables.</figcaption>
+<figcaption aria-hidden="true"><em>Figure 1: Tail dependence for
+different types of copulas and different number of random
+variables.</em></figcaption>
 </figure>
 <h3 id="economics-of-the-cauchy-copula">Economics of the Cauchy
 copula</h3>
@@ -293,8 +294,8 @@ portfolios.</p>
 <figure>
 <img src="figures\Project-workflow-high.png"
 alt="Figure 2: The proposed copula calibration workflow." />
-<figcaption aria-hidden="true">Figure 2: The proposed copula calibration
-workflow.</figcaption>
+<figcaption aria-hidden="true"><em>Figure 2: The proposed copula
+calibration workflow.</em></figcaption>
 </figure>
 <p>Figure 3 further details the cumulative process of constructing
 different time series based on the observed history and representing the
@@ -302,8 +303,8 @@ required data transformations.</p>
 <figure>
 <img src="figures\Project-workflow-detailed.png"
 alt="Figure 3: The proposed process of data transformations for copula calibration." />
-<figcaption aria-hidden="true">Figure 3: The proposed process of data
-transformations for copula calibration.</figcaption>
+<figcaption aria-hidden="true"><em>Figure 3: The proposed process of
+data transformations for copula calibration.</em></figcaption>
 </figure>
 <p>Beyond scalability, another key advantage of the proposed
 architecture lies in the interpretability of results. While alternative
@@ -355,9 +356,9 @@ calculation, we will focus on each component further in this
 section.</p>
 <figure>
 <img src="figures\class-diagram.png"
-alt="Figure 4: Value-at-Risk calculation UML class diagram" />
+alt="Figure 4: Value-at-Risk calculation UML class diagram." />
 <figcaption aria-hidden="true"><em>Figure 4: Value-at-Risk calculation
-UML class diagram</em></figcaption>
+UML class diagram.</em></figcaption>
 </figure>
 <p>Part b) is done in a list of jupyter notebooks designed for the quick
 interactions with the results and exploitive study of different settings
@@ -376,6 +377,85 @@ stage of all required timeseries, they undergo pre-processing to
 calculate log-returns, segmented into the chunks of dedicated
 length.</p>
 <h2 id="joint-simulation">Joint simulation</h2>
+<p>The <strong>JointSim</strong> class serves as an abstract base class
+specifically designed to provide a standardized framework for all copula
+implementations within the project. By defining a list of virtual
+functions, it enforces a consistent interface that all descendant
+classes must implement to ensure architectural integrity. Beyond that,
+the class centralizes the core analytical logic required for
+investigations, including the automated plotting of all simulations,
+resulting contour plots and tail coefficients. This centralized approach
+ensures that common statistical visualizations and diagnostic tools are
+applied uniformly across all models. The current project has integrated
+several specific copula models into its framework:</p>
+<ul>
+<li>The <strong>HistSimulation</strong> class implements a historical
+simulation approach, which generates data by returning a sample of
+normalized observations derived directly from actual historical time
+series. Rather than assuming an underlying parametric distribution, this
+method relies on the empirical distribution of the observed data.</li>
+<li>The <strong>GaussCopulaCorr</strong> class implements the Gaussian
+copula model by utilizing a specified correlation matrix as its primary
+input. To perform simulations, the class employs classical sampling
+techniques derived from a multivariate normal distribution. This process
+leverages the highly optimized multivariate_normal implementation
+provided by the NumPy library.</li>
+<li>The <strong>GaussCopulaNum</strong> class provides an alternative
+implementation of the Gaussian copula designed specifically for
+applications involving actual historical time series data. Unlike
+traditional approaches, this implementation bypasses the potentially
+problematic process of calculating a formal correlation matrix from raw
+data. This design choice is intended to avoid the numerical instability
+and computational intensity often associated with such matrices,
+particularly the risk of generating a matrix that is not positive
+semi-definite. By avoiding this step, the class provides a more robust
+framework for working with empirical datasets where some irregularities
+might otherwise lead to mathematical errors.</li>
+<li>The <strong>CauchyCopulaNum</strong> class implements a Cauchy
+copula, which can be viewed as a special case of the Student-T
+distribution with one degree of freedom. Much like the “GaussCopulaNum”
+implementation, this class is designed to accept actual historical time
+series as an input. This approach intentionally bypasses the
+computationally intensive and numerically sensitive task of calculating
+an explicit correlation matrix, thereby avoiding the common risk of
+encountering a matrix that is not positive semi-definite. Instead, the
+implementation is grounded in the properties of a standard multivariate
+Cauchy distribution with zero mean and unit scale, providing a robust
+method for modelling heavy-tailed dependencies without the instability
+of traditional matrix estimation. An addition benefit of the Cauchy
+copula is the ability to produce an alternative diagonal and generate
+de-correlation scenarios (see <a
+href="#economics-of-the-cauchy-copula">section 3</a> for discussion).
+This capability is particularly valuable for stress-testing and risk
+management, as it enables the simulation of scenarios where assets or
+variables may de-correlate unexpectedly during periods of high
+volatility or extreme market stress.</li>
+<li>The <strong>SkewCopulaNum</strong> class implements a skewed Cauchy
+copula, which serves as an asymmetric extension. Similarly to the
+CauchyCopulaNum implementation, this class utilizes actual historical
+time series as its primary input. To achieve asymmetric tail behaviour,
+the class applies a W-transform (see <a href="#references">[9]</a> for
+details) to the underlying Cauchy copula. This transformation allows the
+model to capture directional dependencies and tail asymmetries that a
+standard symmetric Cauchy and Gaussian copulas would otherwise fail to
+represent, making it particularly effective for modelling empirical data
+with non-symmetric extreme events (i.e. market crisis behaviour is
+different to the periods of growth, see <a
+href="#economics-of-the-cauchy-copula">section 3</a> for
+discussion).</li>
+<li>The <strong>MixCopulaNumTest</strong> class is designed to perform
+mixture simulations by combining skewed Cauchy and Gaussian copulas.
+This approach is mathematically grounded in the principle that a convex
+combination of various copulas also constitutes a valid copula (see <a
+href="#copulas">section 3</a> for details), thereby allowing for the
+modelling of complex, hybrid dependency structures. The user can define
+the specific composition of the mixture by providing the relative
+proportions of each constituent copula as an input parameter, enabling
+the simulation of data that exhibits both symmetric and asymmetric tail
+behaviours simultaneously, in addition to the alternative diagonal
+(i.e. de-correlation scenarios).</li>
+</ul>
+<h2 id="value-at-risk-calculation">Value-at-Risk calculation</h2>
 <h1 id="implementation">Implementation</h1>
 <h1 id="testing-and-evaluation">Testing and Evaluation</h1>
 <h1 id="resultsfindings-and-discussion">Results/Findings and
