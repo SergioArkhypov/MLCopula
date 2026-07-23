@@ -168,7 +168,7 @@ The figure below represents the UML class diagram for the Value-at-Risk calculat
 
 Part b) is done in a list of jupyter notebooks designed for the quick interactions with the results and exploitive study of different settings and parameters.
 
-* The __study_copula_and_var.ipynb__ notebook serves as a dedicated environment for evaluating and visualizing the underlying copula generation processes. To provide an incite of the distinct mathematical dependency structures inherent to each model, the notebook features visual illustrations of the considered copulas in a two-dimensional space. This targeted bivariate approach allows for clear, accessible graphical representations of complex joint distributions, making it significantly easier to observe tail dependence that might otherwise be obscured in higher-dimensional data. The notebook further extends into empirical assessment by calculating and plotting Value-at-Risk (VaR) time series of the various copulas across multiple percentiles. Such  comparative analysis demonstrates how the specific choice of dependency model impacts the accuracy of extreme tail risk estimates over time.
+* The __study_copula_and_var.ipynb__ notebook evaluates various copula models by visualizing their complex dependency structures in an accessible, two-dimensional space. Additionally, it calculates  Value-at-Risk time series to demonstrate how the choice of copula directly impacts portfolio risk estimates at different percentiles.
 * __study_optimisation.ipynb:__
 * __study_final_ts.ipynb:__
 
@@ -196,6 +196,7 @@ As before the __Var__ class serves as an abstract base class, designed to establ
 
 ## Copula calibration
 
+* The __study_copula_and_var.ipynb__ notebook serves as a dedicated environment for evaluating and visualizing the underlying copula generation processes. To provide an incite of the distinct mathematical dependency structures inherent to each model, the notebook features visual illustrations of the considered copulas in a two-dimensional space. This targeted bivariate approach allows for clear, accessible graphical representations of complex joint distributions, making it significantly easier to observe tail dependence that might otherwise be obscured in higher-dimensional data. The notebook further extends into empirical assessment by calculating and plotting Value-at-Risk (VaR) time series of the various copulas across multiple percentiles. Such  comparative analysis demonstrates how the specific choice of dependency model impacts the accuracy of extreme tail risk estimates over time.
 
 
 
