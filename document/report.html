@@ -224,7 +224,7 @@ the underlying variables while simultaneously enabling the generation of
 scenarios that exhibit much heavier tails (joint‑movement) and
 de-correlation. In practice, this means that the copula retains the
 familiar linear dependence captured by Pearson‑type correlations, yet it
-can produce joint realizations that reflect the heightened co‑movement
+can produce joint realisations that reflect the heightened co‑movement
 observed during rare, high‑impact shocks.</p>
 <p>De‑correlation scenarios describe circumstances in which variables
 that normally exhibit a strong positive (or negative) relationship
@@ -252,6 +252,46 @@ seemingly unrelated positions. Modelling frameworks that can generate
 both behaviours would provide a more realistic picture of potential
 extreme outcomes than approaches that rely solely on historic linear
 correlations.</p>
+<h3 id="skewing-copulas">Skewing copulas</h3>
+<p>While generating scenarios that exhibit heavier tails and dynamic
+de-correlation addresses one crucial aspect, it is equally important to
+accurately capture tail asymmetries (a well-documented stylised fact
+that standard symmetric Gaussian and Cauchy copulas fail to represent).
+Empirical stock market data demonstrates that extreme financial events
+are inherently asymmetric. The underlying market dynamics and joint
+dependencies observed during severe crises fundamentally differ from
+those seen during periods of sustained growth, with massive,
+simultaneous downturns occurring far more frequently than equivalent
+rapid expansions. To successfully incorporate this critical asymmetry
+into the dependency structure, a specific type mathematical
+transformation can be applied directly to the copula. In this study we
+utilize the following piecewise function to distort the
+probabilities:</p>
+<p><span class="math display">$$T(u)=\begin{cases} \frac{u}{\theta},
+&amp; \text{when } u \le \theta \\ \frac{1-u}{1-\theta}, &amp;
+\text{when } u &gt; \theta \end{cases}$$</span></p>
+<p>This uniformity-preserving function is applied to each dimension of
+the copula independently. Formally, a transformation <span
+class="math inline"><em>T</em> : [0, 1] → [0, 1]</span> is defined as
+uniformity-preserving if the transformed variable maintains a uniform
+distribution, meaning that <span
+class="math inline"><em>T</em>(<em>u</em>) ∼ <em>U</em>(0, 1)</span>
+given <span class="math inline"><em>u</em> ∼ <em>U</em>(0, 1)</span>.
+This specific functional mapping belongs to the broader mathematical
+category known as W-transforms, which can be used to introduce
+controlled asymmetry into the dependency models. A more rigorous
+theoretical analysis of the W-transform class and its statistical
+properties can be found in <a href="#references">[8]</a>. Figure 2
+provides an illustration of this technique in practice, clearly
+demonstrating how the application of W-transform functions successfully
+injects structural asymmetry directly into the baseline copula.</p>
+<figure>
+<img src="figures\w-transform.png"
+alt="Figure 2: A sample of scenarios from the original 2d Cauchy copula (left) and its W-transformed equivalent (right) ." />
+<figcaption aria-hidden="true"><em>Figure 2: A sample of scenarios from
+the original 2d Cauchy copula (left) and its W-transformed equivalent
+(right) .</em></figcaption>
+</figure>
 <h2 id="literature-review">Literature review</h2>
 <p>The rapid advancement of generative Machine Learning techniques has
 generated significant interest within the financial industry, as
@@ -293,8 +333,8 @@ calibrate copula to historical timeseries related to a list of selected
 portfolios.</p>
 <figure>
 <img src="figures\Project-workflow-high.png"
-alt="Figure 2: The proposed copula calibration workflow." />
-<figcaption aria-hidden="true"><em>Figure 2: The proposed copula
+alt="Figure 3: The proposed copula calibration workflow." />
+<figcaption aria-hidden="true"><em>Figure 3: The proposed copula
 calibration workflow.</em></figcaption>
 </figure>
 <p>Figure 3 further details the cumulative process of constructing
@@ -302,8 +342,8 @@ different time series based on the observed history and representing the
 required data transformations.</p>
 <figure>
 <img src="figures\Project-workflow-detailed.png"
-alt="Figure 3: The proposed process of data transformations for copula calibration." />
-<figcaption aria-hidden="true"><em>Figure 3: The proposed process of
+alt="Figure 4: The proposed process of data transformations for copula calibration." />
+<figcaption aria-hidden="true"><em>Figure 4: The proposed process of
 data transformations for copula calibration.</em></figcaption>
 </figure>
 <p>Beyond scalability, another key advantage of the proposed
@@ -383,30 +423,32 @@ Value-at-Risk calculation; each component is discussed in detail further
 in the section.</p>
 <figure>
 <img src="figures\class-diagram.png"
-alt="Figure 4: Value-at-Risk calculation UML class diagram." />
-<figcaption aria-hidden="true"><em>Figure 4: Value-at-Risk calculation
+alt="Figure 5: Value-at-Risk calculation UML class diagram." />
+<figcaption aria-hidden="true"><em>Figure 5: Value-at-Risk calculation
 UML class diagram.</em></figcaption>
 </figure>
 <p>Part b) is done in a list of jupyter notebooks designed for the quick
 interactions with the results and exploitive study of different settings
 and parameters.</p>
 <ul>
-<li>The <strong>study_copula_and_var.ipynb</strong> notebook serves as a
-dedicated environment for evaluating and visualizing the underlying
-copula generation processes. To provide an incite of the distinct
-mathematical dependency structures inherent to each model, the notebook
-features visual illustrations of the considered copulas in a
-two-dimensional space. This targeted bivariate approach allows for
-clear, accessible graphical representations of complex joint
-distributions, making it significantly easier to observe tail dependence
-that might otherwise be obscured in higher-dimensional data. The
-notebook further extends into empirical assessment by calculating and
-plotting Value-at-Risk (VaR) time series of the various copulas across
-multiple percentiles. Such comparative analysis demonstrates how the
-specific choice of dependency model impacts the accuracy of extreme tail
-risk estimates over time.</li>
-<li><strong>study_optimisation.ipynb:</strong></li>
-<li><strong>study_final_ts.ipynb:</strong></li>
+<li>The <strong>study_copula_and_var.ipynb</strong> notebook evaluates
+various copula models by visualizing their complex dependency structures
+in an accessible, two-dimensional space. Additionally, it calculates
+Value-at-Risk time series to demonstrate how the choice of copula
+directly impacts portfolio risk estimates at different percentiles.</li>
+<li>The <strong>study_optimisation.ipynb</strong> notebook iteratively
+calibrates copula weights and parameters on a monthly basis across a
+twenty-year historical dataset. Central to this process is the
+evaluation of a composite model that blends a standard Gaussian copula
+with a Skewed Cauchy copula to capture both normal market fluctuations
+and extreme tail events. By reducing the Cauchy component’s skewness
+coefficient (see details in previous <a
+href="#skewing-copulas">section</a>), the model accurately simulates the
+heavy left-tail risks and severe downturns characteristic of real-world
+equity markets.</li>
+<li>The <strong>study_optimisationn_ts.ipynb</strong> notebook plots
+final timeseries for the weights and skew performing postprocessing of
+the results produced in the previous notebook.</li>
 </ul>
 <h1 id="implementation">Implementation</h1>
 <p>In this section, we systematically revisit each of the architectural
@@ -434,7 +476,7 @@ classes must implement to ensure architectural integrity. Beyond that,
 the class centralizes the core analytical logic required for
 investigations, including the automated plotting of all simulations,
 resulting contour plots and tail coefficients. This centralized approach
-ensures that common statistical visualizations and diagnostic tools are
+ensures that common statistical visualisations and diagnostic tools are
 applied uniformly across all models. The current project has integrated
 several specific copula models into its framework:</p>
 <ul>
@@ -480,17 +522,17 @@ management, as it enables the simulation of scenarios where assets or
 variables may de-correlate unexpectedly during periods of high
 volatility or extreme market stress.</li>
 <li>The <strong>SkewCopulaNum</strong> class implements a skewed Cauchy
-copula, which serves as an asymmetric extension. Similarly to the
-CauchyCopulaNum implementation, this class utilizes actual historical
-time series as its primary input. To achieve asymmetric tail behaviour,
-the class applies a W-transform (see <a href="#references">[9]</a> for
-details) to the underlying Cauchy copula. This transformation allows the
-model to capture directional dependencies and tail asymmetries that a
-standard symmetric Cauchy and Gaussian copulas would otherwise fail to
-represent, making it particularly effective for modelling empirical data
-with non-symmetric extreme events (i.e. market crisis behaviour is
-different to the periods of growth, see <a
-href="#economics-of-the-cauchy-copula">section 3</a> for
+copula, which serves as an asymmetric extension to the original Cauchy
+copula. Similarly to the CauchyCopulaNum implementation, this class
+utilizes actual historical time series as its primary input. To achieve
+asymmetric tail behaviour, the class applies a W-transform (see <a
+href="#references">[9]</a> for details) to the underlying Cauchy copula.
+This transformation allows the model to capture directional dependencies
+and tail asymmetries that a standard symmetric Cauchy and Gaussian
+copulas would otherwise fail to represent, making it particularly
+effective for modelling empirical data with non-symmetric extreme events
+(i.e. market crisis behaviour is different to the periods of growth, see
+<a href="#economics-of-the-cauchy-copula">section 3</a> for
 discussion).</li>
 <li>The <strong>MixCopulaNumTest</strong> class is designed to perform
 mixture simulations by combining skewed Cauchy and Gaussian copulas.
@@ -525,7 +567,7 @@ marginal distribution for each individual stock. This transformation is
 executed utilizing the “quantile” function (effectively the inverse
 cumulative distribution function) provided by the NumPy package. During
 this step, the model explicitly relies on the standard assumption of
-lognormality, which is widely accepted convention for modeling the
+log-normality, which is widely accepted convention for modeling the
 behavior of equity returns. Once a simulated vector of individual asset
 returns is generated, it is multiplied with the portfolio weights to
 calculate the aggregated return of the entire portfolio. To ensure
@@ -535,7 +577,56 @@ times (i.e. number of Monte-Carlo simulations). Such sampling
 effectively constructs a probability distribution of the overall
 portfolio returns, from which specified VaR metrics can be extracted
 (e.g. 75th, 90th, 99th and 99.5th percentiles).</p>
-<h2 id="copula-calibration">Copula calibration</h2>
+<h2 id="copula-calibration-notebooks">Copula calibration notebooks</h2>
+<ul>
+<li><p>The <strong>study_copula_and_var.ipynb</strong> notebook serves
+as a dedicated environment for evaluating and visualizing the underlying
+copula generation processes. To provide an incite of the distinct
+mathematical dependency structures inherent to each model, the notebook
+features visual illustrations of the considered copulas in a
+two-dimensional space. This targeted bivariate approach allows for
+clear, accessible graphical representations of complex joint
+distributions, making it significantly easier to observe tail dependence
+that might otherwise be obscured in higher-dimensional data. The
+notebook further extends into empirical assessment by calculating and
+plotting Value-at-Risk (VaR) time series of the various copulas across
+multiple percentiles. Such comparative analysis demonstrates how the
+specific choice of dependency model impacts the accuracy of extreme tail
+risk estimates over time.</p></li>
+<li><p>The <strong>study_optimisation.ipynb</strong> notebook is
+dedicated to the calibration of copula weights and associated
+parameters, executing this process iteratively on a month-by-month basis
+across twenty-year historical timeframe. Central to this analysis is the
+evaluation of a composite dependency structure that intricately blends a
+standard Gaussian copula with a Skewed Cauchy copula in order to capture
+both normal market fluctuations and extreme tail events. The Cauchy
+component is modified by a skewness coefficient. At a baseline of 100%,
+this parameter represents a standard, symmetric Cauchy copula. However,
+when decreased, the model introduces a pronounced negative skew into the
+distribution. This adjustment intentionally generates a higher frequency
+of simulated scenarios corresponding to severe market downturns and
+localized company defaults, rather than assuming symmetrical extreme
+growth. Implementing this asymmetry is crucial for accurately reflecting
+the behavior of real-world equity markets, which characteristically
+exhibit heavy left tails and are historically far more prone to sudden,
+catastrophic losses than to equivalent exponential gains. Initially, a
+simultaneous two-dimensional optimisation approach was attempted to
+calibrate both the copula weights and the skewness parameter. However,
+this joint calibration proved unstable, yielding excessively noisy
+parameter estimates due to the complex, non-linear nature of the
+objective function. To overcome this computational instability the
+methodology was refined into a more robust, conditional optimisation
+strategy.Instead of allowing both variables to float freely during the
+search, the system strictly optimizes the Cauchy copula weight while
+holding the skewness parameter constant. This procedure is executed
+across eleven distinct, pre-defined skewness levels ranging from 0.9 to
+1.0. By discretising the skewness dimension into a fixed grid and
+performing isolated one-dimensional optimisations, the model bypasses
+the previously observed noise.</p></li>
+<li><p>The <strong>study_optimisationn_ts.ipynb</strong> notebook plots
+final timeseries for the weights and skew performing postprocessing of
+the results produced in the previous notebook.</p></li>
+</ul>
 <h1 id="testing-and-evaluation">Testing and Evaluation</h1>
 <h1 id="resultsfindings-and-discussion">Results/Findings and
 Discussion</h1>
