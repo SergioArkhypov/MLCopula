@@ -127,7 +127,7 @@ $$T(u)=\begin{cases} \frac{u}{\theta}, & \text{when } u \le \theta \\ \frac{1-u}
 
 This uniformity-preserving function is applied to each dimension of the copula independently. Because this rather than attempting to distort the entire joint distribution simultaneously, it effectively bypasses the exponential computational overhead often referred to as the curse of dimensionality. Ultimately, this elegant transformation ensures that the system can rapidly and reliably simulate complex, asymmetric tail risks across massive portfolios without sacrificing computational speed or performance. Formally, a transformation $T : [0,1] \to [0,1]$ is defined as uniformity-preserving if the transformed variable maintains a uniform distribution, meaning that $T(u) \sim U(0,1)$ given $u \sim U(0,1)$. This specific functional mapping belongs to the broader mathematical category known as W-transforms, which can be used to introduce controlled asymmetry into the dependency models. A more rigorous theoretical analysis of the W-transform class and its statistical properties can be found in [[8]](#references). Figure 2 provides an illustration of this technique in practice, clearly demonstrating how the application of W-transform functions successfully injects structural asymmetry directly into the baseline copula. 
 
-![*Figure 2: A sample of scenarios from the original 2d Cauchy copula (left) and its W-transformed equivalent (right) .*](figures\w-transform.png)
+![*Figure 2: A sample of scenarios from the original 2d Cauchy copula (left) and its W-transformed equivalent (right).*](figures\w-transform.png)
 
 ## Literature review
 
@@ -207,7 +207,25 @@ As before the __Var__ class serves as an abstract base class, designed to establ
 
 * The __study_optimisationn_ts.ipynb__ notebook plots final timeseries for the weights and skew performing postprocessing of the results produced in the previous notebook. 
 
-# Testing and Evaluation 
+# Testing and Evaluation
+
+## Testing copulas generation
+
+xxx
+
+![*Figure 6: Uniform scenarios from various copulas: Gaussian(top left), Cauchy (top right), Mixed Gaussian/Cauchy (bottom left) and Skewed Cauchy (bottom right)*](figures\copulas_scenarios_comparison.png)
+
+![*Figure 7: Tail dependence for various copulas: Gaussian(top left), Cauchy (top right), Mixed Gaussian/Cauchy (bottom left) and Skewed Cauchy (bottom right).*](figures\copulas_tail_dep.png)
+
+## Testing Value-at-Risk calculation
+
+xxx
+
+## Testing optimisation
+
+xxx
+
+
 
 # Results/Findings and Discussion 
 

@@ -271,7 +271,13 @@ probabilities:</p>
 &amp; \text{when } u \le \theta \\ \frac{1-u}{1-\theta}, &amp;
 \text{when } u &gt; \theta \end{cases}$$</span></p>
 <p>This uniformity-preserving function is applied to each dimension of
-the copula independently. Formally, a transformation <span
+the copula independently. Because this rather than attempting to distort
+the entire joint distribution simultaneously, it effectively bypasses
+the exponential computational overhead often referred to as the curse of
+dimensionality. Ultimately, this elegant transformation ensures that the
+system can rapidly and reliably simulate complex, asymmetric tail risks
+across massive portfolios without sacrificing computational speed or
+performance. Formally, a transformation <span
 class="math inline"><em>T</em> : [0, 1] → [0, 1]</span> is defined as
 uniformity-preserving if the transformed variable maintains a uniform
 distribution, meaning that <span
@@ -287,10 +293,10 @@ demonstrating how the application of W-transform functions successfully
 injects structural asymmetry directly into the baseline copula.</p>
 <figure>
 <img src="figures\w-transform.png"
-alt="Figure 2: A sample of scenarios from the original 2d Cauchy copula (left) and its W-transformed equivalent (right) ." />
+alt="Figure 2: A sample of scenarios from the original 2d Cauchy copula (left) and its W-transformed equivalent (right)." />
 <figcaption aria-hidden="true"><em>Figure 2: A sample of scenarios from
 the original 2d Cauchy copula (left) and its W-transformed equivalent
-(right) .</em></figcaption>
+(right).</em></figcaption>
 </figure>
 <h2 id="literature-review">Literature review</h2>
 <p>The rapid advancement of generative Machine Learning techniques has
@@ -628,6 +634,23 @@ final timeseries for the weights and skew performing postprocessing of
 the results produced in the previous notebook.</p></li>
 </ul>
 <h1 id="testing-and-evaluation">Testing and Evaluation</h1>
+<h2 id="testing-copulas-generation">Testing copulas generation</h2>
+<p>xxx</p>
+<figure>
+<img src="figures\copulas_scenarios_comparison.png"
+alt="Figure 6: Uniform scenarios from various copulas: Gaussian(top left), Cauchy (top right), Mixed Gaussian/Cauchy (bottom left) and Skewed Cauchy (bottom right)" />
+<figcaption aria-hidden="true"><em>Figure 6: Uniform scenarios from
+various copulas: Gaussian(top left), Cauchy (top right), Mixed
+Gaussian/Cauchy (bottom left) and Skewed Cauchy (bottom
+right)</em></figcaption>
+</figure>
+<figure>
+<img src="figures\copulas_tail_dep.png"
+alt="Figure 7: Tail dependence for various copulas: Gaussian(top left), Cauchy (top right), Mixed Gaussian/Cauchy (bottom left) and Skewed Cauchy (bottom right)." />
+<figcaption aria-hidden="true"><em>Figure 7: Tail dependence for various
+copulas: Gaussian(top left), Cauchy (top right), Mixed Gaussian/Cauchy
+(bottom left) and Skewed Cauchy (bottom right).</em></figcaption>
+</figure>
 <h1 id="resultsfindings-and-discussion">Results/Findings and
 Discussion</h1>
 <h1
