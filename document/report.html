@@ -290,7 +290,13 @@ theoretical analysis of the W-transform class and its statistical
 properties can be found in <a href="#references">[8]</a>. Figure 2
 provides an illustration of this technique in practice, clearly
 demonstrating how the application of W-transform functions successfully
-injects structural asymmetry directly into the baseline copula.</p>
+injects structural asymmetry directly into the baseline copula. It is
+also important to mention another important property of the proposed
+transformation, if <span
+class="math inline"><em>t</em><em>h</em><em>e</em><em>t</em><em>a</em></span>
+parameter is close to one it has negligible impact on the overall
+correlation but still introduces required asymmetry at the extreme
+tails.</p>
 <figure>
 <img src="figures\w-transform.png"
 alt="Figure 2: A sample of scenarios from the original 2d Cauchy copula (left) and its W-transformed equivalent (right)." />
@@ -635,7 +641,39 @@ the results produced in the previous notebook.</p></li>
 </ul>
 <h1 id="testing-and-evaluation">Testing and Evaluation</h1>
 <h2 id="testing-copulas-generation">Testing copulas generation</h2>
-<p>xxx</p>
+<p>To validate the computational implementation of the copula models, we
+conduct a specialized two-dimensional simulation focused on the stock
+returns of Apple and Microsoft as of 31 December 2025. This bivariate
+approach is selected because it permits a clear, intuitive visual
+analysis of the underlying dependency structures before scaling to
+higher dimensions. The accompanying figure below presents 10,000 uniform
+scenarios generated across four distinct copulas. Crucially, to ensure a
+valid and strictly controlled comparison, every model in this simulation
+is calibrated using the exact same set of input information (comprising
+one year of historical observations), has almost identical Pearson
+correlation coefficient. The visualization is organized into four
+distinct panels to highlight the behavioral characteristics of each
+dependency structure. The top-left quadrant displays the standard
+Gaussian copula, which establishes a baseline of symmetric, light-tailed
+dependence typical of normal market conditions. In contrast, the
+top-right quadrant features the Cauchy copula, clearly demonstrating
+significantly heavier tails and an alternative diagonal for
+de-correlation scenarios. The bottom-left panel illustrates a composite
+model that equally blends the Gaussian and Cauchy copulas with a 50%
+weight assigned to each. Finally, the bottom-right quadrant presents the
+Skewed Cauchy copula configured with a 95% skew coefficient. This
+configuration introduces the critical left-tail asymmetry discussed
+previously, providing clear visual confirmation of the model’s ability
+to simulate realistic, highly correlated market downturns. By
+strategically shifting the probability mass, the copula effectively
+captures the severe, synchronized crashes that characterize genuine
+financial crises, where asset prices tend to collapse simultaneously.
+Equally important is the model’s treatment of positive market movements,
+the transformation ensures a light-tailed structure throughout the
+growth region. This dual-sided approach ensures that while the system
+correctly anticipates correlated losses, it avoids the common pitfall of
+erroneously simulating symmetrically extreme, simultaneous market
+booms.</p>
 <figure>
 <img src="figures\copulas_scenarios_comparison.png"
 alt="Figure 6: Uniform scenarios from various copulas: Gaussian(top left), Cauchy (top right), Mixed Gaussian/Cauchy (bottom left) and Skewed Cauchy (bottom right)" />
@@ -644,6 +682,25 @@ various copulas: Gaussian(top left), Cauchy (top right), Mixed
 Gaussian/Cauchy (bottom left) and Skewed Cauchy (bottom
 right)</em></figcaption>
 </figure>
+<p>To provide further empirical support for the rationale outlined
+above, we graphically analyse the tail dependence coefficients (see
+definition in <a href="#copulas-in-value-at-risk">section 3</a>) across
+a wide range of probability percentiles for each of the evaluated copula
+models:</p>
+<ul>
+<li>Gaussian(top left);</li>
+<li>Cauchy (top right);</li>
+<li>Mixed Gaussian/Cauchy (bottom left), with 50% weight each;</li>
+<li>Skewed Cauchy (bottom right), with skew coefficient of 95%.</li>
+</ul>
+<p>By plotting these coefficients, we can visually quantify the exact
+degree to which extreme events are correlated within the distinct
+dependency structures. This visual analysis allows for a precise
+observation of how tail dependence dynamically evolves as the
+distribution extends further into the extreme regions. Ultimately,
+charting these metrics provides concrete mathematical evidence that
+highlights the profound structural differences between models and
+confirms correctness of the implementation.</p>
 <figure>
 <img src="figures\copulas_tail_dep.png"
 alt="Figure 7: Tail dependence for various copulas: Gaussian(top left), Cauchy (top right), Mixed Gaussian/Cauchy (bottom left) and Skewed Cauchy (bottom right)." />
@@ -651,6 +708,11 @@ alt="Figure 7: Tail dependence for various copulas: Gaussian(top left), Cauchy (
 copulas: Gaussian(top left), Cauchy (top right), Mixed Gaussian/Cauchy
 (bottom left) and Skewed Cauchy (bottom right).</em></figcaption>
 </figure>
+<h2 id="testing-value-at-risk-calculation">Testing Value-at-Risk
+calculation</h2>
+<p>xxx</p>
+<h2 id="testing-optimisation">Testing optimisation</h2>
+<p>xxx</p>
 <h1 id="resultsfindings-and-discussion">Results/Findings and
 Discussion</h1>
 <h1
