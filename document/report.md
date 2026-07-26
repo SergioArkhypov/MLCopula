@@ -225,6 +225,14 @@ By plotting these coefficients, we can visually quantify the exact degree to whi
 
 ![*Figure 7: Tail dependence for various copulas: Gaussian(top left), Cauchy (top right), Mixed Gaussian/Cauchy (bottom left) and Skewed Cauchy (bottom right).*](figures\copulas_tail_dep.png)
 
+Beyond the primary models previously discussed, the analysis must also consider two crucial theoretical boundary cases: the independent copula and the comonotonicity copula. Integrating these theoretical copulas is beneficial as it provides an additional support for the implementation of a sophisticated mixture copula and allows studying extremes. The independent copula models a scenario of absolute zero dependence between variables, reflecting a state of complete market decoupling. Conversely, the comonotonicity copula represents perfect positive dependence, illustrating an extreme environment where all prices move in exact synchronization.  By purposefully blending these boundary conditions with standard dependency structures, the system can account for rare but highly impactful shifts in market regimes.
+
+To practically demonstrate this concept, the current implementation constructs a complex composite mixture that aggregates the Gaussian, Cauchy, independent, and comonotonicity copulas using assigned weights of 50%, 40%, 5%, and 5%, respectively. Inclusion of the minor 5% weights for the independent and comonotonicity copulas ensures that the model reserves a small but vital probability for edge-case scenarios, specifically: moments of total market fragmentation or periods of absolute systemic lockstep during a severe crisis. Use of minor 5% weights also ensures very limited impact on the total Person correlation. 
+
+![*Figure 8: Uniform scenarios from composite mixture copula: the Gaussian (50%), Cauchy (40%), independent (5%) and comonotonicity (5%)*](figures\Uniform_scenarios_Mixture_copula_g0.5,c0.4,u0.05,i0.05.png)
+
+
+
 ## Testing Value-at-Risk calculation
 
 xxx
