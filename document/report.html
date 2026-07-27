@@ -729,7 +729,12 @@ reserves a small but vital probability for edge-case scenarios,
 specifically: moments of total market fragmentation or periods of
 absolute systemic lockstep during a severe crisis. Use of minor 5%
 weights also ensures very limited impact on the total Person
-correlation.</p>
+correlation. Both the independent and comonotonicity copulas can be
+implemented by leveraging the Gaussian copula with a specific
+correlation matrix input. In the case of the independent copula, the
+correlation matrix is constructed such that all elements are zero.
+Conversely, the comonotonicity case is achieved by setting all elements
+of the correlation matrix to one.</p>
 <figure>
 <img
 src="figures\Uniform_scenarios_Mixture_copula_g0.5,c0.4,u0.05,i0.05.png"
@@ -740,7 +745,42 @@ composite mixture copula: the Gaussian (50%), Cauchy (40%), independent
 </figure>
 <h2 id="testing-value-at-risk-calculation">Testing Value-at-Risk
 calculation</h2>
-<p>xxx</p>
+<p>In this section, we validate our MC VaR framework by testing how
+different copula-based dependency structures impact risk estimates at
+different percentiles. Our methodology involves computing monthly
+figures for the period spanning from 2020 to 2025, with each value being
+driven by the preceding twelve months of market data to which it is
+calibrated. To test the robustness of the implementation, we apply this
+process to three specific portfolio configurations. The first is a
+long-only portfolio following the S&amp;P 500 index weights published in
+February 2026. The second test case consists of a mirror-image short
+portfolio, which maintains the exact same weight distribution as the
+long-only portfolio but utilizes inverted signs for all position
+exposures. Finally, we implement a third “hedged” portfolio by randomly
+alternating the sign of the positions (long or short) for each stock,
+thereby creating a portfolio with a randomized, market-neutral
+exposure.</p>
+<p>The figure presented below shows the evolution of standard 99% VaR
+(which is commonly utilized for both internal risk management and
+regulatory capital calculation). It is calculated across the various
+copula models detailed in the preceding section, specifically including
+the Gaussian copula, the Cauchy copula, a mixture copula (with weights
+40%, 40%, 10%, 10%), and a Skewed Cauchy copula configured with a
+skewness parameter of 0.95. By comparing these models, one can observe
+how different dependency and tail assumptions significantly alter the
+resulting risk estimates. To provide an empirical baseline, the
+copula-based results are complemented by historical simulations and the
+parametric dependency structures modelled by the various copulas can be
+evaluated against the actual realised distributions found in the
+historical data. By comparing these two approaches, we can assess the
+extent to which different copula assumptions deviate from or align with
+observed market realities.</p>
+<figure>
+<img src="figures\Var_SP500_LongAll_990.png"
+alt="Figure 9: MOnthly 99% HVaR level and MC VaR levels with different copulas from 2020 to 2025" />
+<figcaption aria-hidden="true"><em>Figure 9: MOnthly 99% HVaR level and
+MC VaR levels with different copulas from 2020 to 2025</em></figcaption>
+</figure>
 <h2 id="testing-optimisation">Testing optimisation</h2>
 <p>xxx</p>
 <h1 id="resultsfindings-and-discussion">Results/Findings and
