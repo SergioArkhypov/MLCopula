@@ -236,7 +236,20 @@ In this section, we validate our MC VaR framework by testing how different copul
 
 The figure presented below shows the evolution of standard 99% VaR (which is commonly utilized for both internal risk management and regulatory capital calculation). It is calculated across the various copula models detailed in the preceding section, specifically including the Gaussian copula, the Cauchy copula, a mixture copula (with weights 40%, 40%, 10%, 10%), and a Skewed Cauchy copula configured with a skewness parameter of 0.95. By comparing these models, one can observe how different dependency and tail assumptions significantly alter the resulting risk estimates. To provide an empirical baseline, the copula-based results are complemented by historical simulations and the parametric dependency structures modelled by the various copulas can be evaluated against the actual realised distributions found in the historical data. By comparing these two approaches, we can assess the extent to which different copula assumptions deviate from or align with observed market realities.
 
-![*Figure 9: Monthly 99% HVaR level and MC VaR levels with different copulas from 2020 to 2025*](figures\Var_SP500_LongAll_990u.png)
+![*Figure 9: Monthly 99% HVaR level and MC VaR levels with different copulas from 2020 to 2025 (all long portfolio)*](figures\Var_SP500_LongAll_990u.png)
+
+An analysis of the time series data reveals three pronounced humps consistently present across all evaluated VaR methodologies. The synchronised appearance of these elevated risk levels provides some empirical validation for the correctness of the model's computational implementation, as they accurately reflect the underlying market dynamics during known periods of severe macroeconomic instability. Specifically, these spikes in the VaR estimates directly correspond to major systemic shocks that occurred within the analysed timeframe: the unprecedented global market volatility triggered by the onset of the COVID-19 pandemic, the profound geopolitical turbulence and subsequent commodity crisis stemming from the war in Ukraine, and the sharp economic disruptions caused by the aggressive tariff regimes introduced following "Liberation" day.
+
+The Historical VaR (HVaR) metric generated exceptionally high value during the onset of the COVID-19 pandemic. However, these extreme peaks are likely overstated due to the methodological limitations of HVaR discussed in [section 3](#value-at-risk-var-and-expected-shortfall-es) — most notably its over-reliance on a sparse number of discrete, severe empirical observations without the benefit of structured tail smoothing. Among the parametric MC VaR approaches evaluated, only the framework utilising the Skewed Cauchy copula reaches comparable magnitudes of 99% percentile during these highly volatile periods. By mathematically incorporating left-tail asymmetry and heavy downside dependencies, the Skewed Cauchy model consistently produces the most conservative VaR estimates. In contrast, and perfectly aligning with theoretical expectations, the standard Gaussian copula persistently generates the lowest risk figures across the observation window. This chronic underestimation is a direct consequence of the Gaussian model's thin-tailed structure and inherent asymptotic independence, which severely restrict its capacity to properly account for the severe, synchronised asset collapses characteristic of genuine market crises.
+
+To ensure a comprehensive evaluation we provide our analysis of 99% VaR estimates also for a market-neutral hedged portfolio and a strictly short portfolio. By examining these distinct structural configurations, we can rigorously test the robustness and versatility of the various copula methodologies across fundamentally different directional exposures and trading strategies. Furthermore supplementary figures with additional percentiles are detailed in [Appendix C](#appendix-c-analysis-of-different-var-methodologies-from-2020-to-2025), offering readers a deeper, more granular insight into the tail risk dynamics under varying market conditions.
+
+
+![*Figure 10: Monthly 99% HVaR level and MC VaR levels with different copulas from 2020 to 2025 (all short portfolio)*](figures\Var_SP500_ShortAll_990.png)
+
+
+![*Figure 11: Monthly 99% HVaR level and MC VaR levels with different copulas from 2020 to 2025 (hedged portfolio)*](figures\Var_SP500_Hedged_990u.png)
+
 
 ## Testing optimisation
 
@@ -290,7 +303,10 @@ xxx
 
 ![Figure A.4: Contour plot for Cauchy copula, numerical simulation.](figures\Contour_plot_Cauchy_copula_(numerical_simulation).png)
 
-## Appendix C: Code listing
+
+## Appendix C: Analysis of different VaR methodologies from 2020 to 2025
+
+## Appendix D: Code listing
 
 
 
