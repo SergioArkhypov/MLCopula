@@ -236,7 +236,7 @@ In this section, we validate our MC VaR framework by testing how different copul
 
 The figure presented below shows the evolution of standard 99% VaR (which is commonly utilized for both internal risk management and regulatory capital calculation). It is calculated across the various copula models detailed in the preceding section, specifically including the Gaussian copula, the Cauchy copula, a mixture copula (with weights 40%, 40%, 10%, 10%), and a Skewed Cauchy copula configured with a skewness parameter of 0.95. By comparing these models, one can observe how different dependency and tail assumptions significantly alter the resulting risk estimates. To provide an empirical baseline, the copula-based results are complemented by historical simulations and the parametric dependency structures modelled by the various copulas can be evaluated against the actual realised distributions found in the historical data. By comparing these two approaches, we can assess the extent to which different copula assumptions deviate from or align with observed market realities.
 
-![*Figure 9: Monthly 99% HVaR level and MC VaR levels with different copulas from 2020 to 2025*](figures\Var_SP500_LongAll_990.png)
+![*Figure 9: Monthly 99% HVaR level and MC VaR levels with different copulas from 2020 to 2025*](figures\Var_SP500_LongAll_990u.png)
 
 ## Testing optimisation
 
