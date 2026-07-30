@@ -246,6 +246,9 @@ To ensure a comprehensive evaluation we provide our analysis of 99% VaR estimate
 
 ![*Figure 10: Monthly 99% HVaR level and MC VaR levels with different copulas from 2020 to 2025 - all short (left) and hedged (right)*](figures\Var_SP500_ShortAll_Hedged_990.png)
 
+During the testing of the composite dependency structures, the framework was further expanded to incorporate both independent and comonotonicity copulas into the overarching mixture blend. As illustrated in the accompanying figure 11 below, the independent copula serves as an effective mechanism for generating de-correlation scenarios, offering a structural alternative to the the Cauchy copula. By purposefully injecting instances of absolute zero dependence into the simulation, the model can realistically replicate idiosyncratic shocks or severe market breakdowns where historical asset linkages abruptly dissolve. It is noteworthy that whe this mixture copula is applied to the market-neutral hedged portfolio, it yields the most conservative 99% Value-at-Risk (VaR) estimates among all the evaluated methodologies. This is a direct consequence of the model's design: the deliberate inclusion of de-correlation and perfect synchronization events severely disrupts the assumed offsetting positions that a hedged strategy relies upon. By simulating these hedge breakdowns, the mixture copula could expose the portfolio's hidden vulnerabilities to sudden shifts in underlying correlation structures, thereby providing a rigorous and prudent tool for stress-testing and capital planning.
+
+![*Figure 11: Monthly 99% HVaR level and MC VaR levels with different copulas from 2020 to 2025 - all long (left) and hedged (right)*](figures\Var_SP500_LongAll_Hedged_990u.png)
 
 ## Testing optimisation
 
