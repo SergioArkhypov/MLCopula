@@ -244,11 +244,7 @@ The Historical VaR (HVaR) metric generated exceptionally high value during the o
 
 To ensure a comprehensive evaluation we provide our analysis of 99% VaR estimates also for a market-neutral hedged portfolio and a strictly short portfolio. By examining these distinct structural configurations, we can rigorously test the robustness and versatility of the various copula methodologies across fundamentally different directional exposures and trading strategies. Furthermore supplementary figures with additional percentiles are detailed in [Appendix C](#appendix-c-analysis-of-different-var-methodologies-from-2020-to-2025), offering readers a deeper, more granular insight into the tail risk dynamics under varying market conditions.
 
-
-![*Figure 10: Monthly 99% HVaR level and MC VaR levels with different copulas from 2020 to 2025 (all short portfolio)*](figures\Var_SP500_ShortAll_990.png)
-
-
-![*Figure 11: Monthly 99% HVaR level and MC VaR levels with different copulas from 2020 to 2025 (hedged portfolio)*](figures\Var_SP500_Hedged_990u.png)
+![*Figure 10: Monthly 99% HVaR level and MC VaR levels with different copulas from 2020 to 2025 - all short (left) and hedged (right)*](figures\Var_SP500_ShortAll_Hedged_990.png)
 
 
 ## Testing optimisation
