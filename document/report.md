@@ -242,7 +242,7 @@ An analysis of the time series data reveals three pronounced humps consistently 
 
 The Historical VaR (HVaR) metric generated exceptionally high value during the onset of the COVID-19 pandemic. However, these extreme peaks are likely overstated due to the methodological limitations of HVaR discussed in [section 3](#value-at-risk-var-and-expected-shortfall-es) — most notably its over-reliance on a sparse number of discrete, severe empirical observations without the benefit of structured tail smoothing. Among the parametric MC VaR approaches evaluated, only the framework utilising the Skewed Cauchy copula reaches comparable magnitudes of 99% percentile during these highly volatile periods. By mathematically incorporating left-tail asymmetry and heavy downside dependencies, the Skewed Cauchy model consistently produces the most conservative VaR estimates. In contrast, and perfectly aligning with theoretical expectations, the standard Gaussian copula persistently generates the lowest risk figures across the observation window. This chronic underestimation is a direct consequence of the Gaussian model's thin-tailed structure and inherent asymptotic independence, which severely restrict its capacity to properly account for the severe, synchronised asset collapses characteristic of genuine market crises.
 
-To ensure a comprehensive evaluation we provide our analysis of 99% VaR estimates also for a market-neutral hedged portfolio and a strictly short portfolio. By examining these distinct structural configurations, we can rigorously test the robustness and versatility of the various copula methodologies across fundamentally different directional exposures and trading strategies. Furthermore supplementary figures with additional percentiles are detailed in [Appendix C](#appendix-c-analysis-of-different-var-methodologies-from-2020-to-2025), offering readers a deeper, more granular insight into the tail risk dynamics under varying market conditions.
+To ensure a comprehensive evaluation we provide our analysis of 99% VaR estimates also for a market-neutral hedged portfolio and a strictly short portfolio. By examining these distinct structural configurations, we can rigorously test the robustness and versatility of the various copula methodologies across fundamentally different directional exposures and trading strategies. Furthermore supplementary figures with additional percentiles are detailed in [Appendix C](#appendix-c-analysis-of-different-var-methodologiespercentiles), offering readers a deeper, more granular insight into the tail risk dynamics under varying market conditions.
 
 ![*Figure 10: Monthly 99% HVaR level and MC VaR levels with different copulas from 2020 to 2025 - all short (left) and hedged (right)*](figures\Var_SP500_ShortAll_Hedged_990.png)
 
@@ -324,7 +324,7 @@ Beyond these algorithmic refinements, several critical analytical expansions rem
 ![Figure A.4: Contour plot for Cauchy copula, numerical simulation.](figures\Contour_plot_Cauchy_copula_(numerical_simulation).png)
 
 
-## Appendix C: Analysis of different VaR methodologies from 2020 to 2025 for different percentiles
+## Appendix C: Analysis of different VaR methodologies/percentiles
 
 ![Figure A.5: Monthly 90% HVaR level and MC VaR levels with different copulas from 2020 to 2025 all long S&P 500 portfolio](figures\Var_SP500_LongAll_900u.png)
 
