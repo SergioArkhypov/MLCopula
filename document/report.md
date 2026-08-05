@@ -324,9 +324,16 @@ Beyond these algorithmic refinements, several critical analytical expansions rem
 ![Figure A.4: Contour plot for Cauchy copula, numerical simulation.](figures\Contour_plot_Cauchy_copula_(numerical_simulation).png)
 
 
-## Appendix C: Analysis of different VaR methodologies from 2020 to 2025
+## Appendix C: Analysis of different VaR methodologies from 2020 to 2025 for different percentiles
 
-## Appendix D: Code listing
+![Figure A.5: Monthly 90% HVaR level and MC VaR levels with different copulas from 2020 to 2025 all long S&P 500 portfolio](figures\Var_SP500_LongAll_900u.png)
+
+![Figure A.6: Monthly 90% HVaR level and MC VaR levels with different copulas from 2020 to 2025 hedged portfolio](figures\Var_SP500_Hedged_900u.png)
+
+
+![Figure A.7: Monthly 99.5% HVaR level and MC VaR levels with different copulas from 2020 to 2025 all long S&P 500 portfolio](figures\Var_SP500_LongAll_995u.png)
+
+![Figure A.8: Monthly 99.5% HVaR level and MC VaR levels with different copulas from 2020 to 2025 hedged portfolio](figures\Var_SP500_Hedged_995u.png)
 
 
 
