@@ -480,27 +480,27 @@ pre-processing to calculate log-returns, segmented into the chunks of
 dedicated length.</p>
 <h2 id="joint-simulation">Joint simulation</h2>
 <p>The <strong>JointSim</strong> class serves as an abstract base class
-specifically designed to provide a standardized framework for all copula
+specifically designed to provide a standardised framework for all copula
 implementations within the project. By defining a list of virtual
 functions, it enforces a consistent interface that all descendant
 classes must implement to ensure architectural integrity. Beyond that,
 the class centralizes the core analytical logic required for
 investigations, including the automated plotting of all simulations,
-resulting contour plots and tail coefficients. This centralized approach
+resulting contour plots and tail coefficients. This centralised approach
 ensures that common statistical visualisations and diagnostic tools are
 applied uniformly across all models. The current project has integrated
 several specific copula models into its framework:</p>
 <ul>
 <li>The <strong>HistSimulation</strong> class implements a historical
 simulation approach, which generates data by returning a sample of
-normalized observations derived directly from actual historical time
+normalised observations derived directly from actual historical time
 series. Rather than assuming an underlying parametric distribution, this
 method relies on the empirical distribution of the observed data.</li>
 <li>The <strong>GaussCopulaCorr</strong> class implements the Gaussian
 copula model by utilizing a specified correlation matrix as its primary
 input. To perform simulations, the class employs classical sampling
 techniques derived from a multivariate normal distribution. This process
-leverages the highly optimized multivariate_normal implementation
+leverages the highly optimised multivariate_normal implementation
 provided by the NumPy library.</li>
 <li>The <strong>GaussCopulaNum</strong> class provides an alternative
 implementation of the Gaussian copula designed specifically for
@@ -559,7 +559,7 @@ behaviours simultaneously, in addition to the alternative diagonal
 </ul>
 <h2 id="value-at-risk-calculation">Value-at-Risk calculation</h2>
 <p>As before the <strong>Var</strong> class serves as an abstract base
-class, designed to establish a standardized, cohesive framework for
+class, designed to establish a standardised, cohesive framework for
 Value-at-Risk (VaR) calculations. This foundational class integrates the
 core computational components of the risk model by combining the
 portfolio definition, the underlying copula specification, and the
@@ -616,7 +616,7 @@ this parameter represents a standard, symmetric Cauchy copula. However,
 when decreased, the model introduces a pronounced negative skew into the
 distribution. This adjustment intentionally generates a higher frequency
 of simulated scenarios corresponding to severe market downturns and
-localized company defaults, rather than assuming symmetrical extreme
+localised company defaults, rather than assuming symmetrical extreme
 growth. Implementing this asymmetry is crucial for accurately reflecting
 the behavior of real-world equity markets, which characteristically
 exhibit heavy left tails and are historically far more prone to sudden,
@@ -641,7 +641,7 @@ the results produced in the previous notebook.</p></li>
 <h1 id="testing-and-evaluation">Testing and Evaluation</h1>
 <h2 id="testing-copulas-generation">Testing copulas generation</h2>
 <p>To validate the computational implementation of the copula models, we
-conduct a specialized two-dimensional simulation focused on the stock
+conduct a specialised two-dimensional simulation focused on the stock
 returns of Apple and Microsoft as of 31 December 2025. This bivariate
 approach is selected because it permits a clear, intuitive visual
 analysis of the underlying dependency structures before scaling to
@@ -650,7 +650,7 @@ scenarios generated across four distinct copulas. Crucially, to ensure a
 valid and strictly controlled comparison, every model in this simulation
 is calibrated using the exact same set of input information (comprising
 one year of historical observations), has almost identical Pearson
-correlation coefficient. The visualization is organized into four
+correlation coefficient. The visualisation is organised into four
 distinct panels to highlight the behavioral characteristics of each
 dependency structure. The top-left quadrant displays the standard
 Gaussian copula, which establishes a baseline of symmetric, light-tailed
@@ -665,7 +665,7 @@ configuration introduces the critical left-tail asymmetry discussed
 previously, providing clear visual confirmation of the model’s ability
 to simulate realistic, highly correlated market downturns. By
 strategically shifting the probability mass, the copula effectively
-captures the severe, synchronized crashes that characterize genuine
+captures the severe, synchronised crashes that characterize genuine
 financial crises, where asset prices tend to collapse simultaneously.
 Equally important is the model’s treatment of positive market movements,
 the transformation ensures a light-tailed structure throughout the
@@ -716,7 +716,7 @@ extremes. The independent copula models a scenario of absolute zero
 dependence between variables, reflecting a state of complete market
 decoupling. Conversely, the comonotonicity copula represents perfect
 positive dependence, illustrating an extreme environment where all
-prices move in exact synchronization. By purposefully blending these
+prices move in exact synchronisation. By purposefully blending these
 boundary conditions with standard dependency structures, the system can
 account for rare but highly impactful shifts in market regimes.</p>
 <p>To practically demonstrate this concept, the current implementation
@@ -757,10 +757,10 @@ portfolio, which maintains the exact same weight distribution as the
 long-only portfolio but utilizes inverted signs for all position
 exposures. Finally, we implement a third “hedged” portfolio by randomly
 alternating the sign of the positions (long or short) for each stock,
-thereby creating a portfolio with a randomized, market-neutral
+thereby creating a portfolio with a randomised, market-neutral
 exposure.</p>
 <p>The figure presented below shows the evolution of standard 99% VaR
-(which is commonly utilized for both internal risk management and
+(which is commonly utilised for both internal risk management and
 regulatory capital calculation). It is calculated across the various
 copula models detailed in the preceding section, specifically including
 the Gaussian copula, the Cauchy copula, a mixture copula (with weights
@@ -844,7 +844,7 @@ dissolve. It is noteworthy that whe this mixture copula is applied to
 the market-neutral hedged portfolio, it yields the most conservative 99%
 Value-at-Risk (VaR) estimates among all the evaluated methodologies.
 This is a direct consequence of the model’s design: the deliberate
-inclusion of de-correlation and perfect synchronization events severely
+inclusion of de-correlation and perfect synchronisation events severely
 disrupts the assumed offsetting positions that a hedged strategy relies
 upon. By simulating these hedge breakdowns, the mixture copula could
 expose the portfolio’s hidden vulnerabilities to sudden shifts in
@@ -870,12 +870,12 @@ hypothesised that incorporating a Skewed Cauchy copula would better
 capture the severe downside risks and asymmetric tail dependencies
 characteristic for such crisis, thereby substantially reducing the
 calibration error. VaR calculation is a computationally expensive and
-noisy procedure, attempting a simultaneous two-dimensional optimization
+noisy procedure, attempting a simultaneous two-dimensional optimisation
 across both the weight and skewness parameters proved unstable. To
 ensure robust and reliable convergence, the methodology was refined into
-a systematic one-dimensional optimization strategy. Under this approach,
-the copula weight was dynamically optimized while the skewness parameter
-was strictly discretized, iterating from 90% to 100% in fixed 1%
+a systematic one-dimensional optimisation strategy. Under this approach,
+the copula weight was dynamically optimised while the skewness parameter
+was strictly discretised, iterating from 90% to 100% in fixed 1%
 increments, allowing the system to isolate the absolute best-performing
 configuration. The subsequent figure illustrates the outcomes of this
 targeted calibration over the period spanning from 2020 to 2025. The
@@ -883,7 +883,7 @@ objective function was designed to minimize the deviation between the
 simulated model estimates and the empirical Historical VaR values across
 four confidence intervals: the 75th, 90th, 99th, and 99.5th percentiles.
 To execute this complex, derivative-free search efficiently, the system
-employed Bayesian optimization utilizing Gaussian Processes.
+employed Bayesian optimisation utilizing Gaussian Processes.
 Specifically, the implementation relied on the skopt package and was
 constrained to 40 objective function calls to perfectly balance
 computational efficiency with accurate parameter discovery (for further
@@ -925,7 +925,7 @@ historical window initiating the dataset from 2006. Because processing
 nearly two decades of high-dimensional financial data introduces
 substantial computational overhead, maintaining a tractable execution
 time for the algorithm became a practical necessity. Consequently, the
-optimization constraints were adjusted, systematically reducing the
+optimisation constraints were adjusted, systematically reducing the
 maximum number of objective function evaluations to 15 per calibration
 cycle. Despite this forced reduction in computational depth, the
 accompanying figure clearly demonstrates that the fundamental dynamics
@@ -936,12 +936,12 @@ systematically surges whenever the market enters periods of
 macroeconomic distress. Conversely, the time series trajectory for the
 skewness parameter exhibits a higher degree of statistical noise over
 this prolonged period. This heightened variance is likely a direct
-consequence of the restricted number of optimization iterations, which
+consequence of the restricted number of optimisation iterations, which
 occasionally prevents the algorithm from reaching absolute convergence.
 Yet, even with this increased volatility in the parameter estimates, a
 meaningful signal remains intact. Clear, distinct drops in the skewness
 coefficient are still observable at the immediate onset of major stress
-events (highlighted in the visualization by the grey-shaded backgrounds)
+events (highlighted in the visualisation by the grey-shaded backgrounds)
 further reaffirming the model’s capacity to adapt to sudden left-tail
 asymmetries during the initial stages of a market shock.</p>
 <figure>
@@ -971,7 +971,7 @@ stability and reliability of the proposed architecture. It conclusively
 demonstrates that the model’s capacity to accurately capture severe,
 asymmetric market shocks is a robust feature of the dependency structure
 itself, rather than a mere statistical artifact of the chosen
-optimization engine.</p>
+optimisation engine.</p>
 <figure>
 <img src="figures\optim\OptimisationResultsMethod_doc.png"
 alt="Figure 14: Calibrated timeseries for Cauchy copula weight and skew from 2006 to 2025 with sequential optimisation using gradient boosted trees (left) and sequential optimisation using decision trees (right)" />
@@ -989,7 +989,7 @@ the 75th, 90th, 99th, and 99.5th percentiles. Conversely, the right
 panel isolates the calibration entirely on the extreme tail, focusing
 the objective function exclusively on the severe 99.5th percentile.
 These targeted analyses were executed exclusively utilising Bayesian
-optimization driven by Gaussian processes. The empirical results yield a
+optimisation driven by Gaussian processes. The empirical results yield a
 particularly compelling observation regarding the structural dynamics of
 the hedged portfolio: during periods of the market crisis, the
 calibrated weight of the heavy-tailed Cauchy copula behaves inversely to
