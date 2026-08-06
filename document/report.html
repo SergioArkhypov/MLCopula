@@ -473,12 +473,11 @@ we start with the portfolio information provided as an input.
 Subsequently, we access historical stock price data from Yahoo Finance
 API, according to the specified timeframe duration. The existing
 implementation, presented within the ‘Market’ class in the ‘market.py’
-file (see listing in <a href="#appendix-c-code-listing">Appendix</a>),
-performs storing of all retrieved data in a locally saved CSV file for
-the reference in case multiple runs be necessary. After the gathering
-stage of all required timeseries, they undergo pre-processing to
-calculate log-returns, segmented into the chunks of dedicated
-length.</p>
+file (see Figure 5), performs storing of all retrieved data in a locally
+saved CSV file for the reference in case multiple runs be necessary.
+After the gathering stage of all required timeseries, they undergo
+pre-processing to calculate log-returns, segmented into the chunks of
+dedicated length.</p>
 <h2 id="joint-simulation">Joint simulation</h2>
 <p>The <strong>JointSim</strong> class serves as an abstract base class
 specifically designed to provide a standardized framework for all copula
@@ -1039,6 +1038,29 @@ measurement by empowering practitioners to actively construct and
 evaluate realistic, extreme stress scenarios alongside with the setting
 up a reverse stress testing framework. We will elaborate on both points
 in the next section.</p>
+<p>While the proposed framework could successfully captures complex
+joint dependencies, the empirical evaluation within this study relies on
+several structural simplifications that warrant critical acknowledgment.
+The current implementation maps the simulated uniform copula outputs to
+empirical marginal distributions utilising a standard log-normal
+assumption for equity returns. Although the skewed Cauchy component
+could inject heavy-tailed dependence and structural asymmetry into the
+joint distribution, forcing the individual marginals into a log-normal
+framework inherently restricts the severity of idiosyncratic shocks.
+Future iterations could seamlessly resolve this limitation by pairing
+the advanced mixture copula structure with Extreme Value Theory (EVT)
+for the marginal distributions, ensuring that both the overarching
+dependency structure and the individual asset behaviors reflect
+authentic crisis dynamics. Also the data acquisition architecture
+introduces potential survivorship bias, as delisted equities are often
+excluded from standard historical market extracts. Additionally, strict
+computational constraints necessitated a significant reduction in
+optimisation iterations, when scaling the calibration across a
+two-decade historical window. While the optimisation engine demonstrated
+remarkable directional stability under these constraints, the resulting
+statistical noise in the skewness parameter underscores the pressing
+need to transition toward more scalable, neural-network-driven
+calibration methodologies in subsequent research.</p>
 <h1
 id="conclusionrecommendationsfuture-work">Conclusion/Recommendations/Future
 Work</h1>
@@ -1097,23 +1119,29 @@ deterioration of market dependencies before severe structural breaks
 fully materialise, risk managers would be equipped with a
 forward-looking mechanism to anticipate and preemptively navigate
 systemic crises.</p>
-<p>Beyond these algorithmic refinements, several critical analytical
-expansions remain necessary to fully realise the comprehensively
-envisioned scope of this research. Due to strict time constraints, the
-current empirical study focused exclusively on Value-at-Risk metrics;
-however, repeating this analysis using Expected Shortfall could provide
-additional insights, as this measure provides a mathematically superior
+<p>Beyond these algorithmic refinements, several analytical expansions
+remain necessary to fully realise the comprehensively envisioned scope
+of this research. Due to strict time constraints, the current empirical
+study focused exclusively on Value-at-Risk metrics; however, repeating
+this analysis using Expected Shortfall could provide additional
+insights, as this measure provides a mathematically superior
 representation of the average losses incurred deep within the extreme
-tail. Additionally, while the theoretical capacity for high
-dimensionality has been established, future work must supply concrete,
-empirical evidence quantifying the model’s computational scalability
-when processing hundreds of distinct underlying assets simultaneously.
-Finally, the practical application of this framework must be formally
-extended into advanced risk management protocols, specifically detailing
-how these dynamically calibrated copulas can be utilised to construct
-targeted stress tests and execute sophisticated reverse stress testing
-scenarios to systematically uncover hidden portfolio
-vulnerabilities.</p>
+tail. Furthermore, to maximize the accuracy of these tail risk
+measurements, future research should integrate Extreme Value Theory
+(EVT) to construct the individual marginal distributions. Coupling
+robust EVT marginals with the dynamically calibrated mixture copulas
+would ensure that both the overarching market dependency structure and
+the idiosyncratic tail risks of individual assets are realistically
+captured during severe shocks. Additionally, while the theoretical
+capacity for high dimensionality has been established, future work must
+supply concrete, empirical evidence quantifying the model’s
+computational scalability when processing hundreds of distinct
+underlying assets simultaneously. Finally, the practical application of
+this framework must be formally extended into advanced risk management
+protocols, specifically detailing how these dynamically calibrated
+copulas can be utilised to construct targeted stress tests and execute
+sophisticated reverse stress testing scenarios to systematically uncover
+hidden portfolio vulnerabilities.</p>
 <p>Beyond risk measurement and stress testing, a promising domain for
 the application of this framework is the field of credit derivative
 pricing, specifically within correlation trading portfolios. These
@@ -1212,7 +1240,6 @@ alt="Figure A.2: Contour plot for Gaussian copula, numerical simulation." />
 <figcaption aria-hidden="true">Figure A.2: Contour plot for Gaussian
 copula, numerical simulation.</figcaption>
 </figure>
-<hr />
 <p><strong>Cauchy copula.</strong></p>
 <figure>
 <img
