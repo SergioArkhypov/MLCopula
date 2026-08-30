@@ -57,20 +57,15 @@ class VarSim(Var):
 
     def calculate_pnls(self, numb_scen):
         joint_sim = self.copula.get_sims(numb_scen)
-        #joint_sim.to_csv(f'C:\\Temp\\joint_sim.csv')
-        #self.spot.to_csv(f'C:\\Temp\\spot.csv')
-        #joint_sim.to_csv(f'C:\\Temp\\sims.csv')
 
         joint_sim[joint_sim > 0.9999] = 0.9999
         joint_sim[joint_sim < 0.0001] = 0.0001
         joint_sim = joint_sim.fillna(0.5)
         print(f'=> min:{joint_sim.min().min()}, max:{joint_sim.max().max()}')
 
-        #todo: only log normal
         scen = pd.DataFrame(
             data=np.array([(np.exp(np.quantile(self.calibration[x], joint_sim[x], method=self.method))-1.0)*self.spot[x] for x in self.calibration.columns ]).T, 
             columns=self.calibration.columns)
-        #scen.to_csv(f'C:\\Temp\\scen.csv')
         print(f'Simulation stats, non nones count: {sum(list(scen.count()))}, needs {scen.size}')
         self.pnls = scen.dot(self.portfolio.T)
          

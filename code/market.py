@@ -46,7 +46,6 @@ class Market:
 
             market = pd.concat(market, axis=1)
             market = market.sort_index(ascending=True)
-             #TODO: implement other !!! current implementation fills missed values with previously available 
             market = market.ffill()
             market.to_csv(market_path)
             self.market = market
@@ -62,7 +61,6 @@ class Market:
 
         returns = np.log(1.0 + market.pct_change(fill_method = None)) 
         returns = returns.dropna(how='all')
-        returns = returns.fillna(0) #TODO: implement other !!!!
-        #returns.to_csv(f'C:\\Temp\\sp500-{selperiod}-{interval}.csv')
+        returns = returns.fillna(0)
         print(f'Market stats {cob_date_str}-{sub_period_years}Y, non nones count: {sum(list(returns.count()))}, needs {returns.size}')
         return returns
