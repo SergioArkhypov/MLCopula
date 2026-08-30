@@ -6,6 +6,15 @@ import os
 
 
 class Market:
+    """
+    To execute the complete workflow, we start with the portfolio information provided as an input.
+    Subsequently, we access historical stock price data from Yahoo Finance API, according to the 
+    specified timeframe duration. The implementation performs storing of all retrieved data in a
+    locally saved CSV file for the reference in case multiple runs be necessary. After the 
+    gathering stage of all required timeseries, they undergo pre-processing to calculate
+    log-returns, segmented into the chunks of dedicated length.
+    """
+
     def __init__(self, name, cob_date_str, ticker_list, period_years, interval, cache_path):
         self.ticker_list = ticker_list
         self.period_years = period_years

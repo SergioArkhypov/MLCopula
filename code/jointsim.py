@@ -6,6 +6,16 @@ import matplotlib.pyplot as plt
 
 
 class JointSim:
+    """
+    The class serves as an abstract base class specifically designed to provide a standardised 
+    framework for all copula implementations within the project. By defining a list of virtual 
+    functions, it enforces a consistent interface that all descendant classes must implement to 
+    ensure architectural integrity. Beyond that, the class centralizes the core analytical logic 
+    required for investigations, including the automated plotting of all simulations, resulting 
+    contour plots and tail coefficients. This centralised approach ensures that common statistical 
+    visualisations and diagnostic tools are applied uniformly across all models.
+    """
+
     def __init__(self, calib_data, rf_dir, seed=0):
         self.seed = seed
         np.random.seed(seed)
@@ -104,6 +114,13 @@ class JointSim:
 
 
 class GaussCopulaCorr(JointSim):
+    """ 
+    The class implements the Gaussian copula model by utilizing a specified correlation matrix 
+    as its primary input. To perform simulations, the class employs classical sampling techniques 
+    derived from a multivariate normal distribution. This process leverages the highly optimised 
+    multivariate_normal implementation provided by the NumPy library.
+    """
+
     def __init__(self, calib_data, rf_dir, seed=0):
         JointSim.__init__(self, calib_data, rf_dir, seed)
         self.name ='Gaussian copula (correlation based)'
@@ -128,6 +145,13 @@ class GaussCopulaCorr(JointSim):
 
 
 class HistSimulation(JointSim):
+    """
+    The class implements a historical simulation approach, which generates data by returning 
+    a sample of normalised observations derived directly from actual historical time series. 
+    Rather than assuming an underlying parametric distribution, this method relies on the 
+    empirical distribution of the observed data.
+    """
+
     def __init__(self, calib_data, rf_dir, seed=0):
         JointSim.__init__(self, calib_data, rf_dir, seed)
         self.name ='Historical simulation'
@@ -140,6 +164,16 @@ class HistSimulation(JointSim):
 
 
 class GaussCopulaNum(JointSim):
+    """
+    The class provides an alternative implementation of the Gaussian copula designed specifically 
+    for applications involving actual historical time series data. Unlike traditional approaches,
+    this implementation bypasses the potentially problematic process of calculating a formal 
+    correlation matrix from raw data. This design choice is intended to avoid the numerical 
+    instability and computational intensity often associated with such matrices, particularly 
+    the risk of generating a matrix that is not positive semi-definite. By avoiding this step, 
+    the class provides a more robust framework for working with empirical datasets where some 
+    irregularities might otherwise lead to mathematical errors.
+    """
     def __init__(self, calib_data, rf_dir, seed=0):
         JointSim.__init__(self, calib_data, rf_dir, seed)
         self.name = 'Gaussian copula (numerical simulation)'
@@ -157,6 +191,22 @@ class GaussCopulaNum(JointSim):
 
 
 class CauchyCopulaNum(JointSim):
+    """
+    The class implements a Cauchy copula, which can be viewed as a special case of the Student-T 
+    distribution with one degree of freedom. Much like the “GaussCopulaNum” implementation, this 
+    class is designed to accept actual historical time series as an input. This approach 
+    intentionally bypasses the computationally intensive and numerically sensitive task of 
+    calculating an explicit correlation matrix, thereby avoiding the common risk of encountering 
+    a matrix that is not positive semi-definite. Instead, the implementation is grounded in the 
+    properties of a standard multivariate Cauchy distribution with zero mean and unit scale, 
+    providing a robust method for modelling heavy-tailed dependencies without the instability of
+    traditional matrix estimation. An addition benefit of the Cauchy copula is the ability 
+    to produce an alternative diagonal and generate de-correlation scenarios. This capability is 
+    particularly valuable for stress-testing and risk management, as it enables the simulation 
+    of scenarios where assets or variables may de-correlate unexpectedly during periods of 
+    high volatility or extreme market stress.
+    """
+
     def __init__(self, calib_data, rf_dir, seed=0):
         JointSim.__init__(self, calib_data, rf_dir, seed)
         self.name = 'Cauchy copula (numerical simulation)'
@@ -200,6 +250,17 @@ class MixCopulaNum(JointSim):
 
 
 class SkewCopulaNum(JointSim):
+    """
+    The class implements a skewed Cauchy copula, which serves as an asymmetric extension to the 
+    original Cauchy copula. Similarly to the CauchyCopulaNum implementation, this class utilizes 
+    actual historical time series as its primary input. To achieve asymmetric tail behaviour, 
+    the class applies a W-transform to the underlying Cauchy copula. This transformation allows 
+    the model to capture directional dependencies and tail asymmetries that a standard symmetric 
+    Cauchy and Gaussian copulas would otherwise fail to represent, making it particularly 
+    effective for modelling empirical data with non-symmetric extreme events (i.e. market crisis 
+    behaviour is different to the periods of growth.
+    """
+
     def __init__(self, calib_data, rf_dir, seed=0, weights=None):
         JointSim.__init__(self, calib_data, rf_dir, seed)
         self.name =f'Skewed Cauchy copula'
@@ -223,6 +284,16 @@ class SkewCopulaNum(JointSim):
     
 
 class MixCopulaNumTest(JointSim):
+    """
+    The class is designed to perform mixture simulations by combining skewed Cauchy and 
+    Gaussian copulas. This approach is mathematically grounded in the principle that a convex 
+    combination of various copulas also constitutes a valid copula, thereby allowing for the 
+    modelling of complex, hybrid dependency structures. The user can define the specific 
+    composition of the mixture by providing the relative proportions of each constituent copula 
+    as an input parameter, enabling the simulation of data that exhibits both symmetric and 
+    asymmetric tail behaviours simultaneously, in addition to the alternative diagonal 
+    (i.e. de-correlation scenarios).
+    """
     def __init__(self, calib_data, rf_dir, seed=0, weights=None):
         JointSim.__init__(self, calib_data, rf_dir, seed)
         self.name =f'Mixture copula test g{1-weights[0]},sc{weights[0]}-{weights[1]}'
