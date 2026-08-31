@@ -12,6 +12,19 @@ class Var:
     """
 
     def __init__(self, calibration, spot, copula, portfolio):
+        """
+        Initializes the base Value-at-Risk (VaR) calculation framework.
+
+        This method stores the foundational components required for the calculations, including 
+        historical returns, current asset prices, the chosen dependency structure (copula), and 
+        the portfolio composition. It also initializes the profit and loss (PnL) array.
+
+        Args:
+            calibration (pd.DataFrame): Historical market data (returns).
+            spot (pd.Series or np.ndarray): The most recent observed spot prices for the simulated assets.
+            copula (JointSim): An instantiated copula model responsible for generating joint uniform scenarios.
+            portfolio (pd.Series or np.ndarray): The portfolio weights or position sizes for each asset.
+        """
         self.calibration = calibration
         self.spot = spot
         self.copula = copula
@@ -23,9 +36,35 @@ class Var:
         raise NotImplementedError
 
     def get_quantile(self, quantile):
+        """
+        Calculates a specific quantile from the generated portfolio PnL distribution.
+
+        This method leverages NumPy's quantile function to extract the value at the 
+        specified probability level from the previously simulated profit and loss (PnL) 
+        array. It is primarily used to extract specific Value-at-Risk (VaR) 
+        metrics after the simulations have been executed
+
+        Args:
+            quantile (float): The probability level for the desired quantile, typically 
+                            between 0.0 and 1.0 (e.g., 0.01 or 0.99).
+
+        Returns:
+            float: The calculated PnL value corresponding to the requested quantile.
+        """
         return np.quantile(self.pnls, quantile)
+
     
     def get_port_value(self):
+        """
+        Calculates the current total value of the portfolio.
+
+        This method computes the baseline portfolio value by taking the dot product 
+        of the most recent observed spot prices and the transposed portfolio weights 
+        or positions. 
+
+        Returns:
+            float or pd.Series: The aggregated current value of the portfolio.
+        """
         return self.spot.dot(self.portfolio.T)
 
 
@@ -51,11 +90,45 @@ class VarSim(Var):
     """
 
     def __init__(self, calibration, spot, copula, portfolio, method='linear'):
+        """
+        Initializes the Monte Carlo VaR simulation framework.
+        This method inherits the foundational components from the base Var class and extends 
+        them by specifying the interpolation method used when mapping uniform scenarios 
+        to empirical marginal distributions. It also dynamically sets the model's 
+        name based on the chosen interpolation method and the underlying copula's name.
+
+        Args:
+            calibration (pd.DataFrame): Historical market data (returns).
+            spot (pd.Series or np.ndarray): The most recent observed spot prices for the simulated assets.
+            copula (JointSim): An instantiated copula model responsible for generating joint uniform scenarios.
+            portfolio (pd.Series or np.ndarray): The portfolio weights or position sizes for each asset.
+            method (str, optional): The interpolation method to use with the quantile function when mapping 
+                                    probabilities to empirical returns. Defaults to 'linear'.
+        """
         Var.__init__(self, calibration, spot, copula, portfolio)
         self.name =f'VaR - Empirical marginals ({method}) - {self.copula.name}'
         self.method = method
 
+
     def calculate_pnls(self, numb_scen):
+        """
+        Executes the core Monte Carlo simulation to generate the portfolio's profit and loss (PnL) distribution.
+
+        This method first generates a specified number of joint uniform scenarios from the 
+        underlying copula. To ensure numerical stability, it clips these probabilities to 
+        a bounded range (0.0001 to 0.9999) and fills any missing values with 0.5. It then maps 
+        these uniform values to the historical log-return marginals using the specified quantile 
+        method, converts them to absolute price changes using the spot prices, and aggregates 
+        the final scenarios via the portfolio weights to populate the PnL distribution.
+
+        Args:
+            numb_scen (int): The total number of Monte Carlo scenarios to simulate.
+            
+        Attributes Set:
+            self.pnls (pd.Series or np.ndarray): The calculated array of aggregated portfolio PnLs 
+                                                for all simulated scenarios.
+        """
+
         joint_sim = self.copula.get_sims(numb_scen)
 
         joint_sim[joint_sim > 0.9999] = 0.9999
@@ -69,6 +142,3 @@ class VarSim(Var):
         print(f'Simulation stats, non nones count: {sum(list(scen.count()))}, needs {scen.size}')
         self.pnls = scen.dot(self.portfolio.T)
          
-
-
-
