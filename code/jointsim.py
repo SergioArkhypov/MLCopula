@@ -17,6 +17,21 @@ class JointSim:
     """
 
     def __init__(self, calib_data, rf_dir, seed=0):
+        """
+        Initializes the base JointSim object, establishing the random seed and preprocessing the calibration dataset.
+
+        During initialization, the method deep copies the provided calibration data and adjusts it 
+        according to the specified risk factor directions. Specifically, it drops any risk factors 
+        marked with NaN in the direction array and inverts the data for short positions 
+        marked as -1.0. It also defines the target directory for saving generated analytical plots.
+
+        Args:
+            calib_data (pd.DataFrame): The historical calibration dataset containing the risk factors.
+            rf_dir (list or np.ndarray): An array indicating the directional exposure of each risk factor 
+                                        (e.g., 1.0 for long, -1.0 for short, NaN to exclude).
+            seed (int, optional): The random seed utilized by NumPy to ensure the reproducibility 
+                                of the simulated scenarios. Defaults to 0.
+        """
         self.seed = seed
         np.random.seed(seed)
         self.figpath = 'C:\\dev\\MLCopula\\document\\figures'
@@ -32,11 +47,38 @@ class JointSim:
         self.rf_dir = rf_dir
         self.size = self.calib_data.shape[0]
         self.sizerf = self.calib_data.shape[1]
+
     
     def get_sims(self, scen_number):
+        """
+        Abstract method to generate simulated joint scenarios based on the specific copula model.
+
+        This method serves as a structural blueprint and must be explicitly overridden by all 
+        concrete child classes. It is responsible for producing the simulated uniform scenarios 
+        (the copula) across all defined risk factors.
+
+        Args:
+            scen_number (int): The total number of scenarios to simulate.
+
+        Raises:
+            NotImplementedError: If the method is not implemented by the inheriting subclass.
+        """
         raise NotImplementedError
+
     
     def plot_sims(self, rf1 : int, rf2 : int):
+        """
+        Generates and saves a 2D scatter plot visualizing the simulated scenarios for a specific pair of risk factors.
+
+        This method calculates the Pearson, Spearman, and Kendall correlation coefficients 
+        between the two specified risk factors. It then creates a scatter plot of their 
+        simulated uniform values, saves the resulting image as a PNG file in the designated 
+        figure directory, and displays the plot.
+
+        Args:
+            rf1 (int): The integer column index of the first risk factor (plotted on the x-axis).
+            rf2 (int): The integer column index of the second risk factor (plotted on the y-axis).
+        """
         pearson = round(self.sims.iloc[:,rf1].corr(self.sims.iloc[:,rf2], method='pearson'), 2)
         spearmn = round(self.sims.iloc[:,rf1].corr(self.sims.iloc[:,rf2], method='spearman'),2)
         kendall = round(self.sims.iloc[:,rf1].corr(self.sims.iloc[:,rf2], method='kendall'), 2)
@@ -47,7 +89,22 @@ class JointSim:
         plt.savefig(f'{self.figpath}\\Uniform_scenarios_{title}.png')
         plt.show()
 
+
     def plot_contour(self, rf1 : int, rf2 : int, step = 0.025):
+        """
+        Generates and saves a 2D contour density plot for a specified pair of simulated risk factors.
+
+        This method employs Gaussian Kernel Density Estimation (KDE) to calculate the probability density 
+        across a uniform grid bounded between 0.0 and 1.0, defined by the step size. It then produces 
+        a filled contour plot representing this density, adds a colorbar, saves the resulting visualization 
+        as a PNG file in the designated figure directory, and displays the plot.
+
+        Args:
+            rf1 (int): The integer column index of the first risk factor (plotted on the x-axis).
+            rf2 (int): The integer column index of the second risk factor (plotted on the y-axis).
+            step (float, optional): The step size used to construct the coordinate grid for the KDE evaluation. 
+                                    Defaults to 0.025.
+        """
         plt.title(f'Contour plot scenarios: {self.name}')
         nscen = self.sims.shape[0]
         x_vals = np.linspace(0.0, 1.0, int(1.0/step))
@@ -63,7 +120,23 @@ class JointSim:
         plt.savefig(f'{self.figpath}\\Contour_plot_{title}.png')
         plt.show()
 
+
     def plot_pdf(self, rf1 : int, rf2 : int, step = 0.025):
+        """
+        Generates and saves a 3D surface plot representing the probability density function (PDF) for a pair of simulated risk factors.
+
+        This method calculates the joint probability density using Gaussian Kernel Density 
+        Estimation (KDE) evaluated over a uniform grid from 0.0 to 1.0, determined by the 
+        specified step size. It then renders the density as a 3D surface plot, saves 
+        the resulting image as a PNG file in the designated figure directory, and displays 
+        the plot.
+
+        Args:
+            rf1 (int): The integer column index of the first risk factor (plotted on the x-axis).
+            rf2 (int): The integer column index of the second risk factor (plotted on the y-axis).
+            step (float, optional): The step size used to construct the coordinate grid for the KDE 
+                                    evaluation. Defaults to 0.025.
+        """
         nscen = self.sims.shape[0]
         fig = plt.figure()
         #plt.title(f'PDF: {self.name}')
@@ -84,12 +157,28 @@ class JointSim:
 
 
     def plot_tailcoef(self, rf1 : int, rf2 : int, step = 0.025):
+        """
+        Generates and saves a plot of the empirical tail dependence coefficients across various quantiles for a pair of simulated risk factors.
+
+        This method evaluates joint extreme co-movements by calculating the proportion of 
+        simulations where both variables simultaneously fall below (lower tail) or exceed (upper tail) 
+        specific probability thresholds, ranging from 0.1% to 99.9%. It normalizes these 
+        joint probabilities to construct the tail coefficients, plots the resulting values against 
+        a set of pre-defined quantile labels (e.g., 'Q01' to 'Q999'), saves the figure as a PNG 
+        in the designated directory, and displays the plot.
+
+        Args:
+            rf1 (int): The integer column index of the first risk factor.
+            rf2 (int): The integer column index of the second risk factor.
+            step (float, optional): Included in the method signature but unused in the current 
+                                    calculation logic. Defaults to 0.025.
+        """
+
         plt.title(f'Tail coefficient: {self.name}')
         max_list = np.maximum(self.sims.iloc[:,rf1], self.sims.iloc[:,rf2])
         min_list = np.minimum(self.sims.iloc[:,rf1], self.sims.iloc[:,rf2])
         count_sim = len(self.sims.iloc[:,rf1])
         indexlist = ['Q01', 'Q1', 'Q5', 'Q10', 'Q25', 'Q50-', 'Q50+', 'Q75', 'Q90', 'Q95', 'Q99', 'Q999']
-        #indexlist1 = [0.01, 0.05, 0.1, 0.25, 0.499, 0.501, 0.75, 0.90, 0.95, 0.99]
 
         vals = [
             np.count_nonzero(max_list <= 0.001)/count_sim*1000.0,
@@ -122,6 +211,13 @@ class GaussCopulaCorr(JointSim):
     """
 
     def __init__(self, calib_data, rf_dir, seed=0):
+        """
+        Initializes the correlation-based Gaussian copula model.
+
+        This method invokes the initialization of the parent JointSim class to process 
+        the calibration dataset, apply directional exposures, and set the random seed. 
+        It then assigns the specific model name 'Gaussian copula (correlation based)'.
+        """
         JointSim.__init__(self, calib_data, rf_dir, seed)
         self.name ='Gaussian copula (correlation based)'
     
